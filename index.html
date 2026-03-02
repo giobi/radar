@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar — Report di collaudo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #f8fafc; --surface: #ffffff; --border: #e2e8f0;
+    --accent: #6366f1; --accent-soft: rgba(99,102,241,.06);
+    --green: #16a34a; --yellow: #ca8a04; --red: #dc2626;
+    --text: #0f172a; --text-secondary: #475569; --text-muted: #94a3b8;
+    --font: 'Inter', -apple-system, sans-serif;
+    --radius: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height:1.7; }
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 2.5rem 0 2rem; }
+.container { max-width: 860px; margin:0 auto; padding:0 1.5rem; }
+.brand { display: flex; align-items: center; gap: .5rem; margin-bottom: .75rem; }
+.brand-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; }
+.brand h1 { font-size: 1.4rem; font-weight: 700; }
+.subtitle { font-size: .88rem; color: var(--text-secondary); }
+main { padding: 2rem 0 4rem; }
+.project-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: var(--text); transition: all .15s; }
+.project-card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(99,102,241,.08); }
+.project-info { display: flex; align-items: center; gap: 1rem; }
+.project-name { font-weight: 600; font-size: 1rem; }
+.project-url { font-size: .78rem; color: var(--text-muted); }
+.project-meta { text-align: right; }
+.project-runs { font-size: .78rem; color: var(--text-muted); }
+.badge { display: inline-block; padding: .15rem .5rem; border-radius: 4px; font-size: .7rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.badge-green { background: rgba(22,163,74,.08); color: var(--green); }
+.badge-yellow { background: rgba(202,138,4,.08); color: var(--yellow); }
+.badge-red { background: rgba(220,38,38,.08); color: var(--red); }
+.footer { border-top: 1px solid var(--border); padding: 1.5rem 0; }
+.footer p { font-size: .75rem; color: var(--text-muted); display: flex; justify-content: space-between; }
+.footer a { color: var(--accent); text-decoration: none; }
+.empty { text-align: center; padding: 4rem 0; color: var(--text-muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <div class="brand-icon">📡</div>
+        <h1>Radar</h1>
+    </div>
+    <p class="subtitle">Report di collaudo — cosa abbiamo controllato e come è andata</p>
+</div>
+</div>
+<main>
+<div class="container">
+    <a class="project-card" href="nexum/">
+        <div class="project-info">
+            <div>
+                <div class="project-name">Nexum</div>
+                <div class="project-url">nexum.it · estendo.sel.re</div>
+            </div>
+        </div>
+        <div class="project-meta">
+            <span class="badge badge-green">FIXED</span>
+            <div class="project-runs">4 report · ultimo 2 mar 2026</div>
+        </div>
+    </a>
+    <a class="project-card" href="a3d/">
+        <div class="project-info">
+            <div>
+                <div class="project-name">A3D</div>
+                <div class="project-url">mule.a3d.it</div>
+            </div>
+        </div>
+        <div class="project-meta">
+            <span class="badge badge-yellow">ISSUES</span>
+            <div class="project-runs">3 report · ultimo 26 feb 2026</div>
+        </div>
+    </a>
+    <a class="project-card" href="calia/">
+        <div class="project-info">
+            <div>
+                <div class="project-name">Calia</div>
+                <div class="project-url">caliaitaliaoutlet.com</div>
+            </div>
+        </div>
+        <div class="project-meta">
+            <span class="badge badge-yellow">ISSUES</span>
+            <div class="project-runs">1 report · ultimo 26 feb 2026</div>
+        </div>
+    </a>
+    <a class="project-card" href="digitag/">
+        <div class="project-info">
+            <div>
+                <div class="project-name">DigiTag</div>
+                <div class="project-url">digitag.me</div>
+            </div>
+        </div>
+        <div class="project-meta">
+            <span class="badge badge-green">HEALTHY</span>
+            <div class="project-runs">1 report · ultimo 26 feb 2026</div>
+        </div>
+    </a>
+    <a class="project-card" href="fasoli/">
+        <div class="project-info">
+            <div>
+                <div class="project-name">Fasoli Piante</div>
+                <div class="project-url">fasolipiante.com</div>
+            </div>
+        </div>
+        <div class="project-meta">
+            <span class="badge badge-yellow">ISSUES</span>
+            <div class="project-runs">1 report · ultimo 26 feb 2026</div>
+        </div>
+    </a>
+</div>
+</main>
+<div class="footer"><div class="container"><p><span>Radar · <a href="https://giobi.com">giobi.com</a></span><span>Report di collaudo automatizzati</span></p></div></div>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar — Nexum: Pagamento carta di credito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #f8fafc; --surface: #ffffff; --surface-alt: #f1f5f9;
+    --border: #e2e8f0; --border-strong: #cbd5e1;
+    --accent: #6366f1; --accent-soft: rgba(99,102,241,.08); --accent-hover: rgba(99,102,241,.12);
+    --green: #16a34a; --green-bg: rgba(22,163,74,.08);
+    --yellow: #ca8a04; --yellow-bg: rgba(202,138,4,.08);
+    --red: #dc2626; --red-bg: rgba(220,38,38,.08);
+    --text: #0f172a; --text-secondary: #475569; --text-muted: #94a3b8;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --radius: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height:1.7; font-size:15px; }
+
+/* Header */
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 2rem 0; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; }
+.brand { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; }
+.brand-icon { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; }
+.brand-name { font-size: .8rem; font-weight: 600; color: var(--accent); letter-spacing: .04em; text-transform: uppercase; }
+.title { font-size: 1.5rem; font-weight: 700; margin-bottom: .25rem; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .82rem; color: var(--text-secondary); }
+.meta-row span { display: flex; align-items: center; gap: .35rem; }
+
+/* Score */
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 8; }
+.score-ring .fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset .8s ease; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 2rem; font-weight: 700; }
+.score-number small { font-size: .9rem; font-weight: 500; color: var(--text-muted); }
+.score-summary h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: .5rem; }
+.score-summary p { font-size: .88rem; color: var(--text-secondary); }
+
+/* Tabs */
+.tabs { padding: 1.5rem 0 0; }
+.tab-buttons { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
+.tab-btn { padding: .55rem 1.2rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font-family: var(--font); font-size: .82rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all .15s; }
+.tab-btn:hover { background: var(--accent-hover); border-color: var(--accent); color: var(--accent); }
+.tab-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ELI5 Steps */
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+.step-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; }
+.step-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.fail { background: var(--red-bg); }
+.step-title { font-weight: 600; font-size: .95rem; }
+.step-explain { font-size: .88rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.75; }
+.step-img { border-radius: 8px; border: 1px solid var(--border); overflow: hidden; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .5rem .75rem; background: var(--surface-alt); font-size: .75rem; color: var(--text-muted); }
+.step-before-after { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.ba-label { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .35rem; }
+
+/* Tech tab */
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+.tech-section h3 { font-size: .88rem; font-weight: 600; margin-bottom: .75rem; display: flex; align-items: center; gap: .4rem; }
+.log-block { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 8px; font-family: var(--mono); font-size: .78rem; line-height: 1.8; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.tech-table th { text-align: left; font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); padding: .5rem .5rem; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .5rem; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .35rem; border-radius: 4px; font-family: var(--mono); font-size: .78rem; }
+
+/* Footer */
+.footer { border-top: 1px solid var(--border); padding: 1.5rem 0; margin-top: 2rem; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; font-size: .75rem; color: var(--text-muted); }
+.footer a { color: var(--accent); text-decoration: none; }
+
+/* Responsive */
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .step-before-after { grid-template-columns: 1fr; }
+    .meta-row { flex-direction: column; gap: .5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <div class="brand-icon">📡</div>
+        <span class="brand-name">Radar</span>
+    </div>
+    <h1 class="title">Nexum — Pagamento carta di credito</h1>
+    <div class="meta-row">
+        <span>📅 27 febbraio 2026</span>
+        <span>🎯 estendo.sel.re</span>
+        <span>🔧 Bug fix</span>
+        <span>⏱️ 3 iterazioni</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- Score -->
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle class="track" cx="60" cy="60" r="52"/>
+            <circle class="fill" cx="60" cy="60" r="52"
+                stroke="#16a34a"
+                stroke-dasharray="326.7"
+                stroke-dashoffset="0"/>
+        </svg>
+        <div class="score-number">100<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>✅ Problema risolto</h2>
+        <p>Il pagamento con carta di credito funziona correttamente. Il problema era una configurazione mancante nel file di ambiente del server. È stato aggiunto il dato mancante e ora tutto funziona.</p>
+    </div>
+</div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple')">👀 Cosa abbiamo fatto</button>
+    <button class="tab-btn" onclick="switchTab('tech')">🔧 Dettagli tecnici</button>
+</div>
+
+<!-- ELI5 Tab -->
+<div id="tab-simple" class="tab-panel active">
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon fail">❌</div>
+        <span class="step-title">Il problema: cliccando "Paga con carta" il sito dava errore</span>
+    </div>
+    <p class="step-explain">
+        Quando un utente arrivava alla pagina di pagamento e sceglieva "Carta di credito", il sito mostrava una pagina di errore invece del modulo per inserire i dati della carta. In pratica, era impossibile pagare con carta.
+    </p>
+    <div class="step-img">
+        <img src="step6-before.png" alt="Schermata pagamento prima del fix">
+        <div class="step-img-caption">La pagina di pagamento — il pulsante "Carta di credito" causava l'errore</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok">🔍</div>
+        <span class="step-title">La causa: mancava un'impostazione sul server</span>
+    </div>
+    <p class="step-explain">
+        Il sito aveva bisogno di sapere <strong>dove inviare i dati della carta</strong> (un codice identificativo del sistema di pagamento). Questo codice non era stato inserito nella configurazione del server. È come se un negozio avesse il POS ma non fosse collegato alla banca.
+    </p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok">✅</div>
+        <span class="step-title">Risolto: aggiunta la configurazione mancante</span>
+    </div>
+    <p class="step-explain">
+        Abbiamo inserito i codici corretti nella configurazione del server. Ora cliccando "Carta di credito" si apre regolarmente il modulo di pagamento.
+    </p>
+    <div class="step-img">
+        <img src="step6-after-fix.png" alt="Schermata pagamento dopo il fix">
+        <div class="step-img-caption">Dopo la correzione — il pagamento con carta funziona regolarmente</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn">⚠️</div>
+        <span class="step-title">Nota: da verificare anche sul sito principale</span>
+    </div>
+    <p class="step-explain">
+        Questa correzione è stata fatta sul sito di test. Lo stesso problema potrebbe esistere anche sul sito che usano i clienti finali. Verificheremo separatamente.
+    </p>
+</div>
+
+</div>
+
+<!-- Tech Tab -->
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3>📋 Riepilogo tecnico</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Server</td><td><code>cloudways-athena.giobi.com</code></td></tr>
+        <tr><td>App path</td><td><code>/home/master/applications/.../public_html</code></td></tr>
+        <tr><td>Target URL</td><td><code>estendo.sel.re/contract/1035/step/6</code></td></tr>
+        <tr><td>Scenario</td><td>Bug fix</td></tr>
+        <tr><td>Iterazioni</td><td>3</td></tr>
+        <tr><td>Verdict</td><td style="color: var(--green); font-weight: 600;">FIXED</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3>🔍 Log errore</h3>
+    <div class="log-block">local.ERROR: Zuora hosted page configuration missing
+  config zuora.gateway.policy.hostedPage.credit-card
+  pageId: , pageUrl: ...
+
+Missing env vars:
+  ZUORA_POLIZZA_GATEWAY_CREDIT_CARD
+  ZUORA_POLIZZA_GATEWAY_SEPA</div>
+</div>
+
+<div class="tech-section">
+    <h3>🔧 Fix applicato</h3>
+    <div class="log-block"># Aggiunto a .env su estendo.sel.re (Athena)
+ZUORA_POLIZZA_GATEWAY_CREDIT_CARD="8adcc1438c86edfa018c87813ca55e24"
+ZUORA_POLIZZA_GATEWAY_SEPA="8adcad47978731a901978d63346e6e7b"
+
+$ php artisan config:clear</div>
+</div>
+
+<div class="tech-section">
+    <h3>⚠️ Note</h3>
+    <ul style="font-size:.85rem; color:var(--text-secondary); padding-left:1.2rem;">
+        <li>Lo stesso problema potrebbe esistere su PROD (SRVAPPWEB) — verificare .env separatamente</li>
+        <li>I 429 nei console errors sono rate limiting Cloudflare su risorse statiche per headless browser, non errori applicativi</li>
+    </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+<div class="footer-inner">
+    <span>Radar — Report di collaudo · <a href="https://radar.giobi.com">radar.giobi.com</a></span>
+    <span><a href="https://giobi.com">giobi.com</a></span>
+</div>
+</div>
+
+</div>
+
+<script>
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
