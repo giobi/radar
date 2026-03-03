@@ -1,178 +1,204 @@
 <!DOCTYPE html>
-<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Radar: Calia Italia Outlet — Audit Tracciamento</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Radar — Calia: Tracciamento Google Ads / GA4</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--mono:'IBM Plex Mono',monospace;--accent:#7c3aed;--red:#dc2626;--yellow:#d97706;--green:#16a34a;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:var(--mono);background:#fafaf9;color:#1c1917;padding:2rem 1.5rem;max-width:900px;margin:0 auto;}
-h1{font-size:1.5rem;margin-bottom:.5rem;}
-h2{font-size:1.1rem;margin:2rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid #e7e5e4;}
-h3{font-size:.9rem;margin:1.2rem 0 .5rem;}
-p,.note{font-size:.82rem;color:#57534e;line-height:1.7;margin-bottom:.5rem;}
-.badge{display:inline-block;padding:.2rem .6rem;border-radius:3px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
-.badge-issues{background:rgba(217,119,6,.12);color:var(--yellow);}
-.badge-healthy{background:rgba(22,163,74,.12);color:var(--green);}
-.badge-broken{background:rgba(220,38,38,.12);color:var(--red);}
-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.8rem;}
-th{text-align:left;padding:.5rem .4rem;border-bottom:2px solid #d6d3d1;color:#78716c;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;}
-td{padding:.5rem .4rem;border-bottom:1px solid #e7e5e4;vertical-align:top;}
-.status{font-weight:600;}
-.pass{color:var(--green);}
-.warn{color:var(--yellow);}
-.fail{color:var(--red);}
-.issue-list{list-style:none;padding:0;}
-.issue-list li{padding:.4rem 0;font-size:.82rem;border-bottom:1px solid #f5f5f4;}
-.issue-list li:last-child{border:none;}
-.eli5{background:#fff;border:1px solid #e7e5e4;border-radius:4px;padding:1.25rem;margin:1rem 0;font-size:.82rem;line-height:1.8;}
-.eli5 strong{color:#1c1917;}
-.flow{background:#fff;border:1px solid #e7e5e4;border-radius:4px;padding:1rem;margin:1rem 0;font-size:.78rem;font-family:var(--mono);white-space:pre;line-height:1.6;overflow-x:auto;}
-.meta{font-size:.75rem;color:#a8a29e;margin-top:2rem;padding-top:1rem;border-top:1px solid #e7e5e4;}
-.section-note{font-size:.75rem;color:#a8a29e;font-style:italic;margin-bottom:1rem;}
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); } .step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); } .step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); } .step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+@media (max-width: 640px) { .score-card { flex-direction: column; text-align: center; } .meta-row { flex-direction: column; gap: .4rem; } }
 </style>
-</head><body>
-
-<span class="badge badge-broken">BROKEN</span>
-<h1>Audit Tracciamento: caliaitaliaoutlet.com</h1>
-<p><strong>Data:</strong> 3 marzo 2026 &mdash; <strong>Sito:</strong> caliaitaliaoutlet.com &mdash; <strong>Problema:</strong> Google Ads non traccia gli acquisti</p>
-
-<h2>In parole semplici</h2>
-
-<div class="eli5">
-Quando un cliente compra un divano sul sito, il sito deve avvisare Google Ads e Google Analytics che c'&egrave; stata una vendita. In questo momento <strong>questo avviso non parte per Google</strong> (mentre per Facebook/Meta funziona).<br><br>
-
-Il risultato: Google Ads non sa quali campagne portano vendite, quindi non pu&ograve; ottimizzare la spesa pubblicitaria. &Egrave; come buttare soldi senza sapere quali funzionano.<br><br>
-
-<strong>La soluzione:</strong> centralizzare tutto in Google Tag Manager (GTM) &mdash; un unico centro di controllo che gestisce Google Ads, GA4, e anche Facebook. Il plugin attuale (PixelYourSite) gestisce solo Facebook e verr&agrave; sostituito.
+</head>
+<body>
+<div class="header">
+<div class="container">
+    <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg><a href="../../dashboard/">Radar</a></div>
+    <h1 class="title">Calia Italia Outlet &mdash; Tracciamento Google Ads / GA4</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>3 marzo 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>Audit</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>caliaitaliaoutlet.com</span>
+    </div>
 </div>
-
-<h2>Stato attuale tracking</h2>
-
-<table>
-<tr><th>Componente</th><th>ID</th><th>Status</th><th>Note</th></tr>
-<tr>
-  <td>Google Tag Manager</td>
-  <td><code>GTM-TK5RDQQC</code></td>
-  <td class="status warn">PARZIALE</td>
-  <td>Container presente ma non su tutte le pagine</td>
-</tr>
-<tr>
-  <td>Google Analytics 4</td>
-  <td><code>G-7KQ77QJ7WM</code></td>
-  <td class="status warn">PARZIALE</td>
-  <td>Configurato dentro GTM, ma l'evento purchase non viene sparato</td>
-</tr>
-<tr>
-  <td>Google Ads Conversion</td>
-  <td><code>AW-11078805278</code></td>
-  <td class="status fail">BROKEN</td>
-  <td>Tag presente in GTM ma mai attivato: manca il trigger purchase</td>
-</tr>
-<tr>
-  <td>Conversion Label</td>
-  <td><code>IHQBCLf5250ZEJ7O5KIp</code></td>
-  <td class="status fail">BROKEN</td>
-  <td>Label configurata ma non sparata</td>
-</tr>
-<tr>
-  <td>Conversion Linker</td>
-  <td>&mdash;</td>
-  <td class="status pass">OK</td>
-  <td>Presente e attivo nel container GTM</td>
-</tr>
-<tr>
-  <td>Facebook Pixel</td>
-  <td><code>705298074662650</code></td>
-  <td class="status pass">OK</td>
-  <td>Gestito da PixelYourSite, tracciamento purchase funzionante</td>
-</tr>
-<tr>
-  <td>PixelYourSite</td>
-  <td>v11.2.0.3</td>
-  <td class="status warn">DA RIMUOVERE</td>
-  <td>Gestisce solo Facebook. Aggiunge peso al sito.</td>
-</tr>
-<tr>
-  <td>Consent Mode (Iubenda)</td>
-  <td>&mdash;</td>
-  <td class="status pass">OK</td>
-  <td>analytics_storage e ad_storage configurati, default granted</td>
-</tr>
-</table>
-
-<h2>Diagnosi tecnica</h2>
-
-<h3>Il problema: nessuno pusha l'evento purchase nel dataLayer</h3>
-
-<p>Il flusso corretto di tracciamento dovrebbe essere:</p>
-
-<div class="flow">Cliente completa acquisto
-        &darr;
-Thank you page caricata
-        &darr;
-Codice WooCommerce pusha dataLayer.push({
-  event: 'purchase',
-  ecommerce: { transaction_id, value, currency, items[] }
-})
-        &darr;
-GTM intercetta l'evento purchase
-        &darr;
-GTM spara:
-  &bull; Tag GA4 Event (purchase) &rarr; G-7KQ77QJ7WM
-  &bull; Tag Google Ads Conversion &rarr; AW-11078805278
-  &bull; Tag Facebook Pixel (purchase) &rarr; 705298074662650</div>
-
-<p>Il problema &egrave; al terzo passaggio: <strong>nessun plugin sta pushando i dati dell'ordine nel dataLayer sulla thank you page</strong>. Il plugin GTM4WP (che normalmente fa questo lavoro) non &egrave; attivo o non &egrave; configurato per WooCommerce. Di conseguenza GTM non ha dati da inviare e i tag di conversione non si attivano mai.</p>
-
-<h3>Problemi trovati</h3>
-
-<ul class="issue-list">
-  <li><span class="fail">&bull;</span> <strong>Nessun dataLayer push per purchase</strong> &mdash; Manca il codice che comunica i dati dell'ordine (importo, prodotti, transaction_id) a GTM sulla pagina di ringraziamento</li>
-  <li><span class="fail">&bull;</span> <strong>GTM non presente su tutte le pagine</strong> &mdash; Lo snippet GTM non &egrave; stato trovato nell'HTML della homepage, potrebbe essere iniettato solo su alcune pagine</li>
-  <li><span class="warn">&bull;</span> <strong>PixelYourSite gestisce solo Facebook</strong> &mdash; Il plugin ha l'integrazione Google disabilitata o non configurata</li>
-  <li><span class="warn">&bull;</span> <strong>Nessun gtag() diretto nel codice sorgente</strong> &mdash; Tutto passa da GTM, corretto ma richiede che il container sia ben configurato</li>
-</ul>
-
-<h2>Soluzione proposta</h2>
-
-<p class="section-note">Concordata in call del 3 marzo con Elvira Contini, Mattia Follari e Giobi</p>
-
-<table>
-<tr><th>Azione</th><th>Dove</th><th>Cosa fa</th></tr>
-<tr>
-  <td><strong>1. Snippet GTM nel child theme</strong></td>
-  <td>functions.php</td>
-  <td>Inserisce lo snippet GTM (<code>GTM-TK5RDQQC</code>) in <code>&lt;head&gt;</code> e <code>&lt;body&gt;</code> su tutte le pagine, in modo affidabile e senza plugin</td>
-</tr>
-<tr>
-  <td><strong>2. dataLayer push su thank you page</strong></td>
-  <td>functions.php</td>
-  <td>Hook <code>woocommerce_thankyou</code>: pusha nel dataLayer transaction_id, valore totale, valuta, lista prodotti con nome/prezzo/quantit&agrave;</td>
-</tr>
-<tr>
-  <td><strong>3. Configurazione GTM</strong></td>
-  <td>tagmanager.google.com</td>
-  <td>Trigger su evento purchase + tag GA4 Event + tag Google Ads Conversion + tag Facebook Pixel purchase. Tutto in un unico container.</td>
-</tr>
-<tr>
-  <td><strong>4. Disattivazione PixelYourSite</strong></td>
-  <td>wp-admin</td>
-  <td>Una volta che GTM gestisce anche Facebook, il plugin diventa ridondante. Rimuoverlo alleggerisce il sito.</td>
-</tr>
-</table>
-
-<h2>Vantaggi della soluzione GTM</h2>
-
-<ul class="issue-list">
-  <li><strong>Un unico centro di controllo</strong> &mdash; Tutti i pixel e tracciamenti gestiti da un'unica interfaccia (GTM), senza toccare il codice del sito</li>
-  <li><strong>Meno plugin = sito pi&ugrave; veloce</strong> &mdash; PixelYourSite carica JS aggiuntivo su ogni pagina. Rimuovendolo il sito si alleggerisce.</li>
-  <li><strong>Debug pi&ugrave; facile</strong> &mdash; GTM ha un Tag Assistant integrato per verificare in tempo reale cosa viene sparato e quando</li>
-  <li><strong>Scalabile</strong> &mdash; Se in futuro si aggiungono altri pixel (TikTok, Pinterest, ecc.), basta aggiungerli in GTM senza toccare WordPress</li>
-</ul>
-
-<div class="meta">
-Radar &middot; caliaitaliaoutlet.com &middot; 3 marzo 2026 &middot; <a href="https://giobi.com" style="color:inherit;">giobi.com</a>
 </div>
+<div class="container">
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--red)" stroke-dasharray="263.9" stroke-dashoffset="184.7"/>
+        </svg>
+        <div class="score-number" style="color:var(--red)">30<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Tracciamento Google non funzionante</h2>
+        <p>Le campagne Google Ads non riescono a vedere le vendite dal sito. Google non sa quali annunci portano clienti e non pu&ograve; ottimizzare la spesa pubblicitaria. Il tracciamento Facebook funziona, quello Google no.</p>
+    </div>
+</div>
+</div>
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Cosa abbiamo trovato</button>
+    <button class="tab-btn" onclick="switchTab('tech', this)"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Dettagli tecnici</button>
+</div>
+<div id="tab-simple" class="tab-panel active">
+<div class="step">
+    <div class="step-header"><div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span class="step-title">Il problema: Google non vede le vendite</span></div>
+    <p class="step-explain">Quando un cliente compra un divano, il sito deve avvisare Google Ads e Google Analytics che c'&egrave; stata una vendita. Questo avviso al momento non parte per Google. &Egrave; come se il registratore di cassa funzionasse ma non mandasse lo scontrino alla banca &mdash; i soldi entrano ma nessuno sa da quale pubblicit&agrave; arriva il cliente.</p>
+</div>
+<div class="step">
+    <div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-title">Facebook funziona correttamente</span></div>
+    <p class="step-explain">Il tracciamento delle vendite per Facebook/Meta funziona. Un plugin sul sito (PixelYourSite) se ne occupa e comunica correttamente ogni acquisto a Facebook. Il problema riguarda solo Google.</p>
+</div>
+<div class="step">
+    <div class="step-header"><div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span class="step-title">La causa: manca il collegamento tra sito e Google</span></div>
+    <p class="step-explain">Sul sito c'&egrave; Google Tag Manager (una specie di centralina per i tracciamenti) ma manca il pezzo fondamentale: il codice che, al momento dell'acquisto, dice a questa centralina i dettagli della vendita (importo, prodotti, numero ordine). Senza questo, la centralina non ha nulla da comunicare a Google.</p>
+</div>
+<div class="step">
+    <div class="step-header"><div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><span class="step-title">Problema aggiuntivo: la centralina non &egrave; su tutte le pagine</span></div>
+    <p class="step-explain">Google Tag Manager dovrebbe essere presente su ogni pagina del sito, ma in alcuni casi non viene caricato (ad esempio sulla homepage). Questo significa che anche il tracciamento base delle visite potrebbe essere incompleto.</p>
+</div>
+<div class="step">
+    <div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><span class="step-title">La soluzione: un unico centro di controllo</span></div>
+    <p class="step-explain">Proponiamo di centralizzare tutto in Google Tag Manager con un piccolo codice nel sito. GTM gestir&agrave; Google Ads, GA4 e anche Facebook da un unico punto, senza dipendere da plugin esterni. Il plugin PixelYourSite verr&agrave; poi disattivato, alleggerendo anche il sito.</p>
+</div>
+</div>
+<div id="tab-tech" class="tab-panel">
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Stato componenti</h3>
+    <table class="tech-table">
+        <tr><th>Componente</th><th>ID</th><th>Status</th></tr>
+        <tr><td>Google Tag Manager</td><td><code>GTM-TK5RDQQC</code></td><td style="color:var(--yellow);font-weight:600">PARZIALE</td></tr>
+        <tr><td>Google Analytics 4</td><td><code>G-7KQ77QJ7WM</code></td><td style="color:var(--yellow);font-weight:600">PARZIALE</td></tr>
+        <tr><td>Google Ads Conversion</td><td><code>AW-11078805278</code></td><td style="color:var(--red);font-weight:600">BROKEN</td></tr>
+        <tr><td>Conversion Label</td><td><code>IHQBCLf5250ZEJ7O5KIp</code></td><td style="color:var(--red);font-weight:600">BROKEN</td></tr>
+        <tr><td>Conversion Linker</td><td>&mdash;</td><td style="color:var(--green);font-weight:600">OK</td></tr>
+        <tr><td>Facebook Pixel</td><td><code>705298074662650</code></td><td style="color:var(--green);font-weight:600">OK</td></tr>
+        <tr><td>PixelYourSite</td><td>v11.2.0.3</td><td style="color:var(--yellow);font-weight:600">DA RIMUOVERE</td></tr>
+        <tr><td>Consent Mode (Iubenda)</td><td>&mdash;</td><td style="color:var(--green);font-weight:600">OK</td></tr>
+    </table>
+</div>
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>Root cause</h3>
+    <div class="log-block">FLUSSO ATTESO (non funzionante):
 
-</body></html>
+Thank you page
+  → dataLayer.push({ event: 'purchase', ecommerce: {...} })
+  → GTM trigger "purchase"
+  → GA4 Event tag (G-7KQ77QJ7WM)
+  → Google Ads Conversion tag (AW-11078805278 / IHQBCLf5250ZEJ7O5KIp)
+
+PROBLEMA:
+Nessun plugin o codice esegue dataLayer.push() sulla thank you page.
+GTM4WP (duracelltomi-google-tag-manager) non attivo o non configurato
+per WooCommerce ecommerce events.
+
+PixelYourSite (v11.2.0.3) gestisce SOLO Facebook Pixel.
+Integrazione Google: disabilitata o non configurata.
+
+GTM container (GTM-TK5RDQQC) non presente nell'HTML della homepage.
+Trovato solo su /checkout/ — iniezione inconsistente.</div>
+</div>
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Fix proposto</h3>
+    <div class="log-block">1. SNIPPET GTM IN CHILD THEME (functions.php)
+   - wp_head hook: GTM script tag
+   - wp_body_open hook: GTM noscript tag
+   - Container ID: GTM-TK5RDQQC
+   - Presente su TUTTE le pagine
+
+2. DATALAYER PUSH SU THANK YOU PAGE (functions.php)
+   - Hook: woocommerce_thankyou
+   - Push: event 'purchase' + ecommerce object
+   - Dati: transaction_id, value, currency, tax, shipping, items[]
+   - Ogni item: item_name, item_id, price, quantity
+
+3. CONFIGURAZIONE GTM (tagmanager.google.com)
+   - Trigger: Custom Event "purchase"
+   - Tag GA4 Event: purchase → G-7KQ77QJ7WM
+   - Tag Google Ads Conversion: AW-11078805278 / IHQBCLf5250ZEJ7O5KIp
+   - Tag Facebook Pixel: purchase → 705298074662650
+
+4. CLEANUP
+   - Disattivare PixelYourSite (ridondante con GTM)
+   - Verificare rimozione gtag inline se presente</div>
+</div>
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Note</h3>
+    <ul style="font-size:.78rem; color:var(--text-secondary); padding-left:1.2rem; line-height:1.9;">
+        <li>Consent Mode (Iubenda) ha default "granted" — non blocca il tracciamento</li>
+        <li>Hosting: Cloudways (165.232.97.86) — SSH non accessibile al momento dell'audit</li>
+        <li>Concordato in call 3 marzo con Elvira Contini, Mattia Follari (ads), Giobi</li>
+    </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
+<script>
+(function(){ var h=window.location.hash; if(h.startsWith('#key=')) sessionStorage.setItem('radar-auth',h.slice(5)); })();
+function switchTab(t,b){ document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active')}); document.querySelectorAll('.tab-panel').forEach(function(x){x.classList.remove('active')}); document.getElementById('tab-'+t).classList.add('active'); b.classList.add('active'); }
+</script>
+</body>
+</html>
