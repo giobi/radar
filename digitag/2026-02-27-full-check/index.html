@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlayRalph: digitag — FIXED</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--mono:'IBM Plex Mono',monospace;--accent:#7c3aed;--red:#dc2626;--yellow:#d97706;--green:#16a34a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--mono);background:#fafaf9;color:#1c1917;padding:2rem 1.5rem;max-width:900px;margin:0 auto;}
+h1{font-size:1.5rem;margin-bottom:.5rem;}
+h2{font-size:1.1rem;margin:2rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid #e7e5e4;}
+h3{font-size:.9rem;margin:1.2rem 0 .5rem;}
+p,.note{font-size:.82rem;color:#57534e;line-height:1.7;margin-bottom:.5rem;}
+.badge{display:inline-block;padding:.2rem .6rem;border-radius:3px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
+.badge-issues{background:rgba(217,119,6,.12);color:var(--yellow);}
+.badge-healthy{background:rgba(22,163,74,.12);color:var(--green);}
+.badge-broken{background:rgba(220,38,38,.12);color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.8rem;}
+th{text-align:left;padding:.5rem .4rem;border-bottom:2px solid #d6d3d1;color:#78716c;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;}
+td{padding:.5rem .4rem;border-bottom:1px solid #e7e5e4;vertical-align:top;}
+.status{font-weight:600;}
+.pass{color:var(--green);}
+.warn{color:var(--yellow);}
+.fail{color:var(--red);}
+.screenshots{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;}
+.screenshots img{width:100%;border:1px solid #d6d3d1;border-radius:4px;}
+.screenshots .caption{font-size:.7rem;color:#a8a29e;text-align:center;margin-top:.25rem;}
+.issue-list{list-style:none;padding:0;}
+.issue-list li{padding:.4rem 0;font-size:.82rem;border-bottom:1px solid #f5f5f4;}
+.issue-list li:last-child{border:none;}
+.meta{font-size:.75rem;color:#a8a29e;margin-top:2rem;padding-top:1rem;border-top:1px solid #e7e5e4;}
+</style>
+</head><body>
+
+<span class="badge badge-healthy">FIXED</span>
+<h1>PlayRalph: digitag.me</h1>
+<p><strong>Data:</strong> 27/02/2026 15:10 &mdash; <strong>Target:</strong> homepage, /contact, admin.digitag.me &mdash; <strong>Iterazioni:</strong> 2 (diagnostic + fix)</p>
+
+<h2>Riepilogo</h2>
+
+<table>
+<tr><th>Target</th><th>Status</th><th>Load</th><th>Note</th></tr>
+<tr>
+  <td>digitag.me</td>
+  <td class="status warn">ISSUES</td>
+  <td>1.71s</td>
+  <td>1 broken img, nav items debug visibili</td>
+</tr>
+<tr>
+  <td>digitag.me/contact</td>
+  <td class="status pass">HEALTHY</td>
+  <td>1.18s</td>
+  <td>Form OK, checkbox newsletter presente</td>
+</tr>
+<tr>
+  <td>admin.digitag.me (login)</td>
+  <td class="status pass">HEALTHY</td>
+  <td>2.98s</td>
+  <td>Passwordless login pulito</td>
+</tr>
+<tr>
+  <td>admin.digitag.me (dashboard)</td>
+  <td class="status pass">FIXED ✅</td>
+  <td>2.04s</td>
+  <td>Rimosso Flux UI, riscritto con Tailwind puro. Tabella funzionante.</td>
+</tr>
+</table>
+
+<h2>Issues trovate</h2>
+
+<h3>🔴 Critiche</h3>
+<ul class="issue-list">
+  <li><strong>Dashboard admin CSS rotto</strong> &mdash; <code>@fluxStyles</code> e <code>@fluxScripts</code> Blade/Livewire directives mostrate come testo. La tabella contatti non ha styling, tutti i dati in un blocco di testo. Export CSV c'e ma la UX e inutilizzabile.</li>
+  <li><strong>"HIDDEN" e "H1" nella navbar</strong> &mdash; Due voci di navigazione debug/dev visibili in produzione (desktop). Imbarazzante per il cliente.</li>
+  <li><strong>Livewire/Alpine duplicati</strong> &mdash; Console warnings: "Detected multiple instances of Livewire running" + "Detected multiple instances of Alpine running". Conflitto JS.</li>
+</ul>
+
+<h3>🟡 Warning</h3>
+<ul class="issue-list">
+  <li><strong>1 immagine rotta (homepage)</strong> &mdash; Unsplash photo-1563986768609 bloccata da ORB (Cross-Origin Read Blocking). Serve self-hosting o proxy.</li>
+  <li><strong>Video Coverr bloccato</strong> &mdash; coverr-abstract-blue-particles video 1080p bloccato da ORB. Background video non caricato.</li>
+  <li><strong>Bug newsletter /contact</strong> &mdash; Segnalato da Claudia: checkbox newsletter sul form contatto NON iscrive in Klaviyo. Da verificare lato backend API.</li>
+  <li><strong>Mittente email notifiche</strong> &mdash; Attualmente digitagadmin@giobi.com. Serve SPF per info@digitag.me.</li>
+</ul>
+
+<h3>🟢 OK</h3>
+<ul class="issue-list">
+  <li>Homepage hero, CTA, layout generale &mdash; OK</li>
+  <li>Mobile responsive &mdash; hamburger menu funziona</li>
+  <li>Form contatto frontend &mdash; tutti i campi presenti, checkbox privacy + newsletter</li>
+  <li>Footer newsletter Klaviyo form &mdash; visibile nel footer</li>
+  <li>Admin login passwordless &mdash; UI pulita, funziona</li>
+  <li>Dati contatti nel DB &mdash; 5 record presenti (test di Claudia incluso)</li>
+</ul>
+
+<h2>Screenshot</h2>
+
+<h3>Homepage (desktop + mobile)</h3>
+<div class="screenshots">
+  <div><img src="homepage-desktop.png" alt="Homepage desktop"><div class="caption">Desktop 1280x800</div></div>
+  <div><img src="homepage-mobile.png" alt="Homepage mobile"><div class="caption">Mobile 375x812</div></div>
+</div>
+
+<h3>Contact form (desktop + mobile)</h3>
+<div class="screenshots">
+  <div><img src="contact-fullpage.png" alt="Contact fullpage"><div class="caption">Desktop fullpage</div></div>
+  <div><img src="contact-mobile.png" alt="Contact mobile"><div class="caption">Mobile 375x812</div></div>
+</div>
+
+<h3>Admin login</h3>
+<div class="screenshots">
+  <div><img src="admin-login-desktop.png" alt="Admin login desktop"><div class="caption">Desktop</div></div>
+  <div><img src="admin-login-mobile.png" alt="Admin login mobile"><div class="caption">Mobile</div></div>
+</div>
+
+<h3>Admin dashboard (BEFORE &mdash; BROKEN)</h3>
+<div class="screenshots">
+  <div><img src="admin-dashboard-desktop.png" alt="Admin dashboard desktop broken"><div class="caption">Desktop - CSS rotto, @fluxStyles visibile</div></div>
+  <div><img src="admin-dashboard-mobile.png" alt="Admin dashboard mobile broken"><div class="caption">Mobile - testo raw senza tabella</div></div>
+</div>
+
+<h3>Admin dashboard (AFTER &mdash; FIXED ✅)</h3>
+<div class="screenshots">
+  <div><img src="admin-dashboard-fixed-desktop.png" alt="Admin dashboard desktop fixed"><div class="caption">Desktop - tabella Tailwind con badge</div></div>
+  <div><img src="admin-dashboard-fixed-mobile.png" alt="Admin dashboard mobile fixed"><div class="caption">Mobile - responsive</div></div>
+</div>
+
+<h2>Fix applicati</h2>
+<ul class="issue-list">
+  <li><strong>Layout app.blade.php</strong> &mdash; Rimosso <code>@fluxStyles</code>/<code>@fluxScripts</code> e tutti i componenti <code>flux:*</code>. Riscritto con Tailwind puro + <code>@livewireStyles</code>/<code>@livewireScripts</code>.</li>
+  <li><strong>contacts-table.blade.php</strong> &mdash; Rimosso componenti Flux (<code>flux:table</code>, <code>flux:badge</code>, etc.). Riscritto con tabella HTML + Tailwind (header grigio, badge colorati, hover row, overflow-x-auto).</li>
+  <li><strong>app.js</strong> &mdash; Rimosso import manuale di Livewire/Alpine dal vendor dist (causava doppia istanza). Ora caricato solo via <code>@livewireScripts</code>.</li>
+  <li><strong>Vite rebuild</strong> &mdash; JS da ~80KB a 36KB (rimosso Livewire bundle duplicato).</li>
+</ul>
+
+<div class="meta">
+  <p>PlayRalph diagnostic &mdash; 27/02/2026 &mdash; Anacleto/brain</p>
+</div>
+
+</body></html>
