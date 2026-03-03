@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar: Calia Italia Outlet — Audit Tracciamento</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--mono:'IBM Plex Mono',monospace;--accent:#7c3aed;--red:#dc2626;--yellow:#d97706;--green:#16a34a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--mono);background:#fafaf9;color:#1c1917;padding:2rem 1.5rem;max-width:900px;margin:0 auto;}
+h1{font-size:1.5rem;margin-bottom:.5rem;}
+h2{font-size:1.1rem;margin:2rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid #e7e5e4;}
+h3{font-size:.9rem;margin:1.2rem 0 .5rem;}
+p,.note{font-size:.82rem;color:#57534e;line-height:1.7;margin-bottom:.5rem;}
+.badge{display:inline-block;padding:.2rem .6rem;border-radius:3px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
+.badge-issues{background:rgba(217,119,6,.12);color:var(--yellow);}
+.badge-healthy{background:rgba(22,163,74,.12);color:var(--green);}
+.badge-broken{background:rgba(220,38,38,.12);color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.8rem;}
+th{text-align:left;padding:.5rem .4rem;border-bottom:2px solid #d6d3d1;color:#78716c;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;}
+td{padding:.5rem .4rem;border-bottom:1px solid #e7e5e4;vertical-align:top;}
+.status{font-weight:600;}
+.pass{color:var(--green);}
+.warn{color:var(--yellow);}
+.fail{color:var(--red);}
+.issue-list{list-style:none;padding:0;}
+.issue-list li{padding:.4rem 0;font-size:.82rem;border-bottom:1px solid #f5f5f4;}
+.issue-list li:last-child{border:none;}
+.eli5{background:#fff;border:1px solid #e7e5e4;border-radius:4px;padding:1.25rem;margin:1rem 0;font-size:.82rem;line-height:1.8;}
+.eli5 strong{color:#1c1917;}
+.flow{background:#fff;border:1px solid #e7e5e4;border-radius:4px;padding:1rem;margin:1rem 0;font-size:.78rem;font-family:var(--mono);white-space:pre;line-height:1.6;overflow-x:auto;}
+.meta{font-size:.75rem;color:#a8a29e;margin-top:2rem;padding-top:1rem;border-top:1px solid #e7e5e4;}
+.section-note{font-size:.75rem;color:#a8a29e;font-style:italic;margin-bottom:1rem;}
+</style>
+</head><body>
+
+<span class="badge badge-broken">BROKEN</span>
+<h1>Audit Tracciamento: caliaitaliaoutlet.com</h1>
+<p><strong>Data:</strong> 3 marzo 2026 &mdash; <strong>Sito:</strong> caliaitaliaoutlet.com &mdash; <strong>Problema:</strong> Google Ads non traccia gli acquisti</p>
+
+<h2>In parole semplici</h2>
+
+<div class="eli5">
+Quando un cliente compra un divano sul sito, il sito deve avvisare Google Ads e Google Analytics che c'&egrave; stata una vendita. In questo momento <strong>questo avviso non parte per Google</strong> (mentre per Facebook/Meta funziona).<br><br>
+
+Il risultato: Google Ads non sa quali campagne portano vendite, quindi non pu&ograve; ottimizzare la spesa pubblicitaria. &Egrave; come buttare soldi senza sapere quali funzionano.<br><br>
+
+<strong>La soluzione:</strong> centralizzare tutto in Google Tag Manager (GTM) &mdash; un unico centro di controllo che gestisce Google Ads, GA4, e anche Facebook. Il plugin attuale (PixelYourSite) gestisce solo Facebook e verr&agrave; sostituito.
+</div>
+
+<h2>Stato attuale tracking</h2>
+
+<table>
+<tr><th>Componente</th><th>ID</th><th>Status</th><th>Note</th></tr>
+<tr>
+  <td>Google Tag Manager</td>
+  <td><code>GTM-TK5RDQQC</code></td>
+  <td class="status warn">PARZIALE</td>
+  <td>Container presente ma non su tutte le pagine</td>
+</tr>
+<tr>
+  <td>Google Analytics 4</td>
+  <td><code>G-7KQ77QJ7WM</code></td>
+  <td class="status warn">PARZIALE</td>
+  <td>Configurato dentro GTM, ma l'evento purchase non viene sparato</td>
+</tr>
+<tr>
+  <td>Google Ads Conversion</td>
+  <td><code>AW-11078805278</code></td>
+  <td class="status fail">BROKEN</td>
+  <td>Tag presente in GTM ma mai attivato: manca il trigger purchase</td>
+</tr>
+<tr>
+  <td>Conversion Label</td>
+  <td><code>IHQBCLf5250ZEJ7O5KIp</code></td>
+  <td class="status fail">BROKEN</td>
+  <td>Label configurata ma non sparata</td>
+</tr>
+<tr>
+  <td>Conversion Linker</td>
+  <td>&mdash;</td>
+  <td class="status pass">OK</td>
+  <td>Presente e attivo nel container GTM</td>
+</tr>
+<tr>
+  <td>Facebook Pixel</td>
+  <td><code>705298074662650</code></td>
+  <td class="status pass">OK</td>
+  <td>Gestito da PixelYourSite, tracciamento purchase funzionante</td>
+</tr>
+<tr>
+  <td>PixelYourSite</td>
+  <td>v11.2.0.3</td>
+  <td class="status warn">DA RIMUOVERE</td>
+  <td>Gestisce solo Facebook. Aggiunge peso al sito.</td>
+</tr>
+<tr>
+  <td>Consent Mode (Iubenda)</td>
+  <td>&mdash;</td>
+  <td class="status pass">OK</td>
+  <td>analytics_storage e ad_storage configurati, default granted</td>
+</tr>
+</table>
+
+<h2>Diagnosi tecnica</h2>
+
+<h3>Il problema: nessuno pusha l'evento purchase nel dataLayer</h3>
+
+<p>Il flusso corretto di tracciamento dovrebbe essere:</p>
+
+<div class="flow">Cliente completa acquisto
+        &darr;
+Thank you page caricata
+        &darr;
+Codice WooCommerce pusha dataLayer.push({
+  event: 'purchase',
+  ecommerce: { transaction_id, value, currency, items[] }
+})
+        &darr;
+GTM intercetta l'evento purchase
+        &darr;
+GTM spara:
+  &bull; Tag GA4 Event (purchase) &rarr; G-7KQ77QJ7WM
+  &bull; Tag Google Ads Conversion &rarr; AW-11078805278
+  &bull; Tag Facebook Pixel (purchase) &rarr; 705298074662650</div>
+
+<p>Il problema &egrave; al terzo passaggio: <strong>nessun plugin sta pushando i dati dell'ordine nel dataLayer sulla thank you page</strong>. Il plugin GTM4WP (che normalmente fa questo lavoro) non &egrave; attivo o non &egrave; configurato per WooCommerce. Di conseguenza GTM non ha dati da inviare e i tag di conversione non si attivano mai.</p>
+
+<h3>Problemi trovati</h3>
+
+<ul class="issue-list">
+  <li><span class="fail">&bull;</span> <strong>Nessun dataLayer push per purchase</strong> &mdash; Manca il codice che comunica i dati dell'ordine (importo, prodotti, transaction_id) a GTM sulla pagina di ringraziamento</li>
+  <li><span class="fail">&bull;</span> <strong>GTM non presente su tutte le pagine</strong> &mdash; Lo snippet GTM non &egrave; stato trovato nell'HTML della homepage, potrebbe essere iniettato solo su alcune pagine</li>
+  <li><span class="warn">&bull;</span> <strong>PixelYourSite gestisce solo Facebook</strong> &mdash; Il plugin ha l'integrazione Google disabilitata o non configurata</li>
+  <li><span class="warn">&bull;</span> <strong>Nessun gtag() diretto nel codice sorgente</strong> &mdash; Tutto passa da GTM, corretto ma richiede che il container sia ben configurato</li>
+</ul>
+
+<h2>Soluzione proposta</h2>
+
+<p class="section-note">Concordata in call del 3 marzo con Elvira Contini, Mattia Follari e Giobi</p>
+
+<table>
+<tr><th>Azione</th><th>Dove</th><th>Cosa fa</th></tr>
+<tr>
+  <td><strong>1. Snippet GTM nel child theme</strong></td>
+  <td>functions.php</td>
+  <td>Inserisce lo snippet GTM (<code>GTM-TK5RDQQC</code>) in <code>&lt;head&gt;</code> e <code>&lt;body&gt;</code> su tutte le pagine, in modo affidabile e senza plugin</td>
+</tr>
+<tr>
+  <td><strong>2. dataLayer push su thank you page</strong></td>
+  <td>functions.php</td>
+  <td>Hook <code>woocommerce_thankyou</code>: pusha nel dataLayer transaction_id, valore totale, valuta, lista prodotti con nome/prezzo/quantit&agrave;</td>
+</tr>
+<tr>
+  <td><strong>3. Configurazione GTM</strong></td>
+  <td>tagmanager.google.com</td>
+  <td>Trigger su evento purchase + tag GA4 Event + tag Google Ads Conversion + tag Facebook Pixel purchase. Tutto in un unico container.</td>
+</tr>
+<tr>
+  <td><strong>4. Disattivazione PixelYourSite</strong></td>
+  <td>wp-admin</td>
+  <td>Una volta che GTM gestisce anche Facebook, il plugin diventa ridondante. Rimuoverlo alleggerisce il sito.</td>
+</tr>
+</table>
+
+<h2>Vantaggi della soluzione GTM</h2>
+
+<ul class="issue-list">
+  <li><strong>Un unico centro di controllo</strong> &mdash; Tutti i pixel e tracciamenti gestiti da un'unica interfaccia (GTM), senza toccare il codice del sito</li>
+  <li><strong>Meno plugin = sito pi&ugrave; veloce</strong> &mdash; PixelYourSite carica JS aggiuntivo su ogni pagina. Rimuovendolo il sito si alleggerisce.</li>
+  <li><strong>Debug pi&ugrave; facile</strong> &mdash; GTM ha un Tag Assistant integrato per verificare in tempo reale cosa viene sparato e quando</li>
+  <li><strong>Scalabile</strong> &mdash; Se in futuro si aggiungono altri pixel (TikTok, Pinterest, ecc.), basta aggiungerli in GTM senza toccare WordPress</li>
+</ul>
+
+<div class="meta">
+Radar &middot; caliaitaliaoutlet.com &middot; 3 marzo 2026 &middot; <a href="https://giobi.com" style="color:inherit;">giobi.com</a>
+</div>
+
+</body></html>
