@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Radar</title>
+<title>Dashboard — Radar</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -24,18 +24,22 @@ header { background: var(--surface); border-bottom: 2px solid var(--text); paddi
 .brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
 h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; }
 .subtitle { font-size: .78rem; color: var(--text-muted); margin-top: .25rem; }
+.stats { display: flex; gap: 2rem; margin-top: 1rem; font-size: .7rem; color: var(--text-muted); }
+.stats strong { color: var(--text); }
 main { padding: 2rem 0 4rem; }
 
-.project { display: flex; align-items: center; justify-content: space-between; padding: .75rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); }
+.project { display: flex; align-items: center; justify-content: space-between; padding: .85rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: background .1s; }
 .project:first-child { border-top: 1px solid var(--border); }
-.project:hover { background: rgba(0,0,0,.015); }
+.project:hover { background: rgba(0,0,0,.02); padding-left: .5rem; padding-right: .5rem; margin-left: -.5rem; margin-right: -.5rem; border-radius: var(--radius); }
+.project-left { flex: 1; }
 .project-name { font-weight: 600; font-size: .85rem; }
-.project-url { font-size: .7rem; color: var(--text-muted); margin-top: .1rem; }
-.project-meta { text-align: right; }
-.project-runs { font-size: .68rem; color: var(--text-muted); margin-top: .15rem; }
-.verdict { font-size: .62rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.v-green { color: var(--green); }
-.v-yellow { color: var(--yellow); }
+.project-url { font-size: .68rem; color: var(--text-muted); margin-top: .15rem; }
+.project-right { text-align: right; flex-shrink: 0; margin-left: 1rem; }
+.project-score { font-size: .85rem; font-weight: 700; }
+.project-runs { font-size: .65rem; color: var(--text-muted); margin-top: .15rem; }
+.score-green { color: var(--green); }
+.score-yellow { color: var(--yellow); }
+.score-red { color: var(--red); }
 
 .watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
 .watermark a { color: var(--text-muted); text-decoration: none; }
@@ -48,73 +52,87 @@ main { padding: 2rem 0 4rem; }
     <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>Radar</div>
     <h1>Dashboard</h1>
     <p class="subtitle">Progetti monitorati e report di collaudo</p>
+    <div class="stats">
+        <span><strong>7</strong> progetti</span>
+        <span><strong>7</strong> report</span>
+        <span>ultimo: <strong>3 marzo 2026</strong></span>
+    </div>
 </div>
 </header>
 <main>
 <div class="container">
-    <a class="project" href="../nexum/">
-        <div>
-            <div class="project-name">Nexum</div>
-            <div class="project-url">nexum.it</div>
-        </div>
-        <div class="project-meta">
-            <div class="verdict v-green">fixed</div>
-            <div class="project-runs">4 report</div>
-        </div>
-    </a>
-    <a class="project" href="../a3d/">
-        <div>
-            <div class="project-name">A3D</div>
-            <div class="project-url">mule.a3d.it</div>
-        </div>
-        <div class="project-meta">
-            <div class="verdict v-yellow">issues</div>
-            <div class="project-runs">3 report</div>
-        </div>
-    </a>
-    <a class="project" href="../calia/">
-        <div>
+    <a class="project" href="../calia/2026-03-03-tracking-audit/">
+        <div class="project-left">
             <div class="project-name">Calia</div>
-            <div class="project-url">caliaitaliaoutlet.com</div>
+            <div class="project-url">caliaitaliaoutlet.com &middot; 3 marzo 2026 &middot; tracking audit</div>
         </div>
-        <div class="project-meta">
-            <div class="verdict v-yellow">issues</div>
+        <div class="project-right">
+            <div class="project-score score-green">100</div>
             <div class="project-runs">1 report</div>
         </div>
     </a>
-    <a class="project" href="../digitag/">
-        <div>
+    <a class="project" href="../digitag/2026-02-27-full-check/">
+        <div class="project-left">
             <div class="project-name">DigiTag</div>
-            <div class="project-url">digitag.me</div>
+            <div class="project-url">digitag.me &middot; 27 febbraio 2026 &middot; full check</div>
         </div>
-        <div class="project-meta">
-            <div class="verdict v-green">healthy</div>
+        <div class="project-right">
+            <div class="project-score score-green">&mdash;</div>
             <div class="project-runs">1 report</div>
         </div>
     </a>
-    <a class="project" href="../fasoli/">
-        <div>
-            <div class="project-name">Fasoli Piante</div>
-            <div class="project-url">fasolipiante.com</div>
+    <a class="project" href="../eleonoramari/2026-03-03-post-migration/">
+        <div class="project-left">
+            <div class="project-name">Eleonora Mari</div>
+            <div class="project-url">eleonoramari.com &middot; 3 marzo 2026 &middot; post-migration</div>
         </div>
-        <div class="project-meta">
-            <div class="verdict v-yellow">issues</div>
+        <div class="project-right">
+            <div class="project-score score-green">100</div>
+            <div class="project-runs">1 report</div>
+        </div>
+    </a>
+    <a class="project" href="../filippomarcodini/2026-03-03-post-migration/">
+        <div class="project-left">
+            <div class="project-name">Filippo Marcodini</div>
+            <div class="project-url">filippomarcodini.com &middot; 3 marzo 2026 &middot; post-migration</div>
+        </div>
+        <div class="project-right">
+            <div class="project-score score-green">90</div>
+            <div class="project-runs">1 report</div>
+        </div>
+    </a>
+    <a class="project" href="../nexum/2026-02-27-payment-debug/">
+        <div class="project-left">
+            <div class="project-name">Nexum</div>
+            <div class="project-url">nexum.it &middot; 27 febbraio 2026 &middot; payment debug</div>
+        </div>
+        <div class="project-right">
+            <div class="project-score score-green">100</div>
+            <div class="project-runs">1 report</div>
+        </div>
+    </a>
+    <a class="project" href="../robertomotta/2026-03-03-post-migration/">
+        <div class="project-left">
+            <div class="project-name">Roberto Motta</div>
+            <div class="project-url">robertomotta.it &middot; 3 marzo 2026 &middot; post-migration</div>
+        </div>
+        <div class="project-right">
+            <div class="project-score score-green">95</div>
+            <div class="project-runs">1 report</div>
+        </div>
+    </a>
+    <a class="project" href="../veterinariogravellona/2026-03-03-post-migration/">
+        <div class="project-left">
+            <div class="project-name">Veterinario Gravellona</div>
+            <div class="project-url">veterinariogravellona.com &middot; 3 marzo 2026 &middot; post-migration</div>
+        </div>
+        <div class="project-right">
+            <div class="project-score score-green">90</div>
             <div class="project-runs">1 report</div>
         </div>
     </a>
 </div>
 </main>
 <div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
-
-<script>
-// Gate predisposta: quando attiva, aggiungere #key=HASH all'URL per bypassare
-// Per ora tutto aperto
-(function(){
-    var hash = window.location.hash;
-    if (hash.startsWith('#key=')) {
-        sessionStorage.setItem('radar-auth', hash.slice(5));
-    }
-})();
-</script>
 </body>
 </html>
