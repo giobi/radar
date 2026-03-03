@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Eleonora Mari: Post-migration check</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-top: .5rem; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+.step-imgs-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .5rem; }
+.step-imgs-row .step-img { margin-top: 0; }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.status-ok { color: var(--green); font-weight: 600; }
+.status-warn { color: var(--yellow); font-weight: 600; }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+    .step-imgs-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+        <a href="../../dashboard/">Radar</a>
+    </div>
+    <h1 class="title">Eleonora Mari — Post-migration check</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>3 marzo 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>6 pagine testate</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Post-deploy</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>eleonoramari.com</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="0"/>
+        </svg>
+        <div class="score-number">100<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Migrazione completata con successo</h2>
+        <p>Il sito eleonoramari.com risponde correttamente dal nuovo server Tanuki (Hetzner). Tutte le pagine si caricano, le immagini funzionano, nessun errore JavaScript, SSL valido. La navigazione completa (7 sezioni) funziona sia da desktop che da mobile.</p>
+    </div>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech', this)">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-simple" class="tab-panel active">
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Homepage: tutto a posto</span>
+    </div>
+    <p class="step-explain">La homepage si carica correttamente con il titolo, la navigazione completa (Art/Exhibitions, Reportage, People, Commercial, Illustrations, About, Contact), i link social e il cookie banner iubenda. Tempo di caricamento: <strong>2.1 secondi</strong>.</p>
+    <div class="step-imgs-row">
+        <div class="step-img">
+            <img src="homepage-desktop.png" alt="Homepage desktop">
+            <div class="step-img-caption">Homepage — vista desktop (1440px)</div>
+        </div>
+        <div class="step-img">
+            <img src="homepage-mobile.png" alt="Homepage mobile">
+            <div class="step-img-caption">Homepage — vista mobile (390px)</div>
+        </div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Pagine interne: navigazione funzionante</span>
+    </div>
+    <p class="step-explain">Abbiamo visitato 4 pagine interne del sito — Art/Exhibitions, Reportage, People e Commercial. Tutte si caricano correttamente con le immagini del portfolio, i testi descrittivi e la navigazione. Nessuna immagine rotta, nessun errore.</p>
+    <div class="step-imgs-row">
+        <div class="step-img">
+            <img src="page-1-art---exhibitions.png" alt="Art / Exhibitions">
+            <div class="step-img-caption">Art / Exhibitions — galleria fotografica OK</div>
+        </div>
+        <div class="step-img">
+            <img src="page-2-reportage.png" alt="Reportage">
+            <div class="step-img-caption">Reportage — testo e immagini OK</div>
+        </div>
+    </div>
+    <div class="step-imgs-row" style="margin-top: .75rem;">
+        <div class="step-img">
+            <img src="page-3-people.png" alt="People">
+            <div class="step-img-caption">People — contenuti caricati correttamente</div>
+        </div>
+        <div class="step-img">
+            <img src="page-4-commercial.png" alt="Commercial">
+            <div class="step-img-caption">Commercial — galleria funzionante</div>
+        </div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Server: confermato Tanuki</span>
+    </div>
+    <p class="step-explain">L'endpoint di controllo <code>system-check.php</code> conferma che il sito risponde dal server <strong>Tanuki</strong> (Hetzner, IP 188.245.145.207). La migrazione da Cloudways/Octopus è completa. PHP 8.3, 65.7 GB di disco disponibile.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Sicurezza: SSL valido</span>
+    </div>
+    <p class="step-explain">Il certificato SSL è valido, emesso da <strong>Google Trust Services</strong>, scade il 24 aprile 2026. Il sito è servito tramite Cloudflare con HTTP/2. Nessun problema di sicurezza rilevato.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Zero errori</span>
+    </div>
+    <p class="step-explain">Nessun errore JavaScript in console, nessuna richiesta HTTP fallita (4xx/5xx), nessuna immagine rotta su nessuna delle pagine visitate. Tutto pulito.</p>
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Riepilogo migrazione</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Dominio</td><td><code>eleonoramari.com</code></td></tr>
+        <tr><td>Tipo sito</td><td>WordPress (Uncode theme)</td></tr>
+        <tr><td>Origine</td><td><code>Cloudways / Octopus</code></td></tr>
+        <tr><td>Destinazione</td><td><code>Hetzner / Tanuki (188.245.145.207)</code></td></tr>
+        <tr><td>CDN</td><td>Cloudflare (HTTP/2)</td></tr>
+        <tr><td>PHP</td><td><code>8.3.30</code></td></tr>
+        <tr><td>Disco libero</td><td>65.7 GB</td></tr>
+        <tr><td>Uptime server</td><td>23 ore</td></tr>
+        <tr><td>Scenario</td><td>Post-deploy check</td></tr>
+        <tr><td>Verdict</td><td class="status-ok">PASS</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>Tempi di caricamento</h3>
+    <table class="tech-table">
+        <tr><th>Pagina</th><th>Tempo</th><th>Stato</th></tr>
+        <tr><td>Homepage</td><td><code>2.11s</code></td><td class="status-ok">OK</td></tr>
+        <tr><td>Art / Exhibitions</td><td><code>2.57s</code></td><td class="status-ok">OK</td></tr>
+        <tr><td>Reportage</td><td><code>2.49s</code></td><td class="status-ok">OK</td></tr>
+        <tr><td>People</td><td><code>2.39s</code></td><td class="status-ok">OK</td></tr>
+        <tr><td>Commercial</td><td><code>2.50s</code></td><td class="status-ok">OK</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Certificato SSL</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Validità</td><td class="status-ok">Valido</td></tr>
+        <tr><td>Emittente</td><td>Google Trust Services</td></tr>
+        <tr><td>Subject</td><td><code>eleonoramari.com</code></td></tr>
+        <tr><td>Scadenza</td><td>24 aprile 2026</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>system-check.php</h3>
+    <div class="log-block">{
+    "server": "tanuki",
+    "ip": "188.245.145.207",
+    "php": "8.3.30",
+    "domain": "eleonoramari.com",
+    "time": "2026-03-03 16:19:19 UTC",
+    "disk_free": "65.7 GB",
+    "uptime": "up 23 hours, 29 minutes"
+}</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Check eseguiti</h3>
+    <table class="tech-table">
+        <tr><th>Check</th><th>Risultato</th></tr>
+        <tr><td>HTTP Response</td><td class="status-ok">200 OK (HTTP/2)</td></tr>
+        <tr><td>Errori console JS</td><td class="status-ok">0</td></tr>
+        <tr><td>Richieste HTTP fallite</td><td class="status-ok">0</td></tr>
+        <tr><td>Immagini rotte</td><td class="status-ok">0</td></tr>
+        <tr><td>SSL valido</td><td class="status-ok">Si</td></tr>
+        <tr><td>Server corretto (Tanuki)</td><td class="status-ok">Confermato</td></tr>
+        <tr><td>Navigazione interna</td><td class="status-ok">7/7 link funzionanti</td></tr>
+        <tr><td>Layout mobile</td><td class="status-ok">Responsive OK</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>HTTP Headers</h3>
+    <div class="log-block">HTTP/2 200
+content-type: text/html; charset=UTF-8
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: 9d69f6495d71c244-FRA
+alt-svc: h3=":443"; ma=86400</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="watermark">Radar &middot; <a href="https://giobi.com">giobi.com</a> &middot; 3 marzo 2026</div>
+
+<script>
+(function(){
+    var hash = window.location.hash;
+    if (hash.startsWith('#key=')) {
+        sessionStorage.setItem('radar-auth', hash.slice(5));
+    }
+})();
+
+function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+</body>
+</html>

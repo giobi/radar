@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Roberto Motta: Post-migration check</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+/* Header */
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+
+/* Score */
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+/* Tabs */
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Steps */
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-top: .5rem; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+.step-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .5rem; }
+.step-gallery .step-img { margin-top: 0; }
+
+/* Tech */
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.status-ok { color: var(--green); font-weight: 600; }
+.status-warn { color: var(--yellow); font-weight: 600; }
+
+/* Watermark */
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+    .step-gallery { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+        <a href="../../dashboard/">Radar</a>
+    </div>
+    <h1 class="title">Roberto Motta — Post-migration check</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>3 marzo 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>7 pagine testate</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Post-deploy</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>robertomotta.it</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="13.2"/>
+        </svg>
+        <div class="score-number">95<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Migrazione riuscita</h2>
+        <p>Il sito robertomotta.it funziona correttamente sul nuovo server Tanuki (Hetzner). Tutte le pagine rispondono, le immagini si caricano, il certificato SSL funziona tramite Cloudflare. Nessun errore JavaScript. Il tempo di caricamento medio di ~2.8s include tracking scripts di terze parti. Il -5 punti per un'immagine lazy-loaded che potrebbe avere un attimo di ritardo in mobile.</p>
+    </div>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech', this)">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-simple" class="tab-panel active">
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Il sito ora gira sul nuovo server Tanuki</span>
+    </div>
+    <p class="step-explain">Il sito robertomotta.it e' stato spostato dal vecchio server Cloudways (Octopus) al nuovo server Hetzner (Tanuki, 188.245.145.207). Il trasferimento e' completato: il sito risponde correttamente dal nuovo server.</p>
+    <div class="step-img">
+        <img src="homepage-desktop.png" alt="Homepage robertomotta.it su desktop">
+        <div class="step-img-caption">Homepage — caricata correttamente dal server Tanuki (3.3s)</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Tutte le pagine funzionano</span>
+    </div>
+    <p class="step-explain">Abbiamo controllato tutte le sezioni principali del sito: Homepage, Portfolio, Contact, About e Shop. Tutte le pagine si aprono correttamente, le immagini si caricano e i link funzionano.</p>
+    <div class="step-gallery">
+        <div class="step-img">
+            <img src="page-portfolio-desktop.png" alt="Portfolio">
+            <div class="step-img-caption">Portfolio</div>
+        </div>
+        <div class="step-img">
+            <img src="page-about-desktop.png" alt="About">
+            <div class="step-img-caption">About</div>
+        </div>
+        <div class="step-img">
+            <img src="page-contact-desktop.png" alt="Contact">
+            <div class="step-img-caption">Contact</div>
+        </div>
+        <div class="step-img">
+            <img src="page-shop-desktop.png" alt="Shop/Negozio">
+            <div class="step-img-caption">Shop (Negozio)</div>
+        </div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Il sito funziona bene anche da telefono</span>
+    </div>
+    <p class="step-explain">Abbiamo verificato la versione mobile del sito. Il layout si adatta correttamente allo schermo del telefono, le immagini si ridimensionano e la navigazione funziona.</p>
+    <div class="step-gallery">
+        <div class="step-img">
+            <img src="homepage-mobile.png" alt="Homepage mobile">
+            <div class="step-img-caption">Homepage (mobile)</div>
+        </div>
+        <div class="step-img">
+            <img src="page-portfolio-mobile.png" alt="Portfolio mobile">
+            <div class="step-img-caption">Portfolio (mobile)</div>
+        </div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <span class="step-title">Certificato SSL attivo</span>
+    </div>
+    <p class="step-explain">Il lucchetto nel browser funziona correttamente. Il sito usa HTTPS tramite Cloudflare, quindi la connessione e' sicura per i visitatori.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Nota: un'immagine potrebbe caricarsi lentamente su mobile</span>
+    </div>
+    <p class="step-explain">Nella homepage visualizzata da telefono, un'immagine risulta in caricamento ritardato (lazy loading). Non e' un errore: l'immagine esiste ed e' raggiungibile, ma il browser la carica solo quando l'utente scorre fino a quel punto. Nessun impatto per i visitatori reali.</p>
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Riepilogo migrazione</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Dominio</td><td><code>robertomotta.it</code></td></tr>
+        <tr><td>Server precedente</td><td><code>Octopus (Cloudways)</code></td></tr>
+        <tr><td>Server attuale</td><td><code>Tanuki (Hetzner) — 188.245.145.207</code></td></tr>
+        <tr><td>PHP</td><td><code>8.3.30</code></td></tr>
+        <tr><td>CDN / SSL</td><td><code>Cloudflare</code></td></tr>
+        <tr><td>Disco libero</td><td><code>65.7 GB</code></td></tr>
+        <tr><td>Uptime server</td><td><code>23 ore</code></td></tr>
+        <tr><td>Scenario</td><td>Post-deploy check</td></tr>
+        <tr><td>Verdict</td><td class="status-ok">MIGRAZIONE OK</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>system-check.php</h3>
+    <div class="log-block">{
+    "server": "tanuki",
+    "ip": "188.245.145.207",
+    "php": "8.3.30",
+    "domain": "robertomotta.it",
+    "time": "2026-03-03 16:19:35 UTC",
+    "disk_free": "65.7 GB",
+    "uptime": "up 23 hours, 29 minutes"
+}</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>Tempi di caricamento</h3>
+    <table class="tech-table">
+        <tr><th>Pagina</th><th>Status</th><th>Load time</th><th>JS errors</th><th>Broken imgs</th></tr>
+        <tr><td>Homepage (desktop)</td><td class="status-ok">200</td><td>3.33s</td><td>0</td><td>0</td></tr>
+        <tr><td>Portfolio (desktop)</td><td class="status-ok">200</td><td>2.76s</td><td>0</td><td>0</td></tr>
+        <tr><td>Contact (desktop)</td><td class="status-ok">200</td><td>2.61s</td><td>0</td><td>0</td></tr>
+        <tr><td>About (desktop)</td><td class="status-ok">200</td><td>2.73s</td><td>0</td><td>0</td></tr>
+        <tr><td>Shop (desktop)</td><td class="status-ok">200</td><td>2.62s</td><td>0</td><td>0</td></tr>
+        <tr><td>Homepage (mobile)</td><td class="status-ok">200</td><td>2.83s</td><td>0</td><td class="status-warn">1*</td></tr>
+        <tr><td>Portfolio (mobile)</td><td class="status-ok">200</td><td>2.57s</td><td>0</td><td>0</td></tr>
+    </table>
+    <p style="font-size:.7rem; color:var(--text-muted); margin-top:.5rem;">* Immagine lazy-loaded non ancora renderizzata al momento dello screenshot. HTTP HEAD conferma 200 OK (115KB).</p>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>SSL</h3>
+    <table class="tech-table">
+        <tr><th>Check</th><th>Risultato</th></tr>
+        <tr><td>Certificato valido</td><td class="status-ok">SI</td></tr>
+        <tr><td>Provider</td><td>Cloudflare (edge certificate)</td></tr>
+        <tr><td>HTTPS redirect</td><td class="status-ok">Attivo</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Note</h3>
+    <ul style="font-size:.78rem; color:var(--text-secondary); padding-left:1.2rem; line-height:1.9;">
+        <li>Le request_errors rilevate sono tutte <code>pagead2.googlesyndication.com</code> (Google Ads tracking bloccato dal headless browser) — non errori applicativi</li>
+        <li>Load time medio ~2.8s include Google Tag Manager, Google Ads e altri tracking scripts di terze parti</li>
+        <li>Un'immagine homepage (<code>IMG_3663_websize-1024x683.jpg</code>) risulta "broken" nel test mobile ma risponde HTTP 200 (115KB) — falso positivo da lazy loading</li>
+        <li>Navigazione principale testata: Portfolio, Contact, About, Shop — tutte OK</li>
+    </ul>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>HTTP Headers</h3>
+    <div class="log-block">HTTP/2 200
+content-type: text/html; charset=UTF-8
+server: cloudflare
+link: &lt;https://robertomotta.it/wp-json/&gt;; rel="https://api.w.org/"
+cf-cache-status: DYNAMIC
+cf-ray: 9d69f6ac986b35f0-FRA</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="watermark">Radar · <a href="https://giobi.com">giobi.com</a> · 3 marzo 2026</div>
+
+<script>
+(function(){
+    var hash = window.location.hash;
+    if (hash.startsWith('#key=')) {
+        sessionStorage.setItem('radar-auth', hash.slice(5));
+    }
+})();
+
+function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+</body>
+</html>

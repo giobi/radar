@@ -1,0 +1,92 @@
+{
+  "pages": [
+    {
+      "name": "Homepage",
+      "url": "https://veterinariogravellona.com",
+      "status": 200,
+      "load_time": 2.05,
+      "console_errors": [],
+      "network_errors": [
+        "POST https://region1.google-analytics.com/g/collect?v=2&tid=G-3LCYB9VKBY&gtm=45je62r1v9116876915za200&_p=1772554816458&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&gdid=dZTNiMT&cid=370558686.1772554817&ul=en-us&sr=1440x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115616986~115938465~115938468~116024733~117484252&sid=1772554816&sct=1&seg=0&dl=https%3A%2F%2Fveterinariogravellona.com%2F&dt=Veterinario%20Gravellona%20%E2%80%93%20Ambulatorio%20veterinario%20a%20Gravellona%20Toce%2C%20dottoressa%20Emanuela%20Rabaioli&en=page_view&_fv=1&_ss=1&_ee=1&tfd=861 -> net::ERR_ABORTED"
+      ],
+      "broken_images": [
+        "https://veterinariogravellona.com/wp-content/uploads/elementor/thumbs/veterinario_gravellona1-q67h394vl0wp8jz3zen6dn1585hsf9860nuy2b5pt4.png"
+      ],
+      "screenshot": "01-homepage.png"
+    },
+    {
+      "name": "+39 338 8242282",
+      "url": "https://veterinariogravellona.com/#",
+      "status": 200,
+      "load_time": 2.04,
+      "console_errors": [],
+      "network_errors": [
+        "POST https://region1.google-analytics.com/g/collect?v=2&tid=G-3LCYB9VKBY&gtm=45je62r1v9116876915za200&_p=1772554823124&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&gdid=dZTNiMT&cid=2086501342.1772554823&ul=en-us&sr=1440x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115616986~115938465~115938469~116024733~117484252&sid=1772554823&sct=1&seg=0&dl=https%3A%2F%2Fveterinariogravellona.com%2F&dt=Veterinario%20Gravellona%20%E2%80%93%20Ambulatorio%20veterinario%20a%20Gravellona%20Toce%2C%20dottoressa%20Emanuela%20Rabaioli&en=page_view&_fv=1&_ss=1&_ee=1&tfd=772 -> net::ERR_ABORTED"
+      ],
+      "broken_images": [
+        "https://veterinariogravellona.com/wp-content/uploads/elementor/thumbs/veterinario_gravellona1-q67h394vl0wp8jz3zen6dn1585hsf9860nuy2b5pt4.png"
+      ],
+      "screenshot": "02-page-1-+39-338-8242282.png"
+    },
+    {
+      "name": "orari",
+      "url": "https://veterinariogravellona.com/#orari",
+      "status": 200,
+      "load_time": 2.27,
+      "console_errors": [],
+      "network_errors": [
+        "POST https://region1.google-analytics.com/g/collect?v=2&tid=G-3LCYB9VKBY&gtm=45je62r1v9116876915za200&_p=1772554826844&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&gdid=dZTNiMT&cid=550628714.1772554827&ul=en-us&sr=1440x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528500~104573694~104684208~104684211~115938465~115938468~116024733~117484252&sid=1772554827&sct=1&seg=0&dl=https%3A%2F%2Fveterinariogravellona.com%2F&dt=Veterinario%20Gravellona%20%E2%80%93%20Ambulatorio%20veterinario%20a%20Gravellona%20Toce%2C%20dottoressa%20Emanuela%20Rabaioli&en=page_view&_fv=1&_ss=1&_ee=1&tfd=845 -> net::ERR_ABORTED"
+      ],
+      "broken_images": [
+        "https://veterinariogravellona.com/wp-content/uploads/elementor/thumbs/veterinario_gravellona1-q67h394vl0wp8jz3zen6dn1585hsf9860nuy2b5pt4.png"
+      ],
+      "screenshot": "02-page-2-orari.png"
+    },
+    {
+      "name": "Homepage (mobile)",
+      "url": "https://veterinariogravellona.com",
+      "status": 200,
+      "load_time": 2.1,
+      "console_errors": [
+        "[error] Failed to load resource: the server responded with a status of 401 ()"
+      ],
+      "network_errors": [
+        "POST https://region1.google-analytics.com/g/collect?v=2&tid=G-3LCYB9VKBY&gtm=45je6320h2v9116876915za200&_p=1772554830814&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&gdid=dZTNiMT&cid=1847018514.1772554831&ul=en-us&sr=375x812&uaa=arm&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=iOS&uapv=16_0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115616986~115938465~115938468~116024733~117484252&sid=1772554831&sct=1&seg=0&dl=https%3A%2F%2Fveterinariogravellona.com%2F&dt=Veterinario%20Gravellona%20%E2%80%93%20Ambulatorio%20veterinario%20a%20Gravellona%20Toce%2C%20dottoressa%20Emanuela%20Rabaioli&en=page_view&_fv=1&_ss=1&_ee=1&tfd=784 -> net::ERR_ABORTED"
+      ],
+      "broken_images": [
+        "https://veterinariogravellona.com/wp-content/uploads/elementor/thumbs/veterinario_gravellona1-q67h394vtsnzk5luv6tesustfmc45lvb70rzal95tc.png",
+        "https://veterinariogravellona.com/wp-content/uploads/2023/05/cane_marrone2.png"
+      ],
+      "screenshot": "03-mobile-homepage.png"
+    }
+  ],
+  "console_errors": [
+    "[error] Failed to load resource: the server responded with a status of 401 ()"
+  ],
+  "network_errors": [
+    "POST https://region1.google-analytics.com/g/collect?v=2&tid=G-3LCYB9VKBY&gtm=45je62r1v9116876915za200&_p=1772554816458&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&gdid=dZTNiMT&cid=370558686.1772554817&ul=en-us&sr=1440x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115616986~115938465~115938468~116024733~117484252&sid=1772554816&sct=1&seg=0&dl=https%3A%2F%2Fveterinariogravellona.com%2F&dt=Veterinario%20Gravellona%20%E2%80%93%20Ambulatorio%20veterinario%20a%20Gravellona%20Toce%2C%20dottoressa%20Emanuela%20Rabaioli&en=page_view&_fv=1&_ss=1&_ee=1&tfd=861 -> net::ERR_ABORTED",
+    "POST https://region1.google-analytics.com/g/collect?v=2&tid=G-3LCYB9VKBY&gtm=45je62r1v9116876915za200&_p=1772554823124&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&gdid=dZTNiMT&cid=2086501342.1772554823&ul=en-us&sr=1440x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115616986~115938465~115938469~116024733~117484252&sid=1772554823&sct=1&seg=0&dl=https%3A%2F%2Fveterinariogravellona.com%2F&dt=Veterinario%20Gravellona%20%E2%80%93%20Ambulatorio%20veterinario%20a%20Gravellona%20Toce%2C%20dottoressa%20Emanuela%20Rabaioli&en=page_view&_fv=1&_ss=1&_ee=1&tfd=772 -> net::ERR_ABORTED",
+    "POST https://region1.google-analytics.com/g/collect?v=2&tid=G-3LCYB9VKBY&gtm=45je62r1v9116876915za200&_p=1772554826844&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&gdid=dZTNiMT&cid=550628714.1772554827&ul=en-us&sr=1440x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528500~104573694~104684208~104684211~115938465~115938468~116024733~117484252&sid=1772554827&sct=1&seg=0&dl=https%3A%2F%2Fveterinariogravellona.com%2F&dt=Veterinario%20Gravellona%20%E2%80%93%20Ambulatorio%20veterinario%20a%20Gravellona%20Toce%2C%20dottoressa%20Emanuela%20Rabaioli&en=page_view&_fv=1&_ss=1&_ee=1&tfd=845 -> net::ERR_ABORTED",
+    "POST https://region1.google-analytics.com/g/collect?v=2&tid=G-3LCYB9VKBY&gtm=45je6320h2v9116876915za200&_p=1772554830814&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&gdid=dZTNiMT&cid=1847018514.1772554831&ul=en-us&sr=375x812&uaa=arm&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=iOS&uapv=16_0&uaw=0&are=1&frm=0&pscdl=noapi&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115616986~115938465~115938468~116024733~117484252&sid=1772554831&sct=1&seg=0&dl=https%3A%2F%2Fveterinariogravellona.com%2F&dt=Veterinario%20Gravellona%20%E2%80%93%20Ambulatorio%20veterinario%20a%20Gravellona%20Toce%2C%20dottoressa%20Emanuela%20Rabaioli&en=page_view&_fv=1&_ss=1&_ee=1&tfd=784 -> net::ERR_ABORTED"
+  ],
+  "screenshots": [],
+  "broken_images": [
+    "https://veterinariogravellona.com/wp-content/uploads/2023/05/cane_marrone2.png",
+    "https://veterinariogravellona.com/wp-content/uploads/elementor/thumbs/veterinario_gravellona1-q67h394vl0wp8jz3zen6dn1585hsf9860nuy2b5pt4.png",
+    "https://veterinariogravellona.com/wp-content/uploads/elementor/thumbs/veterinario_gravellona1-q67h394vtsnzk5luv6tesustfmc45lvb70rzal95tc.png"
+  ],
+  "load_times": {
+    "homepage": 2.05,
+    "mobile": 2.1
+  },
+  "nav_links": [
+    {
+      "href": "https://veterinariogravellona.com/#",
+      "text": "+39 338 8242282"
+    },
+    {
+      "href": "https://veterinariogravellona.com/#orari",
+      "text": "orari"
+    }
+  ]
+}

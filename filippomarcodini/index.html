@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Radar</title>
+<title>Radar — Filippo Marcodini</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
     --bg: #fafaf9; --surface: #ffffff;
-    --border: #e5e5e0;
-    --green: #15803d; --yellow: #854d0e;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --yellow: #854d0e; --red: #b91c1c;
     --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
     --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
     --radius: 3px;
@@ -22,16 +22,18 @@ header { background: var(--surface); border-bottom: 2px solid var(--text); paddi
 .container { max-width: 860px; margin:0 auto; padding:0 2rem; }
 .brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
 .brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
 h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; }
-.subtitle { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+.project-url { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
 main { padding: 2rem 0 4rem; }
 
-.project-row { display: flex; align-items: center; justify-content: space-between; padding: .75rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); }
-.project-row:first-child { border-top: 1px solid var(--border); }
-.project-row:hover { background: rgba(0,0,0,.015); }
-.project-name { font-weight: 600; font-size: .85rem; }
-.project-meta { font-size: .7rem; color: var(--text-muted); margin-top: .1rem; }
-.project-count { font-size: .75rem; color: var(--text-muted); }
+.report-row { display: flex; align-items: center; justify-content: space-between; padding: .75rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); }
+.report-row:first-child { border-top: 1px solid var(--border); }
+.report-row:hover { background: rgba(0,0,0,.015); }
+.report-title { font-weight: 600; font-size: .82rem; }
+.report-date { font-size: .7rem; color: var(--text-muted); margin-top: .1rem; }
+.report-score { font-size: 1rem; font-weight: 700; }
+.report-verdict { font-size: .6rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-top: .1rem; }
 
 .watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
 .watermark a { color: var(--text-muted); text-decoration: none; }
@@ -41,26 +43,22 @@ main { padding: 2rem 0 4rem; }
 <body>
 <header>
 <div class="container">
-    <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>Radar</div>
-    <h1>Report di collaudo</h1>
-    <p class="subtitle">giobi.com</p>
+    <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg><a href="../">Radar</a></div>
+    <h1>Filippo Marcodini</h1>
+    <p class="project-url">filippomarcodini.com</p>
 </div>
 </header>
 <main>
 <div class="container">
-    <a class="project-row" href="filippomarcodini/">
+    <a class="report-row" href="2026-03-03-post-migration/">
         <div>
-            <div class="project-name">Filippo Marcodini</div>
-            <div class="project-meta">filippomarcodini.com &middot; ultimo: 3 marzo 2026</div>
+            <div class="report-title">Post-migration check (Cloudways &rarr; Hetzner)</div>
+            <div class="report-date">3 marzo 2026 &middot; Post-deploy &middot; 2 pagine verificate</div>
         </div>
-        <div class="project-count">1 report</div>
-    </a>
-    <a class="project-row" href="nexum/">
-        <div>
-            <div class="project-name">Nexum</div>
-            <div class="project-meta">nexum.it &middot; estendo.sel.re &middot; ultimo: 27 febbraio 2026</div>
+        <div style="text-align:right;">
+            <div class="report-score" style="color:var(--green);">90</div>
+            <div class="report-verdict" style="color:var(--green);">ok</div>
         </div>
-        <div class="project-count">1 report</div>
     </a>
 </div>
 </main>

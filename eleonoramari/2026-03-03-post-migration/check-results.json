@@ -1,0 +1,74 @@
+{
+  "pages": [
+    {
+      "name": "Art / Exhibitions",
+      "url": "https://eleonoramari.com/art-exhibitions/",
+      "status": "ok",
+      "load_time": 2.57
+    },
+    {
+      "name": "Reportage",
+      "url": "https://eleonoramari.com/reportage/",
+      "status": "ok",
+      "load_time": 2.49
+    },
+    {
+      "name": "People",
+      "url": "https://eleonoramari.com/people/",
+      "status": "ok",
+      "load_time": 2.39
+    },
+    {
+      "name": "Commercial",
+      "url": "https://eleonoramari.com/commercial/",
+      "status": "ok",
+      "load_time": 2.5
+    }
+  ],
+  "console_errors": [],
+  "http_errors": [],
+  "broken_images": [],
+  "load_times": {
+    "homepage": 2.11,
+    "Art / Exhibitions": 2.57,
+    "Reportage": 2.49,
+    "People": 2.39,
+    "Commercial": 2.5
+  },
+  "ssl": {
+    "valid": true,
+    "issuer": "Google Trust Services",
+    "expires": "Apr 24 02:11:16 2026 GMT",
+    "subject": "eleonoramari.com"
+  },
+  "internal_links": [
+    {
+      "href": "https://eleonoramari.com/art-exhibitions/",
+      "text": "Art / Exhibitions"
+    },
+    {
+      "href": "https://eleonoramari.com/reportage/",
+      "text": "Reportage"
+    },
+    {
+      "href": "https://eleonoramari.com/people/",
+      "text": "People"
+    },
+    {
+      "href": "https://eleonoramari.com/commercial/",
+      "text": "Commercial"
+    },
+    {
+      "href": "https://eleonoramari.com/illustrations/",
+      "text": "Illustrations"
+    },
+    {
+      "href": "https://eleonoramari.com/about/",
+      "text": "About"
+    },
+    {
+      "href": "https://eleonoramari.com/contact/",
+      "text": "Contact"
+    }
+  ]
+}

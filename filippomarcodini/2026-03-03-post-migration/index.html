@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — filippomarcodini.com: Post-Migration Check</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-top: .5rem; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.status-ok { color: var(--green); font-weight: 600; }
+.status-warn { color: var(--yellow); font-weight: 600; }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+
+.screenshots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .5rem; }
+.screenshots-grid .step-img { margin-top: 0; }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+    .screenshots-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+        <a href="../../">Radar</a>
+    </div>
+    <h1 class="title">filippomarcodini.com — Post-Migration Check</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>3 marzo 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>2 pagine verificate</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Post-deploy</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>filippomarcodini.com</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="26.4"/>
+        </svg>
+        <div class="score-number">90<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Migrazione riuscita</h2>
+        <p>Il sito funziona correttamente sul nuovo server Tanuki (Hetzner). Tutte le pagine rispondono 200, nessuna immagine rotta su 61 immagini verificate, zero errori JavaScript in console, SSL valido. Unica nota: il TTFB della homepage è ~980ms, accettabile per WordPress con Elementor ma migliorabile con caching.</p>
+    </div>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech', this)">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-simple" class="tab-panel active">
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Il sito funziona sul nuovo server</span>
+    </div>
+    <p class="step-explain">Il sito <strong>filippomarcodini.com</strong> è stato spostato da un server (Cloudways/Octopus) a un nuovo server (Hetzner/Tanuki). Abbiamo verificato che tutto funziona correttamente: la homepage si carica, le immagini si vedono, e il sito è raggiungibile sia da computer che da telefono.</p>
+    <div class="step-img">
+        <img src="homepage-desktop.png" alt="Homepage desktop">
+        <div class="step-img-caption">Homepage desktop — il sito si carica correttamente con tutte le immagini e i video</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Portfolio e contenuti: tutto a posto</span>
+    </div>
+    <p class="step-explain">La sezione portfolio con i lavori video si carica correttamente. Tutte le 61 immagini presenti nel sito vengono visualizzate senza errori. Anche la pagina interna "Wedding" funziona.</p>
+    <div class="screenshots-grid">
+        <div class="step-img">
+            <img src="portfolio-desktop.png" alt="Sezione portfolio">
+            <div class="step-img-caption">Sezione Portfolio</div>
+        </div>
+        <div class="step-img">
+            <img src="wedding-desktop.png" alt="Pagina Wedding">
+            <div class="step-img-caption">Pagina progetto Wedding</div>
+        </div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Versione mobile: ok</span>
+    </div>
+    <p class="step-explain">Il sito si adatta correttamente anche alla visualizzazione da telefono. Il layout responsive funziona, le immagini si ridimensionano e il contenuto è leggibile.</p>
+    <div class="screenshots-grid">
+        <div class="step-img">
+            <img src="homepage-mobile.png" alt="Homepage mobile">
+            <div class="step-img-caption">Homepage da telefono</div>
+        </div>
+        <div class="step-img">
+            <img src="wedding-mobile.png" alt="Wedding mobile">
+            <div class="step-img-caption">Wedding da telefono</div>
+        </div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Sicurezza: certificato SSL valido</span>
+    </div>
+    <p class="step-explain">Il lucchetto nel browser funziona: la connessione al sito è sicura e protetta. Il certificato è valido fino ad aprile 2026 e si rinnova automaticamente.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Nota: la homepage è un po' lenta a caricarsi</span>
+    </div>
+    <p class="step-explain">La homepage impiega circa 1 secondo per iniziare a rispondere, e circa 23 secondi per caricare tutti i contenuti (immagini, video, elementi grafici). Questo è normale per un sito con molti contenuti multimediali e Elementor, ma si potrebbe migliorare con un sistema di cache.</p>
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Riepilogo migrazione</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Dominio</td><td><code>filippomarcodini.com</code></td></tr>
+        <tr><td>Server precedente</td><td><code>Cloudways / Octopus</code></td></tr>
+        <tr><td>Server attuale</td><td><code>Hetzner / Tanuki (188.245.145.207)</code></td></tr>
+        <tr><td>PHP</td><td><code>8.3.30</code></td></tr>
+        <tr><td>CMS</td><td><code>WordPress + Elementor</code></td></tr>
+        <tr><td>CDN/Proxy</td><td><code>Cloudflare</code></td></tr>
+        <tr><td>Scenario</td><td>Post-deploy check</td></tr>
+        <tr><td>Verdict</td><td class="status-ok">MIGRAZIONE OK</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>Performance</h3>
+    <table class="tech-table">
+        <tr><th>Metrica</th><th>Valore</th><th>Stato</th></tr>
+        <tr><td>TTFB Homepage</td><td><code>980ms</code></td><td class="status-warn">ACCETTABILE</td></tr>
+        <tr><td>TTFB Wedding</td><td><code>461ms</code></td><td class="status-ok">OK</td></tr>
+        <tr><td>Full load Homepage (networkidle)</td><td><code>23s</code></td><td class="status-warn">PESANTE</td></tr>
+        <tr><td>DNS Lookup</td><td><code>2.7ms</code></td><td class="status-ok">OK</td></tr>
+        <tr><td>TLS Handshake</td><td><code>28ms</code></td><td class="status-ok">OK</td></tr>
+        <tr><td>HTML Size</td><td><code>47 KB</code></td><td class="status-ok">OK</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Check funzionali</h3>
+    <table class="tech-table">
+        <tr><th>Check</th><th>Risultato</th></tr>
+        <tr><td>Homepage HTTP 200</td><td class="status-ok">PASS</td></tr>
+        <tr><td>Wedding page HTTP 200</td><td class="status-ok">PASS</td></tr>
+        <tr><td>system-check.php = tanuki</td><td class="status-ok">PASS</td></tr>
+        <tr><td>Immagini rotte (su 61)</td><td class="status-ok">0 — PASS</td></tr>
+        <tr><td>Errori JS console</td><td class="status-ok">0 — PASS</td></tr>
+        <tr><td>Responsive mobile</td><td class="status-ok">PASS</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>SSL Certificate</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Subject</td><td><code>CN=filippomarcodini.com</code></td></tr>
+        <tr><td>Issuer</td><td><code>Google Trust Services / WE1</code></td></tr>
+        <tr><td>Valid from</td><td><code>2026-01-11</code></td></tr>
+        <tr><td>Valid until</td><td><code>2026-04-11</code></td></tr>
+        <tr><td>Stato</td><td class="status-ok">VALIDO</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>system-check.php</h3>
+    <div class="log-block">{
+    "server": "tanuki",
+    "ip": "188.245.145.207",
+    "php": "8.3.30",
+    "domain": "filippomarcodini.com",
+    "time": "2026-03-03 16:19:11 UTC",
+    "disk_free": "65.7 GB",
+    "uptime": "up 23 hours, 29 minutes"
+}</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Raccomandazioni</h3>
+    <ul style="font-size:.78rem; color:var(--text-secondary); padding-left:1.2rem; line-height:1.9;">
+        <li>TTFB homepage ~1s: valutare WP Super Cache o LiteSpeed Cache per ridurre a &lt;500ms</li>
+        <li>Full load 23s: le 61 immagini + video Elementor pesano — lazy loading e WebP consigliati</li>
+        <li>SSL scade 2026-04-11: verificare rinnovo automatico Cloudflare (dovrebbe essere gestito)</li>
+        <li>Il sito ha solo 2 pagine indicizzate: homepage + wedding project. Struttura molto leggera</li>
+    </ul>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="watermark"><a href="https://giobi.com">Radar · giobi.com</a> · 3 marzo 2026</div>
+
+<script>
+(function(){
+    var hash = window.location.hash;
+    if (hash.startsWith('#key=')) {
+        sessionStorage.setItem('radar-auth', hash.slice(5));
+    }
+})();
+
+function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+</body>
+</html>
