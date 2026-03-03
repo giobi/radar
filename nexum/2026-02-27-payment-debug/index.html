@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Radar</title>
+<title>Radar — Nexum: Pagamento carta di credito</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
     --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
     --border: #e5e5e0; --border-strong: #d0d0c8;
-    --accent: #1c1917; --accent-soft: rgba(28,25,23,.05);
     --green: #15803d; --green-bg: rgba(21,128,61,.06);
     --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
     --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
@@ -21,23 +20,12 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
 
-/* Gate */
-.gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-.gate-box { width: 320px; }
-.gate-box h1 { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; }
-.gate-input { width: 100%; padding: .6rem .75rem; border: 2px solid var(--border-strong); border-radius: var(--radius); font-family: var(--mono); font-size: .85rem; background: var(--surface); color: var(--text); outline: none; }
-.gate-input:focus { border-color: var(--text); }
-.gate-input::placeholder { color: var(--text-muted); }
-.gate-error { font-size: .72rem; color: var(--red); margin-top: .5rem; display: none; }
-
-/* Content hidden by default */
-.report { display: none; }
-
 /* Header */
 .header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
 .container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
 .brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
 .brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
 .title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
 .meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
 .meta-item { display: flex; align-items: center; gap: .35rem; }
@@ -92,10 +80,10 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 .tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
 .tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
 
-/* Footer */
-.footer { border-top: 2px solid var(--text); padding: 1.25rem 0; margin-top: 2rem; }
-.footer-inner { display: flex; justify-content: space-between; align-items: center; font-size: .68rem; color: var(--text-muted); }
-.footer a { color: var(--text-secondary); text-decoration: none; }
+/* Watermark */
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
 
 @media (max-width: 640px) {
     .score-card { flex-direction: column; text-align: center; }
@@ -105,23 +93,11 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </head>
 <body>
 
-<!-- Password gate -->
-<div class="gate" id="gate">
-<div class="gate-box">
-    <h1>Radar / Report</h1>
-    <input class="gate-input" id="gate-pw" type="password" placeholder="Codice accesso" autocomplete="off" autofocus>
-    <div class="gate-error" id="gate-err">Codice non valido</div>
-</div>
-</div>
-
-<!-- Report content -->
-<div class="report" id="report">
-
 <div class="header">
 <div class="container">
     <div class="brand">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
-        Radar
+        <a href="../../dashboard/">Radar</a>
     </div>
     <h1 class="title">Nexum — Pagamento carta di credito</h1>
     <div class="meta-row">
@@ -253,41 +229,18 @@ $ php artisan config:clear</div>
 </div>
 </div>
 
-<div class="footer">
-<div class="footer-inner">
-    <span>Radar &middot; Report di collaudo</span>
-    <span><a href="https://giobi.com">giobi.com</a></span>
-</div>
 </div>
 
-</div>
-</div>
+<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
 
 <script>
-// Simple client-side gate — not Fort Knox, just keeps casuals out
-// Hash of password stored, not plaintext
+// Hash-link gate (predisposta, per ora tutto aperto)
+// Uso futuro: radar.giobi.com/nexum/report/#key=abc123
 (function(){
-    var H='e3b98a';// first 6 chars of sha256 of password — set per-project or global
-    var K='radar2026';// actual password for now — will be hashed properly in production
-    var g=document.getElementById('gate');
-    var r=document.getElementById('report');
-    var i=document.getElementById('gate-pw');
-    var e=document.getElementById('gate-err');
-    // Check sessionStorage
-    if(sessionStorage.getItem('radar-auth')==='1'){g.style.display='none';r.style.display='block';return;}
-    i.addEventListener('keydown',function(ev){
-        if(ev.key==='Enter'){
-            if(i.value===K){
-                sessionStorage.setItem('radar-auth','1');
-                g.style.display='none';
-                r.style.display='block';
-            } else {
-                e.style.display='block';
-                i.value='';
-                i.focus();
-            }
-        }
-    });
+    var hash = window.location.hash;
+    if (hash.startsWith('#key=')) {
+        sessionStorage.setItem('radar-auth', hash.slice(5));
+    }
 })();
 
 function switchTab(tab, btn) {

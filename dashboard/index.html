@@ -18,17 +18,6 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.65; font-size:14px; }
 
-.gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-.gate-box { width: 320px; }
-.gate-title { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; display: flex; align-items: center; gap: .5rem; }
-.gate-title svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
-.gate-input { width: 100%; padding: .6rem .75rem; border: 2px solid var(--border-strong); border-radius: var(--radius); font-family: var(--mono); font-size: .85rem; background: var(--surface); color: var(--text); outline: none; }
-.gate-input:focus { border-color: var(--text); }
-.gate-input::placeholder { color: var(--text-muted); }
-.gate-error { font-size: .72rem; color: var(--red); margin-top: .5rem; display: none; }
-
-.content { display: none; }
-
 header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2.5rem 0 2rem; }
 .container { max-width: 860px; margin:0 auto; padding:0 2rem; }
 .brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
@@ -48,22 +37,12 @@ main { padding: 2rem 0 4rem; }
 .v-green { color: var(--green); }
 .v-yellow { color: var(--yellow); }
 
-footer { border-top: 2px solid var(--text); padding: 1.25rem 0; }
-footer p { font-size: .68rem; color: var(--text-muted); display: flex; justify-content: space-between; }
-footer a { color: var(--text-secondary); text-decoration: none; }
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
 </style>
 </head>
 <body>
-
-<div class="gate" id="gate">
-<div class="gate-box">
-    <div class="gate-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>Radar</div>
-    <input class="gate-input" id="gate-pw" type="password" placeholder="Codice accesso" autocomplete="off" autofocus>
-    <div class="gate-error" id="gate-err">Codice non valido</div>
-</div>
-</div>
-
-<div class="content" id="content">
 <header>
 <div class="container">
     <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>Radar</div>
@@ -125,30 +104,16 @@ footer a { color: var(--text-secondary); text-decoration: none; }
     </a>
 </div>
 </main>
-<footer><div class="container"><p><span>Radar &middot; giobi.com</span><span>Report di collaudo</span></p></div></footer>
-</div>
+<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
 
 <script>
+// Gate predisposta: quando attiva, aggiungere #key=HASH all'URL per bypassare
+// Per ora tutto aperto
 (function(){
-    var K='radar2026';
-    var g=document.getElementById('gate');
-    var c=document.getElementById('content');
-    var i=document.getElementById('gate-pw');
-    var e=document.getElementById('gate-err');
-    if(sessionStorage.getItem('radar-auth')==='1'){g.style.display='none';c.style.display='block';return;}
-    i.addEventListener('keydown',function(ev){
-        if(ev.key==='Enter'){
-            if(i.value===K){
-                sessionStorage.setItem('radar-auth','1');
-                g.style.display='none';
-                c.style.display='block';
-            } else {
-                e.style.display='block';
-                i.value='';
-                i.focus();
-            }
-        }
-    });
+    var hash = window.location.hash;
+    if (hash.startsWith('#key=')) {
+        sessionStorage.setItem('radar-auth', hash.slice(5));
+    }
 })();
 </script>
 </body>
