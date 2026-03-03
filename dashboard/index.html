@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --yellow: #854d0e; --red: #b91c1c;
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.65; font-size:14px; }
+
+.gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.gate-box { width: 320px; }
+.gate-title { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; display: flex; align-items: center; gap: .5rem; }
+.gate-title svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.gate-input { width: 100%; padding: .6rem .75rem; border: 2px solid var(--border-strong); border-radius: var(--radius); font-family: var(--mono); font-size: .85rem; background: var(--surface); color: var(--text); outline: none; }
+.gate-input:focus { border-color: var(--text); }
+.gate-input::placeholder { color: var(--text-muted); }
+.gate-error { font-size: .72rem; color: var(--red); margin-top: .5rem; display: none; }
+
+.content { display: none; }
+
+header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2.5rem 0 2rem; }
+.container { max-width: 860px; margin:0 auto; padding:0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; }
+.subtitle { font-size: .78rem; color: var(--text-muted); margin-top: .25rem; }
+main { padding: 2rem 0 4rem; }
+
+.project { display: flex; align-items: center; justify-content: space-between; padding: .75rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); }
+.project:first-child { border-top: 1px solid var(--border); }
+.project:hover { background: rgba(0,0,0,.015); }
+.project-name { font-weight: 600; font-size: .85rem; }
+.project-url { font-size: .7rem; color: var(--text-muted); margin-top: .1rem; }
+.project-meta { text-align: right; }
+.project-runs { font-size: .68rem; color: var(--text-muted); margin-top: .15rem; }
+.verdict { font-size: .62rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.v-green { color: var(--green); }
+.v-yellow { color: var(--yellow); }
+
+footer { border-top: 2px solid var(--text); padding: 1.25rem 0; }
+footer p { font-size: .68rem; color: var(--text-muted); display: flex; justify-content: space-between; }
+footer a { color: var(--text-secondary); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+<div class="gate-box">
+    <div class="gate-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>Radar</div>
+    <input class="gate-input" id="gate-pw" type="password" placeholder="Codice accesso" autocomplete="off" autofocus>
+    <div class="gate-error" id="gate-err">Codice non valido</div>
+</div>
+</div>
+
+<div class="content" id="content">
+<header>
+<div class="container">
+    <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>Radar</div>
+    <h1>Dashboard</h1>
+    <p class="subtitle">Progetti monitorati e report di collaudo</p>
+</div>
+</header>
+<main>
+<div class="container">
+    <a class="project" href="../nexum/">
+        <div>
+            <div class="project-name">Nexum</div>
+            <div class="project-url">nexum.it</div>
+        </div>
+        <div class="project-meta">
+            <div class="verdict v-green">fixed</div>
+            <div class="project-runs">4 report</div>
+        </div>
+    </a>
+    <a class="project" href="../a3d/">
+        <div>
+            <div class="project-name">A3D</div>
+            <div class="project-url">mule.a3d.it</div>
+        </div>
+        <div class="project-meta">
+            <div class="verdict v-yellow">issues</div>
+            <div class="project-runs">3 report</div>
+        </div>
+    </a>
+    <a class="project" href="../calia/">
+        <div>
+            <div class="project-name">Calia</div>
+            <div class="project-url">caliaitaliaoutlet.com</div>
+        </div>
+        <div class="project-meta">
+            <div class="verdict v-yellow">issues</div>
+            <div class="project-runs">1 report</div>
+        </div>
+    </a>
+    <a class="project" href="../digitag/">
+        <div>
+            <div class="project-name">DigiTag</div>
+            <div class="project-url">digitag.me</div>
+        </div>
+        <div class="project-meta">
+            <div class="verdict v-green">healthy</div>
+            <div class="project-runs">1 report</div>
+        </div>
+    </a>
+    <a class="project" href="../fasoli/">
+        <div>
+            <div class="project-name">Fasoli Piante</div>
+            <div class="project-url">fasolipiante.com</div>
+        </div>
+        <div class="project-meta">
+            <div class="verdict v-yellow">issues</div>
+            <div class="project-runs">1 report</div>
+        </div>
+    </a>
+</div>
+</main>
+<footer><div class="container"><p><span>Radar &middot; giobi.com</span><span>Report di collaudo</span></p></div></footer>
+</div>
+
+<script>
+(function(){
+    var K='radar2026';
+    var g=document.getElementById('gate');
+    var c=document.getElementById('content');
+    var i=document.getElementById('gate-pw');
+    var e=document.getElementById('gate-err');
+    if(sessionStorage.getItem('radar-auth')==='1'){g.style.display='none';c.style.display='block';return;}
+    i.addEventListener('keydown',function(ev){
+        if(ev.key==='Enter'){
+            if(i.value===K){
+                sessionStorage.setItem('radar-auth','1');
+                g.style.display='none';
+                c.style.display='block';
+            } else {
+                e.style.display='block';
+                i.value='';
+                i.focus();
+            }
+        }
+    });
+})();
+</script>
+</body>
+</html>

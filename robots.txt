@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /dashboard/
+Disallow: /nexum/
+Disallow: /a3d/
+Disallow: /calia/
+Disallow: /digitag/
+Disallow: /fasoli/
