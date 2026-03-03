@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Tanuki: Cache Benchmark</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+
+.benchmark-table { width: 100%; border-collapse: collapse; font-size: .82rem; margin: 1rem 0; }
+.benchmark-table th { text-align: left; font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); padding: .6rem .5rem; border-bottom: 2px solid var(--border); }
+.benchmark-table td { padding: .6rem .5rem; border-bottom: 1px solid var(--surface-alt); }
+.benchmark-table .site-name { font-weight: 600; }
+.benchmark-table .pre { color: var(--red); font-weight: 600; }
+.benchmark-table .post { color: var(--green); font-weight: 600; }
+.benchmark-table .improvement { color: var(--green); font-weight: 700; font-size: .9rem; }
+
+.bar-chart { margin: 1.5rem 0; }
+.bar-row { display: flex; align-items: center; gap: .75rem; margin-bottom: .6rem; }
+.bar-label { width: 160px; font-size: .75rem; font-weight: 600; text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; height: 28px; background: var(--surface-alt); border-radius: 2px; position: relative; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 2px; display: flex; align-items: center; padding-left: .5rem; font-size: .7rem; font-weight: 600; color: white; min-width: fit-content; }
+.bar-fill.pre { background: var(--red); opacity: .3; }
+.bar-fill.post { background: var(--green); }
+.bar-value { font-size: .7rem; color: var(--text-muted); margin-left: .5rem; white-space: nowrap; }
+
+.footer { border-top: 1px solid var(--border); padding: 1.5rem 0; margin-top: 2rem; font-size: .68rem; color: var(--text-muted); text-align: center; }
+.footer a { color: var(--text-muted); text-decoration: none; }
+
+@media (max-width: 600px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .5rem; }
+    .bar-row { flex-direction: column; align-items: stretch; }
+    .bar-label { width: auto; text-align: left; }
+    .benchmark-table { font-size: .72rem; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="container">
+    <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg><a href="../../dashboard/">Radar</a></div>
+    <h1 class="title">Tanuki: Cache Benchmark</h1>
+    <div class="meta-row">
+        <span class="meta-item">3 marzo 2026</span>
+        <span class="meta-item">Server: tanuki.giobi.com (188.245.145.207)</span>
+        <span class="meta-item">Hetzner cx33 &middot; 4 siti WordPress</span>
+    </div>
+</div>
+</div>
+
+<div class="score-section">
+<div class="container">
+    <div class="score-card">
+        <div class="score-ring">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+                <circle class="track" cx="50" cy="50" r="42"/>
+                <circle class="fill" cx="50" cy="50" r="42" stroke="#15803d"
+                    stroke-dasharray="263.89" stroke-dashoffset="0"/>
+            </svg>
+            <div class="score-number">100<small>/100</small></div>
+        </div>
+        <div class="score-summary">
+            <h2>Cache implementata con successo</h2>
+            <p>Tutti e 4 i siti rispondono in meno di 80ms. Il tempo di risposta medio è passato da ~560ms a ~64ms grazie a FastCGI Cache (full page cache a livello nginx) e Redis Object Cache (cache del database WordPress).</p>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="tabs">
+<div class="container">
+    <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab('client')">Cosa abbiamo fatto</button>
+        <button class="tab-btn" onclick="switchTab('tech')">Dettagli tecnici</button>
+    </div>
+
+    <div id="tab-client" class="tab-panel active">
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-icon ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <div class="step-title">Misurato la velocit&agrave; di partenza</div>
+            </div>
+            <div class="step-explain">
+                Prima di toccare niente, abbiamo misurato quanto tempo ci metteva ogni sito a rispondere. Due siti (filippomarcodini.com e robertomotta.it) ci mettevano pi&ugrave; di un secondo &mdash; troppo. Gli altri due erano gi&agrave; ragionevoli.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-icon ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <div class="step-title">Attivata la cache delle pagine</div>
+            </div>
+            <div class="step-explain">
+                Abbiamo detto al server: &laquo;quando qualcuno visita una pagina, salva la risposta. Se un altro visitatore chiede la stessa pagina, dagli la copia salvata invece di ricostruirla da zero&raquo;. Questo velocizza enormemente le visite perch&eacute; il server non deve interrogare il database ogni volta.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-icon ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <div class="step-title">Attivata la cache del database</div>
+            </div>
+            <div class="step-explain">
+                Anche internamente, WordPress ora salva in memoria le richieste al database pi&ugrave; frequenti (impostazioni, menu, widget). Cos&igrave; anche quando la pagina non &egrave; in cache, il sito risponde pi&ugrave; velocemente.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-icon ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <div class="step-title">Aggiunta protezione contro i bot</div>
+            </div>
+            <div class="step-explain">
+                I tentativi di accesso ripetuti (attacchi automatici) vengono ora limitati: massimo 3 tentativi al secondo sulla pagina di login. Inoltre, un punto di accesso tecnico spesso abusato (xmlrpc) &egrave; stato completamente bloccato.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-icon ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+                <div class="step-title">Risultato: tutti i siti sotto gli 80ms</div>
+            </div>
+            <div class="step-explain">
+                Il miglioramento &egrave; drastico. Ecco il confronto prima/dopo per ogni sito:
+            </div>
+
+            <table class="benchmark-table">
+                <thead>
+                    <tr>
+                        <th>Sito</th>
+                        <th>Prima</th>
+                        <th>Dopo</th>
+                        <th>Miglioramento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="site-name">filippomarcodini.com</td>
+                        <td class="pre">960 ms</td>
+                        <td class="post">62 ms</td>
+                        <td class="improvement">15x</td>
+                    </tr>
+                    <tr>
+                        <td class="site-name">eleonoramari.com</td>
+                        <td class="pre">79 ms</td>
+                        <td class="post">62 ms</td>
+                        <td style="color:var(--text-muted);">gi&agrave; veloce</td>
+                    </tr>
+                    <tr>
+                        <td class="site-name">veterinariogravellona.com</td>
+                        <td class="pre">355 ms</td>
+                        <td class="post">69 ms</td>
+                        <td class="improvement">5x</td>
+                    </tr>
+                    <tr>
+                        <td class="site-name">robertomotta.it</td>
+                        <td class="pre">850 ms</td>
+                        <td class="post">63 ms</td>
+                        <td class="improvement">13x</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="bar-chart">
+                <div class="bar-row">
+                    <div class="bar-label">filippomarcodini</div>
+                    <div class="bar-track">
+                        <div class="bar-fill pre" style="width:96%"></div>
+                    </div>
+                    <div class="bar-value">960ms</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label"></div>
+                    <div class="bar-track">
+                        <div class="bar-fill post" style="width:6.2%"></div>
+                    </div>
+                    <div class="bar-value">62ms</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">robertomotta</div>
+                    <div class="bar-track">
+                        <div class="bar-fill pre" style="width:85%"></div>
+                    </div>
+                    <div class="bar-value">850ms</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label"></div>
+                    <div class="bar-track">
+                        <div class="bar-fill post" style="width:6.3%"></div>
+                    </div>
+                    <div class="bar-value">63ms</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">veterinariogravellona</div>
+                    <div class="bar-track">
+                        <div class="bar-fill pre" style="width:35.5%"></div>
+                    </div>
+                    <div class="bar-value">355ms</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label"></div>
+                    <div class="bar-track">
+                        <div class="bar-fill post" style="width:6.9%"></div>
+                    </div>
+                    <div class="bar-value">69ms</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">eleonoramari</div>
+                    <div class="bar-track">
+                        <div class="bar-fill pre" style="width:7.9%"></div>
+                    </div>
+                    <div class="bar-value">79ms</div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label"></div>
+                    <div class="bar-track">
+                        <div class="bar-fill post" style="width:6.2%"></div>
+                    </div>
+                    <div class="bar-value">62ms</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="tab-tech" class="tab-panel">
+
+        <div class="tech-section">
+            <h3>Riepilogo</h3>
+            <table class="tech-table">
+                <tr><th>Campo</th><th>Valore</th></tr>
+                <tr><td>Server</td><td>tanuki.giobi.com (188.245.145.207)</td></tr>
+                <tr><td>Provider</td><td>Hetzner cx33 &mdash; 4 vCPU / 8 GB / 80 GB NVMe</td></tr>
+                <tr><td>OS</td><td>Ubuntu 24.04</td></tr>
+                <tr><td>Stack</td><td>nginx + PHP 8.3 FPM + MySQL 8 + Redis 7</td></tr>
+                <tr><td>Scenario</td><td>Cache benchmark pre/post</td></tr>
+                <tr><td>Costo server</td><td>6,09 EUR/mese</td></tr>
+                <tr><td>Verdict</td><td style="color:var(--green);font-weight:700;">HEALTHY</td></tr>
+            </table>
+        </div>
+
+        <div class="tech-section">
+            <h3>Cache Stack implementato</h3>
+            <div class="log-block">1. FastCGI Cache (nginx-level full page cache)
+   - Zone: WPCACHE, 100MB keys, 512MB max, 60m inactive
+   - Path: /var/cache/nginx/fastcgi
+   - Bypass: POST, logged-in users, wp-admin, wp-login, wp-json
+   - Headers: X-FastCGI-Cache (HIT/MISS/BYPASS)
+
+2. Redis Object Cache (WP database query cache)
+   - Plugin: redis-cache (free, PhpRedis client)
+   - Prefix per-site per evitare collisioni
+   - Connessione: 127.0.0.1:6379 database 0
+
+3. Rate Limiting (bot protection)
+   - wp-login.php: 3 req/s burst 5
+   - xmlrpc.php: BLOCKED (deny all, return 403)
+   - PHP in uploads/: BLOCKED
+
+4. Static Assets
+   - expires 365d, Cache-Control: public, immutable
+   - access_log off per static files</div>
+        </div>
+
+        <div class="tech-section">
+            <h3>Dati TTFB grezzi (origin, bypass Cloudflare)</h3>
+            <div class="log-block">PRE-CACHE (direct to origin):
+filippomarcodini.com    1077ms  1029ms  1002ms  (avg: 1036ms)
+eleonoramari.com          23ms    24ms    24ms  (avg: 24ms)
+veterinariogravellona.com 260ms   225ms   259ms  (avg: 248ms)
+robertomotta.it           726ms   821ms   756ms  (avg: 768ms)
+
+POST-CACHE (direct to origin, FastCGI HIT):
+filippomarcodini.com       22ms    21ms    23ms  (avg: 22ms)
+eleonoramari.com           22ms    22ms    23ms  (avg: 22ms)
+veterinariogravellona.com  24ms    23ms    23ms  (avg: 23ms)
+robertomotta.it            24ms     9ms    22ms  (avg: 18ms)
+
+POST-CACHE (via Cloudflare, utente reale):
+filippomarcodini.com       75ms    51ms    61ms  (avg: 62ms)
+eleonoramari.com           59ms    66ms    62ms  (avg: 62ms)
+veterinariogravellona.com  63ms    76ms    69ms  (avg: 69ms)
+robertomotta.it            66ms    55ms    67ms  (avg: 63ms)</div>
+        </div>
+
+        <div class="tech-section">
+            <h3>Configurazione nginx (snippet)</h3>
+            <div class="log-block"># /etc/nginx/conf.d/fastcgi-cache.conf
+fastcgi_cache_path /var/cache/nginx/fastcgi
+    levels=1:2
+    keys_zone=WPCACHE:100m
+    max_size=512m
+    inactive=60m
+    use_temp_path=off;
+
+# /etc/nginx/snippets/fastcgi-cache.conf
+set $skip_cache 0;
+if ($request_method = POST) { set $skip_cache 1; }
+if ($http_cookie ~* "wordpress_logged_in|woocommerce_cart") {
+    set $skip_cache 1;
+}
+fastcgi_cache WPCACHE;
+fastcgi_cache_valid 200 301 60m;
+fastcgi_cache_bypass $skip_cache;
+fastcgi_no_cache $skip_cache;
+add_header X-FastCGI-Cache $upstream_cache_status;</div>
+        </div>
+
+        <div class="tech-section">
+            <h3>Note</h3>
+            <div class="log-block">- veterinariogravellona aveva Object Cache Pro (Cloudways) come drop-in
+  con password Redis vecchia. Rimosso e sostituito con redis-cache plugin.
+- La cache FastCGI bypassa automaticamente utenti loggati, POST, wp-admin.
+- Il primo visitatore dopo un cache miss prende il TTFB "reale" (cold start),
+  tutti i successivi prendono il TTFB cached (~22ms origin).
+- Via Cloudflare si aggiungono ~40ms di latenza di rete (efesto -> CF -> utente).</div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+<div class="footer">
+<div class="container">
+    Radar &middot; <a href="https://giobi.com">giobi.com</a> &middot; 3 marzo 2026
+</div>
+</div>
+
+<script>
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

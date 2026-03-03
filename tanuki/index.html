@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Tanuki</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --yellow: #854d0e; --red: #b91c1c;
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.65; font-size:14px; }
+
+header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 860px; margin:0 auto; padding:0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; }
+.project-url { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+main { padding: 2rem 0 4rem; }
+
+.report-row { display: flex; align-items: center; justify-content: space-between; padding: .75rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); }
+.report-row:first-child { border-top: 1px solid var(--border); }
+.report-row:hover { background: rgba(0,0,0,.015); }
+.report-title { font-weight: 600; font-size: .82rem; }
+.report-date { font-size: .7rem; color: var(--text-muted); margin-top: .1rem; }
+.report-score { font-size: 1rem; font-weight: 700; }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+    <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg><a href="../dashboard/">Radar</a></div>
+    <h1>Tanuki</h1>
+    <p class="project-url">tanuki.giobi.com &middot; Hetzner cx33 &middot; 4 siti WordPress</p>
+</div>
+</header>
+<main>
+<div class="container">
+    <a class="report-row" href="2026-03-03-cache-benchmark/">
+        <div>
+            <div class="report-title">Cache Benchmark: FastCGI + Redis</div>
+            <div class="report-date">3 marzo 2026 &middot; Performance &middot; TTFB da ~560ms a ~64ms</div>
+        </div>
+        <div style="text-align:right;">
+            <div class="report-score" style="color:var(--green);">100</div>
+        </div>
+    </a>
+</div>
+</main>
+<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
+</body>
+</html>
