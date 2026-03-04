@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Ledger</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#fafaf9; --surface:#fff; --border:#e5e5e0; --text:#1c1917; --text-secondary:#57534e; --text-muted:#a8a29e; --green:#15803d; --mono:'IBM Plex Mono','SFMono-Regular','Consolas',monospace; --radius:3px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--mono); background:var(--bg); color:var(--text); line-height:1.7; font-size:14px; }
+.header { background:var(--surface); border-bottom:2px solid var(--text); padding:2rem 0 1.75rem; }
+.container { max-width:860px; margin:0 auto; padding:0 2rem; }
+.brand { font-size:.65rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:.75rem; }
+.brand a { color:var(--text-muted); text-decoration:none; }
+.title { font-size:1.3rem; font-weight:700; letter-spacing:-.01em; }
+.subtitle { font-size:.78rem; color:var(--text-secondary); margin-top:.25rem; }
+.reports { padding:2rem 0; }
+.report-item { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem 1.5rem; margin-bottom:.5rem; display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:var(--text); transition: border-color .15s; }
+.report-item:hover { border-color:var(--text); }
+.report-date { font-size:.72rem; color:var(--text-muted); }
+.report-title { font-weight:600; font-size:.85rem; }
+.report-score { font-weight:700; font-size:1rem; }
+.score-green { color:var(--green); }
+.footer { border-top:1px solid var(--border); padding:1.5rem 0; text-align:center; font-size:.65rem; color:var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="brand">Radar &middot; <a href="https://giobi.com">giobi.com</a></div>
+        <div class="title">Ledger</div>
+        <div class="subtitle">ledger.giobi.com &middot; 1 report</div>
+    </div>
+</div>
+<div class="container">
+    <div class="reports">
+        <a href="2026-03-04-gantt-chart/" class="report-item">
+            <div>
+                <div class="report-date">04/03/2026</div>
+                <div class="report-title">Gantt Chart nel Budget Portal</div>
+            </div>
+            <div class="report-score score-green">100</div>
+        </a>
+    </div>
+    <div class="footer">Radar &middot; giobi.com</div>
+</div>
+</body>
+</html>
