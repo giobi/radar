@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Nexum / Logout Button Fix</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #f8fafc; --surface: #ffffff; --surface-alt: #f1f5f9;
+    --border: #e2e8f0; --accent: #6366f1; --accent-light: rgba(99,102,241,.08);
+    --green: #10b981; --green-bg: rgba(16,185,129,.08);
+    --yellow: #f59e0b; --yellow-bg: rgba(245,158,11,.08);
+    --red: #ef4444; --red-bg: rgba(239,68,68,.08);
+    --text: #0f172a; --text-secondary: #475569; --text-muted: #94a3b8;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+    --radius: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height:1.7; font-size:15px; }
+
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 2rem 0; }
+.container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; }
+.title { font-size: 1.5rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { font-size: .9rem; color: var(--text-secondary); }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .8rem; color: var(--text-muted); margin-top: .75rem; }
+
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 1.5rem 0; display: flex; align-items: center; gap: 2rem; }
+.score-circle { width: 80px; height: 80px; position: relative; flex-shrink: 0; }
+.score-circle svg { transform: rotate(-90deg); }
+.score-circle .bg { stroke: #e2e8f0; }
+.score-circle .fg { stroke: var(--green); stroke-linecap: round; transition: stroke-dashoffset .5s; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.4rem; font-weight: 700; }
+.score-text h2 { font-size: 1.1rem; margin-bottom: .25rem; }
+.score-text p { color: var(--text-secondary); font-size: .9rem; }
+
+.tabs { display: flex; gap: 0; margin: 1.5rem 0 0; border-bottom: 2px solid var(--border); }
+.tab { padding: .75rem 1.25rem; font-size: .85rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; color: var(--text-muted); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1rem 0; }
+.card-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; }
+.card-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .85rem; flex-shrink: 0; }
+.card-icon.green { background: var(--green-bg); color: var(--green); }
+.card-title { font-weight: 600; font-size: .95rem; }
+.card-body { font-size: .88rem; color: var(--text-secondary); }
+.card-body p { margin-bottom: .5rem; }
+
+.screenshot { border-radius: 6px; border: 1px solid var(--border); max-width: 100%; margin: 1rem 0; }
+.screenshot-caption { font-size: .78rem; color: var(--text-muted); margin-top: .25rem; }
+
+.code-block { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 6px; font-family: var(--mono); font-size: .78rem; line-height: 1.8; overflow-x: auto; margin: .75rem 0; white-space: pre-wrap; }
+
+.footer { padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 2rem; font-size: .75rem; color: var(--text-muted); text-align: center; }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <div class="brand">Radar / netycom.it</div>
+        <div class="title">Nexum — Bottone Logout</div>
+        <div class="subtitle">Verifica colore testo nel pulsante di uscita in alto a destra</div>
+        <div class="meta-row">
+            <span>Target: estendo.sel.re</span>
+            <span>Scenario: Post-fix</span>
+            <span>Data: 2026-03-04</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Score -->
+    <div class="score-card">
+        <div class="score-circle">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle class="bg" cx="40" cy="40" r="34" fill="none" stroke-width="6"/>
+                <circle class="fg" cx="40" cy="40" r="34" fill="none" stroke-width="6"
+                    stroke-dasharray="213.6" stroke-dashoffset="0"/>
+            </svg>
+            <div class="score-number">100</div>
+        </div>
+        <div class="score-text">
+            <h2>Tutto a posto</h2>
+            <p>Il pulsante per uscire ora si vede correttamente: icona bianca su sfondo scuro, ben visibile nella barra in alto.</p>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('eli5')">Cosa abbiamo fatto</div>
+        <div class="tab" onclick="switchTab('tech')">Dettagli tecnici</div>
+    </div>
+
+    <!-- ELI5 Tab -->
+    <div class="tab-content active" id="tab-eli5">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#10003;</div>
+                <div class="card-title">Corretto il pulsante di uscita</div>
+            </div>
+            <div class="card-body">
+                <p>Il pulsante per uscire dal sistema (in alto a destra nella barra) aveva il testo dello stesso colore dello sfondo, rendendolo praticamente invisibile.</p>
+                <p>Abbiamo corretto il colore: ora l'icona di uscita appare bianca su sfondo scuro, ben visibile e cliccabile.</p>
+                <img src="screenshot-topbar.png" alt="Barra superiore con pulsante logout visibile" class="screenshot">
+                <div class="screenshot-caption">La barra superiore dopo la correzione: a destra si vede l'email, lo store e il pulsante di uscita.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tech Tab -->
+    <div class="tab-content" id="tab-tech">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Riepilogo tecnico</div>
+            </div>
+            <div class="card-body">
+                <p><strong>Server:</strong> Cloudways Athena (staging)</p>
+                <p><strong>File:</strong> resources/views/components/layouts/head-style.blade.php</p>
+                <p><strong>Problema:</strong> Il selettore CSS per il bottone logout era sbagliato. Usava <code>#app #app-body #topbar ...</code> ma nella struttura HTML, <code>#app-body</code> (il tag body) contiene <code>#app</code> (un div), non il contrario. Il selettore non matchava mai.</p>
+                <p><strong>Verifica Playwright:</strong></p>
+<div class="code-block">btn-logout color: rgb(255, 255, 255) ← bianco
+btn-logout bg:    rgb(85, 85, 85)    ← grigio scuro
+topbar bg:        rgb(238, 238, 238) ← grigio chiaro</div>
+                <p><strong>Fix applicato:</strong></p>
+<div class="code-block">/* PRIMA (selettore sbagliato — non matchava mai) */
+#app #app-body #topbar #topbar-right #btn-logout { color: #fff; }
+
+/* DOPO (selettore corretto) */
+#topbar-right #btn-logout { color: #fff; }</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    <div class="container">
+        Radar / netycom.it — Generato il 2026-03-04
+    </div>
+</div>
+
+<script>
+function switchTab(id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
