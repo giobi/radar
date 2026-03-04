@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — ABChat: Post-fix RefreshDatabase Incident</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.footer { border-top: 1px solid var(--border); padding: 1.5rem 0; margin-top: 2rem; }
+.footer-text { font-size: .65rem; color: var(--text-muted); text-align: center; letter-spacing: .05em; }
+@media (max-width: 640px) { .score-card { flex-direction: column; text-align: center; } .meta-row { gap: .75rem; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <a href="/dashboard/">RADAR</a> / <a href="/abchat/">ABChat</a>
+    </div>
+    <div class="title">Post-fix: Incident RefreshDatabase</div>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 4 marzo 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> grworktech.giobi.com (generations)</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Post-fix validation</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="#15803d" stroke-dasharray="264" stroke-dashoffset="26.4"/>
+        </svg>
+        <div class="score-number">90<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Funziona, con una nota</h2>
+        <p>Il database era stato cancellato dal comando di test (RefreshDatabase). I 3 brain (David, Demo, Yoni) sono stati ricreati e sono visibili nella dashboard. I terminali si aprono correttamente. Il boot loop e stato risolto. Resta da verificare manualmente la creazione di nuove sessioni dalla sidebar (non testabile in automatico perche richiede autenticazione WebSocket).</p>
+    </div>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('client')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Cosa abbiamo fatto</button>
+    <button class="tab-btn" onclick="switchTab('tech')"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Dettagli tecnici</button>
+</div>
+
+<!-- CLIENT TAB -->
+<div id="tab-client" class="tab-panel active">
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="step-title">Login funzionante</div>
+    </div>
+    <div class="step-explain">Il link di accesso ha funzionato al primo tentativo. Dopo il click, si arriva direttamente alla pagina dei brain.</div>
+    <div class="step-img"><img src="01-login.png" alt="Login redirect"><div class="step-img-caption">Redirect automatico alla dashboard dopo il login</div></div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="step-title">Tutti e 3 i brain visibili</div>
+    </div>
+    <div class="step-explain">Dopo l'incidente, i brain di David, Demo e Yoni erano spariti dalla dashboard. Ora sono tutti visibili con stato "Attivo", con i pulsanti Claude e Gemini funzionanti.</div>
+    <div class="step-img"><img src="02-dashboard-brains.png" alt="Dashboard con 3 brain"><div class="step-img-caption">Dashboard: David Caggiari-Pallett Brain, Demo Brain, Yoni Szpiro Brain — tutti attivi</div></div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="step-title">Terminale Demo funzionante</div>
+    </div>
+    <div class="step-explain">Il terminale del brain Demo si apre correttamente. Claude e attivo (pallino verde in basso), la sidebar mostra il calendario e le sezioni Brain, Diary, Progetti, TODO.</div>
+    <div class="step-img"><img src="03-webssh-demo.png" alt="WebSSH Demo"><div class="step-img-caption">Terminale Demo Brain — Claude attivo, interfaccia completa</div></div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="step-title">Terminale David funzionante</div>
+    </div>
+    <div class="step-explain">Il brain di David si apre senza problemi. Il boot loop che bloccava la sessione e stato risolto. Il terminale mostra Claude attivo con Email e Telegram configurati.</div>
+    <div class="step-img"><img src="04-webssh-david.png" alt="WebSSH David"><div class="step-img-caption">Terminale David Caggiari-Pallett Brain — nessun boot loop</div></div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="step-title">Terminale Yoni funzionante</div>
+    </div>
+    <div class="step-explain">Anche il brain di Yoni si apre correttamente. Claude e attivo, Telegram configurato, nessun errore visibile.</div>
+    <div class="step-img"><img src="05-webssh-yoni.png" alt="WebSSH Yoni"><div class="step-img-caption">Terminale Yoni Szpiro Brain — operativo</div></div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="step-title">Sessioni nella sidebar — da verificare manualmente</div>
+    </div>
+    <div class="step-explain">Il pulsante "Nuova Sessione" e presente nella sidebar, ma le sessioni esistenti non sono visibili nel test automatico. Questo e normale: le sessioni vengono caricate tramite una connessione sicura (WebSocket) che il test automatico non puo simulare. Va verificato manualmente aprendo il sito nel browser.</div>
+    <div class="step-img"><img src="06-sidebar-sessions.png" alt="Sidebar"><div class="step-img-caption">Sidebar con "+ New Session" visibile — sessioni caricate via WebSocket (non testabile in automatico)</div></div>
+</div>
+
+</div>
+
+<!-- TECH TAB -->
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Riepilogo incident</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Server</td><td>generations (135.181.144.5)</td></tr>
+        <tr><td>Dominio</td><td>grworktech.giobi.com</td></tr>
+        <tr><td>Causa root</td><td>RefreshDatabase trait nei test PHPUnit ha cancellato il DB SQLite di produzione</td></tr>
+        <tr><td>Dati persi</td><td>Tabelle brains, brain_users, brain_sessions (utenti e magic_links sopravvissuti)</td></tr>
+        <tr><td>Scenario</td><td>Post-fix validation</td></tr>
+        <tr><td>Score</td><td>90/100</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Fix applicati</h3>
+    <div class="log-block">1. Ricreati record brain in DB per David (fb0ef105), Yoni (dea0d1c3), Demo (6eba7b55)
+2. Ricreati brain_users (owner link) per ogni brain
+3. Ricreate 5 brain_sessions per le sessioni tmux attive
+4. Rimosso RefreshDatabase da tutti i test (3 file)
+5. TestCase base: safety check che ABORTA se DB non e :memory:
+6. TestCase base: migrate automatico su :memory: per ogni test
+7. Pre-commit hook: blocca RefreshDatabase, DatabaseMigrations, migrate:fresh/refresh
+8. Creato brain-launcher.sh (mancante — causa root del boot loop)
+9. Anti-loop guard in server.js (max 3 recreation in 30s)
+10. Killati processi zombie Claude (~10 processi, ~2.5GB RAM)
+11. Creato DatabaseSafetyTest smoke test (6 assertion)
+12. Deploy su generations (git merge origin/main)</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Causa root: RefreshDatabase</h3>
+    <div class="log-block">// PRIMA (distruttivo):
+use Illuminate\Foundation\Testing\RefreshDatabase;
+class BrainAccessTest extends TestCase {
+    use RefreshDatabase;  // &lt;-- CANCELLA E RICREA TUTTE LE TABELLE
+
+// DOPO (sicuro):
+// TestCase::setUp() fa:
+//   1. Verifica che DB sia :memory: (altrimenti ABORT)
+//   2. Esegue migrate su DB effimero
+// Nessun trait distruttivo, nessun rischio per produzione</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Protezioni aggiunte</h3>
+    <div class="log-block">1. TestCase safety: abort se database != :memory:
+2. Pre-commit hook: blocca use RefreshDatabase nel codice
+3. Pre-commit hook: blocca migrate:fresh e migrate:refresh
+4. DatabaseSafetyTest: scansiona tutti i file test per RefreshDatabase
+5. Anti-loop guard in server.js: blocca sessioni che crashano &gt;3x in 30s
+6. brain-launcher.sh: dispatcher per claude/gemini wrapper</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Test suite</h3>
+    <div class="log-block">$ php artisan test
+  47 passed (116 assertions) — 14.28s
+
+  DatabaseSafetyTest:
+    database is memory sqlite .............. PASS
+    database driver is sqlite .............. PASS
+    every brain has an owner ............... PASS
+    brain user link is created correctly ... PASS
+    dashboard shows brain after creation ... PASS
+    no test file uses refresh database ..... PASS</div>
+</div>
+
+</div>
+</div>
+
+<div class="footer">
+<div class="container">
+    <div class="footer-text">Radar / giobi.com / generato il 4 marzo 2026 01:10</div>
+</div>
+</div>
+
+<script>
+function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>

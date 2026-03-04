@@ -1,0 +1,8 @@
+PASS|Login magic link|Redirect a dashboard OK
+PASS|Dashboard brain visibility|Trovati 3/3 brain
+PASS|WebSSH terminal Demo|Terminal visibile
+PASS|WebSSH terminal David|Terminal visibile
+PASS|WebSSH terminal Yoni|Terminal visibile
+WARN|Sidebar sessions|Pulsante nuova sessione presente ma nessuna sessione visibile
+WARN|API /sessions|0 sessioni - raw: {"error":"Unauthorized: Invalid token"}
+SCORE|90
