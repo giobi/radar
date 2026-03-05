@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — InEnergy: Landing dinamiche fix</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-top: .75rem; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table a { color: var(--text); }
+.footer { padding: 2rem 0; margin-top: 2rem; border-top: 1px solid var(--border); font-size: .7rem; color: var(--text-muted); text-align: center; }
+@media(max-width:600px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .5rem; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="brand">📡 Radar &middot; <a href="https://radar.netycom.it/inenergy/">inenergy</a> &middot; netycom.it</div>
+        <h1 class="title">Landing dinamiche — Fix nomi convenzione</h1>
+        <div class="meta-row">
+            <div class="meta-item">📅 5 marzo 2026</div>
+            <div class="meta-item">🎯 3 landing pages</div>
+            <div class="meta-item">📋 Post-fix validation</div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="score-section">
+        <div class="score-card">
+            <div class="score-ring">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <circle class="track" cx="50" cy="50" r="42"></circle>
+                    <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.89" stroke-dashoffset="39.5835"></circle>
+                </svg>
+                <div class="score-number">85<small>/100</small></div>
+            </div>
+            <div class="score-summary">
+                <h2>Funziona, con note</h2>
+                <p>Il bug principale (nome "UI VCO" sulla landing Altair) è risolto. Tutti i testi ora sono dinamici e mostrano il nome corretto della convenzione. Restano 2 punti aperti: i link ai PDF delle condizioni economiche (CTE) non funzionano, e c'è un errore CORS su un'immagine SVG. Entrambi richiedono intervento server.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('overview')">👀 Cosa abbiamo fatto</button>
+            <button class="tab-btn" onclick="switchTab('tech')">🔧 Dettagli tecnici</button>
+        </div>
+        <div id="tab-overview" class="tab-panel active">
+            
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="step-title">Corretto il nome della convenzione su Altair</span>
+    </div>
+    <div class="step-explain">Prima del fix, aprendo la pagina Altair appariva il nome "Unione Industriale VCO" invece di "Gruppo Altair". Questo succedeva in tutti i testi: titolo, sottotitolo, nome dei prodotti, e anche nel modulo di contatto. Ora ogni convenzione mostra il suo nome corretto, preso direttamente dai dati della campagna.</div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="step-title">Gruppo Altair — Score 80/100</span>
+    </div>
+    <div class="step-explain">La pagina si carica in 3.67s, il titolo mostra "Gruppo Altair – In Energy". Trovati alcuni punti da verificare:<div style="margin-top:.5rem;font-size:.78rem;color:var(--yellow);line-height:1.8">&bull; 6 link PDF rotti: download-allegato.php?id=MS9y6zNN%2BuE%3D&tipo=&nome=INENERGY%20CASA%20LUCE%20DINAMICA%20DIPENDENTI%20ALTAIR_CDL42603_CTE.pdf, download-allegato.php?id=9dNKIoyiscE%3D&tipo=&nome=035832ENVFL01XX000000IECCDL42603_CDL42603_SchedaSintetica.pdf, download-allegato.php?id=XmrENBGx%2F7g%3D&tipo=&nome=035832ENVFL01XX000000IECCDL42603_CDL42603_SchedaConfrontabilita.pdf, download-allegato.php?id=XX2LECzclqE%3D&tipo=&nome=INENERGY%20CASA%20GAS%20DINAMICO%20DIPENDENTI%20ALTAIR_CDG42603_CTE.pdf, download-allegato.php?id=rS%2F4000Volw%3D&tipo=&nome=035832GNVML01XX000000IECCDG42603_CDG42603_SchedaSintetica.pdf, download-allegato.php?id=VOxDmuZf%2FZ0%3D&tipo=G&nome=Condizioni_Generali.pdf<br>&bull; 2 errori JS in console</div></div>
+    <div class="step-img">
+        <img src="screenshot-altair-desktop.png" alt="Screenshot desktop Gruppo Altair" loading="lazy">
+        <div class="step-img-caption">Desktop — Gruppo Altair</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="step-title">Unione Industriale VCO — Score 80/100</span>
+    </div>
+    <div class="step-explain">La pagina si carica in 3.56s, il titolo mostra "Unione Industriale del VCO – In Energy". Trovati alcuni punti da verificare:<div style="margin-top:.5rem;font-size:.78rem;color:var(--yellow);line-height:1.8">&bull; 6 link PDF rotti: download-allegato.php?id=PtkHdd4U3ao%3D&tipo=&nome=INENERGY%20CASA%20LUCE%20DINAMICA%20DIPENDENTI%20AZIENDE%20ASSOCIATE%20UI%20VCO%20%20_CDLY2603_CTE.pdf, download-allegato.php?id=u1zKTVXyOsA%3D&tipo=&nome=035832ENVFL01XX000000IECCDLY2603_CDLY2603_SchedaSintetica.pdf, download-allegato.php?id=aGxtRwQJi9M%3D&tipo=&nome=035832ENVFL01XX000000IECCDLY2603_CDLY2603_SchedaConfrontabilita.pdf, download-allegato.php?id=iec5lXoHRgM%3D&tipo=&nome=INENERGY%20CASA%20GAS%20DINAMICO%20DIPENDENTI%20AZIENDE%20ASSOCIATE%20UI%20VCO%20%20_CDGX2603_CTE.pdf, download-allegato.php?id=otldGgRH58k%3D&tipo=&nome=035832GNVML01XX000000IECCDGX2603_CDGX2603_SchedaSintetica.pdf, download-allegato.php?id=VOxDmuZf%2FZ0%3D&tipo=G&nome=Condizioni_Generali.pdf<br>&bull; 2 errori JS in console</div></div>
+    <div class="step-img">
+        <img src="screenshot-uivco-desktop.png" alt="Screenshot desktop Unione Industriale VCO" loading="lazy">
+        <div class="step-img-caption">Desktop — Unione Industriale VCO</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <span class="step-title">Pagina Convenzioni — Score 95/100</span>
+    </div>
+    <div class="step-explain">La pagina si carica in 3.35s, il titolo mostra "Convenzioni – In Energy". Trovati alcuni punti da verificare:<div style="margin-top:.5rem;font-size:.78rem;color:var(--yellow);line-height:1.8">&bull; 2 errori JS in console</div></div>
+    <div class="step-img">
+        <img src="screenshot-convenzioni-desktop.png" alt="Screenshot desktop Pagina Convenzioni" loading="lazy">
+        <div class="step-img-caption">Desktop — Pagina Convenzioni</div>
+    </div>
+</div>
+
+        </div>
+        <div id="tab-tech" class="tab-panel">
+            
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> Gruppo Altair</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>URL</td><td><a href="https://in-energy.it/landing/?campagna=altair" target="_blank" style="color:var(--text)">https://in-energy.it/landing/?campagna=altair</a></td></tr>
+        <tr><td>HTTP Status</td><td>200</td></tr>
+        <tr><td>Load Time</td><td>3.67s</td></tr>
+        <tr><td>Title</td><td>Gruppo Altair – In Energy</td></tr>
+        <tr><td>Score</td><td>80/100</td></tr>
+        <tr><td>UI VCO Bug</td><td>✅ Risolto</td></tr>
+    </table>
+<div class="log-block" style="margin-top:.75rem">Access to image at 'https://www.in-energy.it/landing/wp-content/uploads/elementor/css/wp-content/uploads/2025/06/macchia.svg' (redirected from 'https://in-energy.it/landing/wp-content/uploads/elementor/css/wp-content/uploads/2025/06/macchia.svg') from origin 'https://in-energy.it' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Failed to load resource: net::ERR_FAILED</div><div style="margin-top:.75rem;font-size:.78rem"><div style="color:var(--yellow);margin-bottom:.25rem">⚠️ 6 link PDF rotti: download-allegato.php?id=MS9y6zNN%2BuE%3D&tipo=&nome=INENERGY%20CASA%20LUCE%20DINAMICA%20DIPENDENTI%20ALTAIR_CDL42603_CTE.pdf, download-allegato.php?id=9dNKIoyiscE%3D&tipo=&nome=035832ENVFL01XX000000IECCDL42603_CDL42603_SchedaSintetica.pdf, download-allegato.php?id=XmrENBGx%2F7g%3D&tipo=&nome=035832ENVFL01XX000000IECCDL42603_CDL42603_SchedaConfrontabilita.pdf, download-allegato.php?id=XX2LECzclqE%3D&tipo=&nome=INENERGY%20CASA%20GAS%20DINAMICO%20DIPENDENTI%20ALTAIR_CDG42603_CTE.pdf, download-allegato.php?id=rS%2F4000Volw%3D&tipo=&nome=035832GNVML01XX000000IECCDG42603_CDG42603_SchedaSintetica.pdf, download-allegato.php?id=VOxDmuZf%2FZ0%3D&tipo=G&nome=Condizioni_Generali.pdf</div><div style="color:var(--yellow);margin-bottom:.25rem">⚠️ 2 errori JS in console</div></div></div>
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> Unione Industriale VCO</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>URL</td><td><a href="https://in-energy.it/landing/?campagna=uivco" target="_blank" style="color:var(--text)">https://in-energy.it/landing/?campagna=uivco</a></td></tr>
+        <tr><td>HTTP Status</td><td>200</td></tr>
+        <tr><td>Load Time</td><td>3.56s</td></tr>
+        <tr><td>Title</td><td>Unione Industriale del VCO – In Energy</td></tr>
+        <tr><td>Score</td><td>80/100</td></tr>
+        <tr><td>UI VCO Bug</td><td>✅ Risolto</td></tr>
+    </table>
+<div class="log-block" style="margin-top:.75rem">Access to image at 'https://www.in-energy.it/landing/wp-content/uploads/elementor/css/wp-content/uploads/2025/06/macchia.svg' (redirected from 'https://in-energy.it/landing/wp-content/uploads/elementor/css/wp-content/uploads/2025/06/macchia.svg') from origin 'https://in-energy.it' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Failed to load resource: net::ERR_FAILED</div><div style="margin-top:.75rem;font-size:.78rem"><div style="color:var(--yellow);margin-bottom:.25rem">⚠️ 6 link PDF rotti: download-allegato.php?id=PtkHdd4U3ao%3D&tipo=&nome=INENERGY%20CASA%20LUCE%20DINAMICA%20DIPENDENTI%20AZIENDE%20ASSOCIATE%20UI%20VCO%20%20_CDLY2603_CTE.pdf, download-allegato.php?id=u1zKTVXyOsA%3D&tipo=&nome=035832ENVFL01XX000000IECCDLY2603_CDLY2603_SchedaSintetica.pdf, download-allegato.php?id=aGxtRwQJi9M%3D&tipo=&nome=035832ENVFL01XX000000IECCDLY2603_CDLY2603_SchedaConfrontabilita.pdf, download-allegato.php?id=iec5lXoHRgM%3D&tipo=&nome=INENERGY%20CASA%20GAS%20DINAMICO%20DIPENDENTI%20AZIENDE%20ASSOCIATE%20UI%20VCO%20%20_CDGX2603_CTE.pdf, download-allegato.php?id=otldGgRH58k%3D&tipo=&nome=035832GNVML01XX000000IECCDGX2603_CDGX2603_SchedaSintetica.pdf, download-allegato.php?id=VOxDmuZf%2FZ0%3D&tipo=G&nome=Condizioni_Generali.pdf</div><div style="color:var(--yellow);margin-bottom:.25rem">⚠️ 2 errori JS in console</div></div></div>
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> Pagina Convenzioni</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>URL</td><td><a href="https://in-energy.it/landing/convenzioni.php" target="_blank" style="color:var(--text)">https://in-energy.it/landing/convenzioni.php</a></td></tr>
+        <tr><td>HTTP Status</td><td>200</td></tr>
+        <tr><td>Load Time</td><td>3.35s</td></tr>
+        <tr><td>Title</td><td>Convenzioni – In Energy</td></tr>
+        <tr><td>Score</td><td>95/100</td></tr>
+        <tr><td>UI VCO Bug</td><td>✅ Risolto</td></tr>
+    </table>
+<div class="log-block" style="margin-top:.75rem">Access to font at 'https://promo.in-energy.it/wp-content/uploads/elementor/google-fonts/fonts/worksans-qgysz_wnahgadqq43rh_fkdp.woff2' from origin 'https://in-energy.it' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Failed to load resource: net::ERR_FAILED</div><div style="margin-top:.75rem;font-size:.78rem"><div style="color:var(--yellow);margin-bottom:.25rem">⚠️ 2 errori JS in console</div></div></div>
+            <div class="tech-section">
+                <h3><svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg> Fix applicato</h3>
+                <div class="log-block">File: /landing/index.php
+
+Problema: Template HTML costruito a partire dalla landing UI VCO.
+Tutti i testi (titolo, sottotitolo, descrizione, nomi prodotto,
+checkbox, hidden input) erano hardcodati "Unione Industriale VCO".
+
+Fix: Estratti 6 nuovi campi dinamici:
+- $sottotitolo, $descrizione, $checkboxHeading, $checkboxLabel → da campagne.json
+- $denomLuce, $denomGas → da API SOAP Akyra (DenominazioneOfferta)
+
+Sostituiti tutti i 16 riferimenti hardcodati con variabili PHP.
+Testato con ?campagna=altair e ?campagna=uivco — entrambi corretti.</div>
+            </div>
+            <div class="tech-section">
+                <h3>⚠️ Punti aperti per go-live</h3>
+                <div style="font-size:.78rem;line-height:2">
+                    <div><strong>1. PDF CTE mancanti</strong> — I link ai PDF delle Condizioni Tecnico Economiche puntano a <code>download-allegato.php</code> che restituisce errore. Serve verifica lato server/API Akyra (endpoint GetAllegatiOfferta + DownloadAllegatoWeb).</div>
+                    <div><strong>2. CORS su SVG</strong> — L'immagine <code>macchia.svg</code> è bloccata da CORS (redirect www → non-www). Serve header Access-Control-Allow-Origin su nginx.</div>
+                    <div><strong>3. CORS su font</strong> — Font Work Sans caricato da promo.in-energy.it bloccato da CORS su in-energy.it. Serve header CORS o copia locale del font.</div>
+                    <div><strong>4. Alt text immagine</strong> — Il logo partner ha ancora alt="Unione Industriale del VCO" hardcodato. Fix minore.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="container">
+        Radar 📡 &middot; netycom.it &middot; Generato il 5 marzo 2026
+    </div>
+</div>
+
+<script>
+function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

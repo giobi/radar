@@ -1,0 +1,67 @@
+[
+  {
+    "slug": "altair",
+    "label": "Gruppo Altair",
+    "url": "https://in-energy.it/landing/?campagna=altair",
+    "status": 200,
+    "load_time": 3.67,
+    "title": "Gruppo Altair \u2013 In Energy",
+    "console_errors": [
+      "Access to image at 'https://www.in-energy.it/landing/wp-content/uploads/elementor/css/wp-content/uploads/2025/06/macchia.svg' (redirected from 'https://in-energy.it/landing/wp-content/uploads/elementor/css/wp-content/uploads/2025/06/macchia.svg') from origin 'https://in-energy.it' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "has_hardcoded_uivco": false,
+    "screenshots": [
+      "screenshot-altair-desktop.png",
+      "screenshot-altair-mobile.png"
+    ],
+    "issues": [
+      "6 link PDF rotti: download-allegato.php?id=MS9y6zNN%2BuE%3D&tipo=&nome=INENERGY%20CASA%20LUCE%20DINAMICA%20DIPENDENTI%20ALTAIR_CDL42603_CTE.pdf, download-allegato.php?id=9dNKIoyiscE%3D&tipo=&nome=035832ENVFL01XX000000IECCDL42603_CDL42603_SchedaSintetica.pdf, download-allegato.php?id=XmrENBGx%2F7g%3D&tipo=&nome=035832ENVFL01XX000000IECCDL42603_CDL42603_SchedaConfrontabilita.pdf, download-allegato.php?id=XX2LECzclqE%3D&tipo=&nome=INENERGY%20CASA%20GAS%20DINAMICO%20DIPENDENTI%20ALTAIR_CDG42603_CTE.pdf, download-allegato.php?id=rS%2F4000Volw%3D&tipo=&nome=035832GNVML01XX000000IECCDG42603_CDG42603_SchedaSintetica.pdf, download-allegato.php?id=VOxDmuZf%2FZ0%3D&tipo=G&nome=Condizioni_Generali.pdf",
+      "2 errori JS in console"
+    ],
+    "score": 80
+  },
+  {
+    "slug": "uivco",
+    "label": "Unione Industriale VCO",
+    "url": "https://in-energy.it/landing/?campagna=uivco",
+    "status": 200,
+    "load_time": 3.56,
+    "title": "Unione Industriale del VCO \u2013 In Energy",
+    "console_errors": [
+      "Access to image at 'https://www.in-energy.it/landing/wp-content/uploads/elementor/css/wp-content/uploads/2025/06/macchia.svg' (redirected from 'https://in-energy.it/landing/wp-content/uploads/elementor/css/wp-content/uploads/2025/06/macchia.svg') from origin 'https://in-energy.it' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "has_hardcoded_uivco": false,
+    "screenshots": [
+      "screenshot-uivco-desktop.png",
+      "screenshot-uivco-mobile.png"
+    ],
+    "issues": [
+      "6 link PDF rotti: download-allegato.php?id=PtkHdd4U3ao%3D&tipo=&nome=INENERGY%20CASA%20LUCE%20DINAMICA%20DIPENDENTI%20AZIENDE%20ASSOCIATE%20UI%20VCO%20%20_CDLY2603_CTE.pdf, download-allegato.php?id=u1zKTVXyOsA%3D&tipo=&nome=035832ENVFL01XX000000IECCDLY2603_CDLY2603_SchedaSintetica.pdf, download-allegato.php?id=aGxtRwQJi9M%3D&tipo=&nome=035832ENVFL01XX000000IECCDLY2603_CDLY2603_SchedaConfrontabilita.pdf, download-allegato.php?id=iec5lXoHRgM%3D&tipo=&nome=INENERGY%20CASA%20GAS%20DINAMICO%20DIPENDENTI%20AZIENDE%20ASSOCIATE%20UI%20VCO%20%20_CDGX2603_CTE.pdf, download-allegato.php?id=otldGgRH58k%3D&tipo=&nome=035832GNVML01XX000000IECCDGX2603_CDGX2603_SchedaSintetica.pdf, download-allegato.php?id=VOxDmuZf%2FZ0%3D&tipo=G&nome=Condizioni_Generali.pdf",
+      "2 errori JS in console"
+    ],
+    "score": 80
+  },
+  {
+    "slug": "convenzioni",
+    "label": "Pagina Convenzioni",
+    "url": "https://in-energy.it/landing/convenzioni.php",
+    "status": 200,
+    "load_time": 3.35,
+    "title": "Convenzioni \u2013 In Energy",
+    "console_errors": [
+      "Access to font at 'https://promo.in-energy.it/wp-content/uploads/elementor/google-fonts/fonts/worksans-qgysz_wnahgadqq43rh_fkdp.woff2' from origin 'https://in-energy.it' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "has_hardcoded_uivco": false,
+    "screenshots": [
+      "screenshot-convenzioni-desktop.png",
+      "screenshot-convenzioni-mobile.png"
+    ],
+    "issues": [
+      "2 errori JS in console"
+    ],
+    "score": 95
+  }
+]
