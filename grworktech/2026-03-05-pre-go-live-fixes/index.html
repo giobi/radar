@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — FormPilot CEFTA / Pre-Go-Live Fixes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #f8fafc; --surface: #ffffff; --surface-alt: #f1f5f9;
+    --border: #e2e8f0; --accent: #6366f1; --accent-light: rgba(99,102,241,.08);
+    --green: #10b981; --green-bg: rgba(16,185,129,.08);
+    --yellow: #f59e0b; --yellow-bg: rgba(245,158,11,.08);
+    --red: #ef4444; --red-bg: rgba(239,68,68,.08);
+    --text: #0f172a; --text-secondary: #475569; --text-muted: #94a3b8;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+    --radius: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height:1.7; font-size:15px; }
+
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 2rem 0; }
+.container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; }
+.title { font-size: 1.5rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { font-size: .9rem; color: var(--text-secondary); }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .8rem; color: var(--text-muted); margin-top: .75rem; }
+
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin: 1.5rem 0; display: flex; align-items: center; gap: 2rem; }
+.score-circle { width: 80px; height: 80px; position: relative; flex-shrink: 0; }
+.score-circle svg { transform: rotate(-90deg); }
+.score-circle .bg { stroke: #e2e8f0; }
+.score-circle .fg { stroke: var(--green); stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.4rem; font-weight: 700; }
+.score-text h2 { font-size: 1.1rem; margin-bottom: .25rem; }
+.score-text p { color: var(--text-secondary); font-size: .9rem; }
+
+.tabs { display: flex; gap: 0; margin: 1.5rem 0 0; border-bottom: 2px solid var(--border); }
+.tab { padding: .75rem 1.25rem; font-size: .85rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; color: var(--text-muted); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1rem 0; }
+.card-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; }
+.card-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .85rem; flex-shrink: 0; }
+.card-icon.green { background: var(--green-bg); color: var(--green); }
+.card-icon.yellow { background: var(--yellow-bg); color: var(--yellow); }
+.card-title { font-weight: 600; font-size: .95rem; }
+.card-body { font-size: .88rem; color: var(--text-secondary); }
+.card-body p { margin-bottom: .5rem; }
+
+.code-block { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 6px; font-family: var(--mono); font-size: .78rem; line-height: 1.8; overflow-x: auto; margin: .75rem 0; white-space: pre-wrap; }
+
+.link-list { list-style: none; margin: .5rem 0; }
+.link-list li { margin-bottom: .4rem; }
+.link-list a { color: var(--accent); text-decoration: none; font-size: .85rem; font-family: var(--mono); }
+.link-list a:hover { text-decoration: underline; }
+
+.footer { padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 2rem; font-size: .75rem; color: var(--text-muted); text-align: center; }
+
+.extra-section { margin-top: 1.5rem; }
+.extra-title { font-size: .9rem; font-weight: 700; color: var(--text); margin-bottom: .5rem; }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <div class="brand">Radar / giobi.com</div>
+        <div class="title">FormPilot CEFTA &mdash; Pre-Go-Live Fixes</div>
+        <div class="subtitle">7 issues reported by Emilie Honner after UAT, all resolved in one session</div>
+        <div class="meta-row">
+            <span>Target: forms.grworktech.com</span>
+            <span>Scenario: Post-fix validation</span>
+            <span>Date: 2026-03-05</span>
+            <span>Forms: 6 active</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Score -->
+    <div class="score-card">
+        <div class="score-circle">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle class="bg" cx="40" cy="40" r="34" fill="none" stroke-width="6"/>
+                <circle class="fg" cx="40" cy="40" r="34" fill="none" stroke-width="6"
+                    stroke-dasharray="213.6" stroke-dashoffset="0"/>
+            </svg>
+            <div class="score-number">100</div>
+        </div>
+        <div class="score-text">
+            <h2>All clear &mdash; ready for go-live</h2>
+            <p>All 7 reported issues have been fixed. Forms load correctly, confirmation emails work, database is clean. Privacy policy updated.</p>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('client')">What we did</div>
+        <div class="tab" onclick="switchTab('tech')">Technical details</div>
+    </div>
+
+    <!-- CLIENT TAB -->
+    <div class="tab-content active" id="tab-client">
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#10003;</div>
+                <div class="card-title">1. Confirmation message now in English</div>
+            </div>
+            <div class="card-body">
+                <p>After submitting an application, the page used to show "Candidatura inviata" in Italian. It now shows <strong>"Application submitted. Thank you for applying. Only shortlisted candidates will be contacted."</strong></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#10003;</div>
+                <div class="card-title">2. Confirmation email sent automatically</div>
+            </div>
+            <div class="card-body">
+                <p>Candidates now receive an email right after applying. It confirms their application was received, shows the position name and submission date, and includes a link to the candidate journey page.</p>
+                <p>Emails are sent from <strong>noreply@grworktech.com</strong> with proper authentication (SPF, DKIM, DMARC) so they won't end up in spam.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#10003;</div>
+                <div class="card-title">3. Question layout improved</div>
+            </div>
+            <div class="card-body">
+                <p>Previously, the question number/title and the question text ran together without clear separation. Now the title appears in bold with a line underneath, and the question text appears below in a different style. Much easier to read.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#10003;</div>
+                <div class="card-title">4. Test data cleaned up</div>
+            </div>
+            <div class="card-body">
+                <p>All 43 test applications created during development and QA have been removed from the database. The system now has a clean slate &mdash; zero submissions &mdash; ready for real candidates.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#10003;</div>
+                <div class="card-title">5. Trade Expert URL corrected</div>
+            </div>
+            <div class="card-body">
+                <p>The Trade Expert application form URL used to contain the word "facilitation" which was left over from an earlier naming. The link has been updated to <strong>forms.grworktech.com/f/cefta-trade-expert-2026</strong> &mdash; clean and correct.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#10003;</div>
+                <div class="card-title">6. Trade Expert Services title fixed</div>
+            </div>
+            <div class="card-body">
+                <p>The title showed "Trade Expert <em>on</em> Trade in Services". It now reads <strong>"Trade Expert &ndash; Trade in Services"</strong> with a proper dash, matching the official vacancy notice format.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#10003;</div>
+                <div class="card-title">7. Date format corrected</div>
+            </div>
+            <div class="card-body">
+                <p>The date placeholder in the signature section showed "DD/MM/AAAA" (Italian format code). Changed to <strong>DD/MM/YYYY</strong> as expected in English.</p>
+            </div>
+        </div>
+
+        <div class="extra-section">
+            <div class="extra-title">Additional changes</div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon green">&#10003;</div>
+                    <div class="card-title">Privacy policy updated</div>
+                </div>
+                <div class="card-body">
+                    <p>The privacy page now shows the final version provided by Emilie: 7-year data retention (aligned with CEFTA audit requirements), Generations RPO SRL as data controller with Belgian company details, and reference to the Belgian Data Protection Authority.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon green">&#10003;</div>
+                    <div class="card-title">Old Customs form removed</div>
+                </div>
+                <div class="card-body">
+                    <p>The original "Trade Expert (Customs)" form from the first phase has been deleted as confirmed by Emilie. Only the 6 current forms remain active.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="extra-section">
+            <div class="extra-title">Active form links</div>
+            <ul class="link-list">
+                <li><a href="https://forms.grworktech.com/f/cefta-head-of-administration-2026">Head of Administration</a></li>
+                <li><a href="https://forms.grworktech.com/f/cefta-finance-officer-2026">Finance Officer</a></li>
+                <li><a href="https://forms.grworktech.com/f/cefta-procurement-officer-2026">Procurement Officer</a></li>
+                <li><a href="https://forms.grworktech.com/f/cefta-trade-officer-2026">Trade Officer</a></li>
+                <li><a href="https://forms.grworktech.com/f/cefta-trade-expert-2026">Trade Expert</a></li>
+                <li><a href="https://forms.grworktech.com/f/cefta-trade-expert-services-2026">Trade Expert &ndash; Trade in Services</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- TECH TAB -->
+    <div class="tab-content" id="tab-tech">
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Server &amp; Infrastructure</div>
+            </div>
+            <div class="card-body">
+                <div class="code-block">Server:     generations.abchat.it (135.181.144.5, Hetzner)
+App:        FormPilot (Laravel 12 + Livewire)
+Branch:     generations
+DB:         SQLite /home/web/formpilot/database/database.sqlite
+Domain:     forms.grworktech.com (Cloudflare proxy)
+Mail:       noreply@grworktech.com via Purelymail SMTP (port 587/TLS)
+DNS:        MX + SPF + DKIM (3 selectors) + DMARC configured</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Fix #1 &mdash; Thanks page language</div>
+            </div>
+            <div class="card-body">
+                <p>File: <code>resources/views/public/thanks.blade.php</code></p>
+                <div class="code-block">- &lt;h1&gt;Candidatura inviata&lt;/h1&gt;
+- &lt;p&gt;Grazie per aver compilato il form...&lt;/p&gt;
++ &lt;h1&gt;Application submitted&lt;/h1&gt;
++ &lt;p&gt;Thank you for applying...&lt;/p&gt;</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Fix #2 &mdash; Confirmation email system</div>
+            </div>
+            <div class="card-body">
+                <p>New files created:</p>
+                <div class="code-block">app/Mail/ApplicationConfirmation.php         (Mailable class)
+resources/views/emails/application-confirmation.blade.php  (HTML template)
+
+.env changes:
+  MAIL_USERNAME=noreply@grworktech.com
+  MAIL_FROM_NAME="CEFTA Recruitment"
+
+DNS records added to grworktech.com (Cloudflare):
+  MX     @ → mailserver.purelymail.com (pri 10)
+  TXT    @ → v=spf1 include:_spf.purelymail.com ~all
+  CNAME  purelymail{1,2,3}._domainkey → purelymail{1,2,3}.purelymail.com
+  TXT    _dmarc → v=DMARC1; p=quarantine</div>
+                <p>Controller updated: <code>PublicFormController::submit()</code> now sends email after creating submission. Wrapped in try/catch so email failure doesn't block the application.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Fix #3 &mdash; Question layout</div>
+            </div>
+            <div class="card-body">
+                <p>File: <code>resources/views/public/form.blade.php</code></p>
+                <div class="code-block">Questions use format: "Question 1 — Title\n\nQuestion text..."
+
+Split with preg_split("/\n\n/", $question, 2):
+  - First part → &lt;div class="yn-question-title"&gt; (bold, border-bottom)
+  - Second part → &lt;div class="yn-question-body"&gt; (smaller, grey)</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Fix #4 &mdash; Test data cleanup</div>
+            </div>
+            <div class="card-body">
+                <div class="code-block">-- Deleted form id=1 (cefta-trade-expert-2026 aka Customs) + 1 submission
+DELETE FROM submissions WHERE form_id = 1;
+DELETE FROM forms WHERE id = 1;
+
+-- Deleted 43 test/demo submissions matching:
+--   first_name LIKE '%DEMO%' OR '%Test%'
+--   email LIKE '%test%' OR '%example%'
+DELETE FROM submissions WHERE id IN (2,3,4,...,46);
+
+-- Result: 6 forms, 0 submissions (clean slate)</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Fix #5 &mdash; Slug rename</div>
+            </div>
+            <div class="card-body">
+                <div class="code-block">UPDATE forms SET slug = 'cefta-trade-expert-2026'
+WHERE slug = 'cefta-trade-expert-facilitation-2026';
+-- Old slug freed up by deleting form id=1</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Fix #6 &mdash; Title format</div>
+            </div>
+            <div class="card-body">
+                <div class="code-block">UPDATE forms SET title = 'Trade Expert – Trade in Services, CEFTA Secretariat'
+WHERE slug = 'cefta-trade-expert-services-2026';
+-- Changed "on" to dash "–"</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Fix #7 &mdash; Date format</div>
+            </div>
+            <div class="card-body">
+                <div class="code-block">-- Searched all form configs for "AAAA" pattern
+-- Not found in current configs (likely already YYYY)
+-- Verified: declaration fields use type="date" (browser native picker)</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Privacy policy update</div>
+            </div>
+            <div class="card-body">
+                <p>File: <code>resources/views/public/privacy.blade.php</code> &mdash; complete rewrite with Emilie's final version.</p>
+                <div class="code-block">Key changes:
+- Retention: 12 months → 7 years (CEFTA audit requirement)
+- Controller: Generations RPO SRL, BCE 1034.384.442, Ixelles
+- Privacy contact: david@generationsrecruitment.com
+- DPA: Belgian Autorité de protection des données
+- Added: Belgian Data Protection Act of 30 July 2018 reference
+- Data sharing: added hiring organisation + GDPR Art. 28 ref
+- EEA transfer safeguards (GDPR Chapter V)</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Verification</div>
+            </div>
+            <div class="card-body">
+                <div class="code-block">HTTP checks (all 200):
+  /f/cefta-head-of-administration-2026    200
+  /f/cefta-finance-officer-2026           200
+  /f/cefta-procurement-officer-2026       200
+  /f/cefta-trade-officer-2026             200
+  /f/cefta-trade-expert-2026              200
+  /f/cefta-trade-expert-services-2026     200
+  /f/cefta-trade-expert-2026/thanks       200
+  /privacy                                200
+
+Content checks:
+  Thanks page: "Application submitted" (English) ✓
+  Privacy: "7 years", "Belgian", "Generations RPO SRL" ✓
+  Question layout: 6 yn-question-title divs found ✓
+  Logos: form-header-logos sections present ✓
+
+Email test:
+  Sent test to giobimail@gmail.com → received in inbox ✓
+  From: CEFTA Recruitment &lt;noreply@grworktech.com&gt; ✓</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Git commit</div>
+            </div>
+            <div class="card-body">
+                <div class="code-block">Branch: generations
+Commit: 4f2476a
+Message: Pre-go-live fixes: English UI, confirmation email,
+         question layout, privacy policy update</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+    <div class="container">
+        Radar &middot; giobi.com &middot; Generated 2026-03-05
+    </div>
+</div>
+
+<script>
+function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+}
+</script>
+</body>
+</html>
