@@ -79,6 +79,22 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 .watermark a { color: var(--text-muted); text-decoration: none; }
 .watermark a:hover { color: var(--text-secondary); }
 
+/* Timeline */
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.timeline h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.tl { position: relative; padding-left: 1.5rem; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--border-strong); }
+.tl-item { position: relative; margin-bottom: .75rem; display: flex; align-items: baseline; gap: .75rem; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot { position: absolute; left: -1.5rem; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); flex-shrink: 0; }
+.tl-dot.red { border-color: var(--red); background: var(--red-bg); }
+.tl-dot.yellow { border-color: var(--yellow); background: var(--yellow-bg); }
+.tl-dot.green { border-color: var(--green); background: var(--green-bg); }
+.tl-time { font-size: .72rem; font-weight: 600; color: var(--text-muted); min-width: 42px; flex-shrink: 0; }
+.tl-text { font-size: .8rem; color: var(--text-secondary); }
+.tl-duration { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; background: var(--green-bg); color: var(--green); font-size: .68rem; font-weight: 600; border-radius: 2px; letter-spacing: .03em; }
+
 @media (max-width: 640px) {
     .score-card { flex-direction: column; text-align: center; }
     .meta-row { flex-direction: column; gap: .4rem; }
@@ -119,6 +135,19 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
         <p>Il sito era completamente down a causa di un errore nel plugin dei pagamenti (Nexi XPay). Il plugin v8.3.0 conteneva un file con il nome scritto in modo sbagliato (una lettera maiuscola invece che minuscola), che su Linux causa un blocco totale. Abbiamo aggiornato il plugin alla versione 8.3.1 che corregge l'errore. Tutto funziona: sito, catalogo, e pagamenti Nexi.</p>
     </div>
 </div>
+</div>
+
+<div class="timeline">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Timeline intervento</h3>
+    <div class="tl">
+        <div class="tl-item"><div class="tl-dot red"></div><span class="tl-time">09:22</span><span class="tl-text">Segnalazione: sito down, pagina bianca</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">09:23</span><span class="tl-text">Diagnosi: HTTP 200 ma 0 bytes. DNS ok. Errore critico WordPress</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">09:24</span><span class="tl-text">Root cause: fatal error in cartasi-x-pay v8.3.0 (case sensitivity filename)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09:25</span><span class="tl-text">Plugin disattivato via filesystem — sito ripristinato</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09:27</span><span class="tl-text">Screenshot e verifica homepage + negozio + mobile</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09:38</span><span class="tl-text">Plugin aggiornato a v8.3.1 e riattivato — pagamenti Nexi funzionanti</span></div>
+    </div>
+    <div class="tl-duration">Sito down → online: 3 minuti &middot; Fix completo: 16 minuti</div>
 </div>
 
 <div class="tabs">
