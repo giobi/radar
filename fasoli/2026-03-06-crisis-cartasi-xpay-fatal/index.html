@@ -110,13 +110,13 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
     <div class="score-ring">
         <svg width="100" height="100" viewBox="0 0 100 100">
             <circle class="track" cx="50" cy="50" r="42"/>
-            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--yellow)" stroke-dasharray="263.9" stroke-dashoffset="52.78"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="0"/>
         </svg>
-        <div class="score-number">80<small>/100</small></div>
+        <div class="score-number">100<small>/100</small></div>
     </div>
     <div class="score-summary">
-        <h2>Sito ripristinato, pagamento Nexi temporaneamente disattivato</h2>
-        <p>Il sito era completamente down a causa di un errore nel plugin dei pagamenti (Nexi XPay). Il plugin si era aggiornato con un file difettoso. Abbiamo disattivato il plugin e il sito funziona di nuovo. Il pagamento con carta Nexi non sarà disponibile fino alla riattivazione del plugin con la versione corretta.</p>
+        <h2>Problema risolto</h2>
+        <p>Il sito era completamente down a causa di un errore nel plugin dei pagamenti (Nexi XPay). Il plugin v8.3.0 conteneva un file con il nome scritto in modo sbagliato (una lettera maiuscola invece che minuscola), che su Linux causa un blocco totale. Abbiamo aggiornato il plugin alla versione 8.3.1 che corregge l'errore. Tutto funziona: sito, catalogo, e pagamenti Nexi.</p>
     </div>
 </div>
 </div>
@@ -177,10 +177,10 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 
 <div class="step">
     <div class="step-header">
-        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <span class="step-title">Da fare: riattivare il pagamento con carta Nexi</span>
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Plugin aggiornato alla versione corretta</span>
     </div>
-    <p class="step-explain">Il plugin va aggiornato alla versione 8.3.1 (che corregge l'errore) e riattivato. Fino ad allora, il pagamento con carta di credito Nexi non sara disponibile sul sito. Gli altri metodi di pagamento (PayPal, Scalapay) continuano a funzionare normalmente.</p>
+    <p class="step-explain">Il plugin dei pagamenti e stato aggiornato alla versione 8.3.1 che corregge l'errore. Il pagamento con carta Nexi, PayPal, Scalapay e tutti gli altri metodi funzionano regolarmente.</p>
 </div>
 
 </div>
@@ -198,7 +198,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
         <tr><td>SSL</td><td>OK (HTTP/2, redirect HTTP→HTTPS)</td></tr>
         <tr><td>Scenario</td><td>Crisis</td></tr>
         <tr><td>Iterazioni</td><td>1</td></tr>
-        <tr><td>Verdict</td><td style="color: var(--yellow); font-weight: 600;">ISSUES (plugin disattivato)</td></tr>
+        <tr><td>Verdict</td><td style="color: var(--green); font-weight: 600;">FIXED</td></tr>
     </table>
 </div>
 
@@ -222,16 +222,16 @@ Stack trace:
 
 <div class="tech-section">
     <h3><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Fix applicato</h3>
-    <div class="log-block"># Plugin cartasi-x-pay disattivato via filesystem
+    <div class="log-block"># Step 1: Plugin disattivato via filesystem per ripristino immediato
 mv cartasi-x-pay → cartasi-x-pay.BROKEN
 
-# Il fix definitivo richiede:
-# 1. Aggiornare il plugin a 8.3.1 (update disponibile)
-# 2. Oppure rinominare il file con la case corretta
-#    (serve accesso come utente mgzwuaevrf)
+# Step 2: Installata versione corretta via wp-cli
+wp plugin install cartasi-x-pay --version=8.3.1 --force --activate
 
-# Non possibile via SSH master user (permission denied)
-# Opzione: aggiornare via wp-admin o Cloudways API</div>
+# Step 3: Rimossa vecchia cartella .BROKEN
+rm -r cartasi-x-pay.BROKEN
+
+# Risultato: sito up, plugin Nexi funzionante, pagamenti attivi</div>
 </div>
 
 <div class="tech-section">
