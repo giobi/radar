@@ -111,7 +111,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
     <h1 class="title">Nexum — Test vendita contratto end-to-end</h1>
     <div class="meta-row">
         <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>6 marzo 2026</span>
-        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>6 step completati</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>8 step + finalizzazione</span>
         <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Collaudo</span>
         <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>estendo.sel.re</span>
     </div>
@@ -125,13 +125,13 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
     <div class="score-ring">
         <svg width="100" height="100" viewBox="0 0 100 100">
             <circle class="track" cx="50" cy="50" r="42"/>
-            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="26.4"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="0"/>
         </svg>
-        <div class="score-number">90<small>/100</small></div>
+        <div class="score-number">100<small>/100</small></div>
     </div>
     <div class="score-summary">
-        <h2>Flusso contratto funzionante fino al pagamento</h2>
-        <p>Abbiamo provato a fare una vendita completa di una polizza smartphone, partendo dalla scelta del servizio fino al pagamento. Il sistema funziona correttamente per tutti i 6 passaggi testati: scelta servizio, dati cliente, dati dispositivo, privacy, questionario e scelta pagamento. Il pagamento non si completa perch&eacute; richiede una connessione al sistema bancario (Zuora) che non &egrave; attiva in ambiente di prova. Ogni passaggio viene registrato nel diario delle attivit&agrave;.</p>
+        <h2>Vendita contratto completata con successo</h2>
+        <p>Abbiamo eseguito una vendita completa di una polizza smartphone, dall'inizio alla fine: scelta del servizio, dati cliente, dati dispositivo, privacy, questionario, pagamento con carta di credito, firma e finalizzazione. Tutti gli 8 passaggi funzionano correttamente. Il pagamento &egrave; stato elaborato tramite il circuito Zuora/Stripe in ambiente sandbox. Ogni passaggio viene registrato automaticamente nel diario delle attivit&agrave;.</p>
     </div>
 </div>
 </div>
@@ -146,9 +146,12 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
         <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:14</span><span class="tl-text">Step 3 — Corretto: prezzo 1100, IMEI valido, Samsung Galaxy A41 selezionato</span></div>
         <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:15</span><span class="tl-text">Step 4 — Privacy: accettate le dichiarazioni obbligatorie</span></div>
         <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:16</span><span class="tl-text">Step 5 — Questionario di adeguatezza: risposte positive a tutte le 6 domande</span></div>
-        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:16</span><span class="tl-text">Step 6 — Scelta pagamento: pagina raggiunta (carta di credito o SEPA)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">14:38</span><span class="tl-text">Step 6 — Pagamento con carta di credito Zuora sandbox (4242...4242)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">14:40</span><span class="tl-text">Pagamento elaborato con successo tramite Zuora/Stripe</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">14:44</span><span class="tl-text">Step 7 — Firma cartacea selezionata, avanzamento al riepilogo</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">14:46</span><span class="tl-text">Step 8 — Finalizzazione contratto confermata, stato: complete</span></div>
     </div>
-    <div class="tl-duration">Test completato in circa 15 minuti</div>
+    <div class="tl-duration">Test completato: 11:01 &rarr; 14:46 (con interruzioni)</div>
 </div>
 
 <div class="tabs">
@@ -212,13 +215,33 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="step-title">Pagina di pagamento raggiunta</span>
+        <span class="step-title">Pagamento con carta di credito completato</span>
     </div>
-    <p class="step-explain">Siamo arrivati al sesto passaggio: la scelta del metodo di pagamento. Sono disponibili carta di credito (Visa, Mastercard) e addebito diretto SEPA. Il pagamento non si conclude perch&eacute; in ambiente di prova non &egrave; collegato il sistema bancario.</p>
+    <p class="step-explain">Nel sesto passaggio abbiamo scelto il pagamento con carta di credito. Il sistema ha aperto il modulo bancario (Zuora), dove abbiamo inserito i dati della carta. Il pagamento &egrave; stato elaborato correttamente e il sistema ha confermato l'esito positivo.</p>
     <div class="step-img">
-        <img src="radar-step6-final.png" alt="Step 6 — scelta pagamento">
-        <div class="step-img-caption">Scelta pagamento: carta di credito o SEPA</div>
+        <img src="radar-payment-filled.png" alt="Form pagamento carta compilato">
+        <div class="step-img-caption">Modulo di pagamento con carta di credito compilato</div>
     </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Firma del contratto</span>
+    </div>
+    <p class="step-explain">Nel settimo passaggio il sistema offre due modalit&agrave; di firma: digitale (tramite Namirial) oppure cartacea. Per questo test abbiamo usato la firma cartacea e proseguito al riepilogo finale.</p>
+    <div class="step-img">
+        <img src="radar-step7.png" alt="Step 7 — scelta firma">
+        <div class="step-img-caption">Scelta della modalit&agrave; di firma: digitale o cartacea</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Contratto finalizzato</span>
+    </div>
+    <p class="step-explain">Nell'ottavo e ultimo passaggio abbiamo confermato la finalizzazione del contratto. Il sistema ha registrato il contratto come completato e ci ha riportato alla lista dei contratti. L'intera vendita &egrave; stata tracciata nel registro attivit&agrave;.</p>
 </div>
 
 <div class="step">
@@ -247,26 +270,26 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
         <tr><td>Contratto</td><td><code>#1043</code> — Protezione Smartphone DA+F+R [1001-1200 euro]</td></tr>
         <tr><td>Prodotto ID</td><td><code>9</code></td></tr>
         <tr><td>Scenario</td><td>Collaudo — test vendita completa</td></tr>
-        <tr><td>Step completati</td><td>6 su 8 (fino a pagamento)</td></tr>
-        <tr><td>Verdict</td><td style="color: var(--green); font-weight: 600;">HEALTHY</td></tr>
+        <tr><td>Step completati</td><td>8 su 8 + finalizzazione</td></tr>
+        <tr><td>Pagamento</td><td>Zuora sandbox CC 4242...4242 — elaborato 14:40:43</td></tr>
+        <tr><td>Finalizzazione</td><td>14:46:40 — status: complete</td></tr>
+        <tr><td>Verdict</td><td style="color: var(--green); font-weight: 600;">FIXED (100/100)</td></tr>
     </table>
 </div>
 
 <div class="tech-section">
     <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Diary logs registrati (contract_id: 1043)</h3>
-    <div class="log-block">ID  | EVENT       | STEP                          | TIMESTAMP
-175 | step.next   | 2→3 ClientDataStep               | 2026-03-06 11:04:50
-184 | step.next   | 3→4 SmartphoneStep                | 2026-03-06 11:14:37
-187 | step.next   | 4→5 PrivacyStep V2                | 2026-03-06 11:15:34
-190 | step.next   | 5→6 SuitabilityTestStep           | 2026-03-06 11:16:16
+    <div class="log-block">ID  | EVENT              | STEP / DETTAGLIO                    | TIMESTAMP
+175 | step.next          | 2→3 ClientDataStep                  | 2026-03-06 11:04:50
+184 | step.next          | 3→4 SmartphoneStep                   | 2026-03-06 11:14:37
+187 | step.next          | 4→5 PrivacyStep V2                   | 2026-03-06 11:15:34
+190 | step.next          | 5→6 SuitabilityTestStep              | 2026-03-06 11:16:16
+203 | step.next          | 7→8 NamirialSignStep                 | 2026-03-06 14:44:54
+207 | contract.finalized | product_id:9, store_id:18, copy:false| 2026-03-06 14:46:40
 
-step.enter events: 191 (PaymentChooseStep), 189 (SuitabilityTestStep),
-  186 (PrivacyStep), 183 (SmartphoneStep), 174 (ClientDataStep)
-
-Metadata per ogni log:
-  - step_order, step_class, step_label, product_id
-  - from_step / to_step (per step.next)
-  - user_id: 7</div>
+step.enter: 20 eventi (ogni mount/reload registra un enter)
+Totale diary records per contract 1043: 35+
+user_id: 7 su tutti i log</div>
 </div>
 
 <div class="tech-section">
@@ -285,7 +308,13 @@ Step 3: Smartphone →
   - ⚠ Dropdown list-group fuori da #input-text-model (sibling nel col-6)
 Step 4: Privacy → click su checkbox answers.privacy + answers.info
 Step 5: Suitability → 6 radio input[value="1"] per domande SI
-Step 6: Payment → raggiunto, non processabile (Zuora non attivo in staging)</div>
+Step 6: Payment → Zuora iframe sandbox caricato, CC 4242...4242 12/2028 CVV 123
+  - Zuora frame: sandbox.eu.zuora.com/apps/PublicHostedPageLite.do
+  - Campi: #input-creditCardNumber, #input-creditCardExpirationMonth/Year, #input-cardSecurityCode, #input-creditCardHolderName
+  - Submit: a#submitButton.btn-submit (non button/input!)
+  - Callback Livewire: paymentCallback → PaymentCallbackProcessor → success
+Step 7: Namirial → Firma cartacea (a[wire:click="$set('navActive','documentLink')"])
+Step 8: Finalizza → SweetAlert2 confirm → finalizeContract() → status=complete → redirect /contract</div>
 </div>
 
 <div class="tech-section">
