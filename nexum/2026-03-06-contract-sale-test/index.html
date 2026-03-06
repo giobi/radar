@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Nexum: Test vendita contratto end-to-end</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-top: .5rem; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.timeline h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.tl { position: relative; padding-left: 1.5rem; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--border-strong); }
+.tl-item { position: relative; margin-bottom: .75rem; display: flex; align-items: baseline; gap: .75rem; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot { position: absolute; left: -1.5rem; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); flex-shrink: 0; }
+.tl-dot.red { border-color: var(--red); background: var(--red-bg); }
+.tl-dot.yellow { border-color: var(--yellow); background: var(--yellow-bg); }
+.tl-dot.green { border-color: var(--green); background: var(--green-bg); }
+.tl-time { font-size: .72rem; font-weight: 600; color: var(--text-muted); min-width: 42px; flex-shrink: 0; }
+.tl-text { font-size: .8rem; color: var(--text-secondary); }
+.tl-duration { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; background: var(--green-bg); color: var(--green); font-size: .68rem; font-weight: 600; border-radius: 2px; letter-spacing: .03em; }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+        <a href="../../dashboard/">Radar</a>
+    </div>
+    <h1 class="title">Nexum — Test vendita contratto end-to-end</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>6 marzo 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>6 step completati</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Collaudo</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>estendo.sel.re</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="26.4"/>
+        </svg>
+        <div class="score-number">90<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Flusso contratto funzionante fino al pagamento</h2>
+        <p>Abbiamo provato a fare una vendita completa di una polizza smartphone, partendo dalla scelta del servizio fino al pagamento. Il sistema funziona correttamente per tutti i 6 passaggi testati: scelta servizio, dati cliente, dati dispositivo, privacy, questionario e scelta pagamento. Il pagamento non si completa perch&eacute; richiede una connessione al sistema bancario (Zuora) che non &egrave; attiva in ambiente di prova. Ogni passaggio viene registrato nel diario delle attivit&agrave;.</p>
+    </div>
+</div>
+</div>
+
+<div class="timeline">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Cronologia del test</h3>
+    <div class="tl">
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:01</span><span class="tl-text">Accesso automatico al portale, creazione contratto #1043 (Protezione Smartphone DA+F+R)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:02</span><span class="tl-text">Step 1 — Presentazione contratto: confermato e avanzato</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:04</span><span class="tl-text">Step 2 — Anagrafica: compilati tutti i campi, codice fiscale verificato</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">11:06</span><span class="tl-text">Step 3 — Dati smartphone: primo tentativo con prezzo fuori range (500 invece di 1001-1200)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:14</span><span class="tl-text">Step 3 — Corretto: prezzo 1100, IMEI valido, Samsung Galaxy A41 selezionato</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:15</span><span class="tl-text">Step 4 — Privacy: accettate le dichiarazioni obbligatorie</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:16</span><span class="tl-text">Step 5 — Questionario di adeguatezza: risposte positive a tutte le 6 domande</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:16</span><span class="tl-text">Step 6 — Scelta pagamento: pagina raggiunta (carta di credito o SEPA)</span></div>
+    </div>
+    <div class="tl-duration">Test completato in circa 15 minuti</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech', this)">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-simple" class="tab-panel active">
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Scelta del servizio e creazione contratto</span>
+    </div>
+    <p class="step-explain">Dalla pagina di scelta servizio abbiamo selezionato "Crea nuovo contratto" per la polizza Protezione Smartphone DA+F+R (fascia 1001-1200 euro). Il sistema ha creato il contratto numero 1043 e ci ha portato al primo passaggio.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Dati del cliente compilati correttamente</span>
+    </div>
+    <p class="step-explain">Nel secondo passaggio abbiamo inserito i dati anagrafici del cliente: nome, cognome, codice fiscale, indirizzo email e recapito telefonico. Il sistema ha verificato la correttezza del codice fiscale prima di procedere.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Dati dello smartphone inseriti</span>
+    </div>
+    <p class="step-explain">Nel terzo passaggio abbiamo inserito il prezzo del dispositivo (1100 euro), il codice IMEI, la marca (Samsung) e il modello (Galaxy A41). La marca e il modello si selezionano da un elenco che si aggiorna mentre si digita.</p>
+    <div class="step-img">
+        <img src="radar-step3-filled.png" alt="Step 3 — dati smartphone compilati">
+        <div class="step-img-caption">Dati smartphone compilati: prezzo, IMEI, marca e modello</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Informative privacy accettate</span>
+    </div>
+    <p class="step-explain">Nel quarto passaggio sono presenti le informative sulla privacy e sull'intermediario. Abbiamo accettato le due dichiarazioni obbligatorie per proseguire.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Questionario di adeguatezza superato</span>
+    </div>
+    <p class="step-explain">Nel quinto passaggio il cliente risponde a 6 domande sulla polizza (condizioni di rimborso, pagamento frazionato, tempi di denuncia, scoperto, disdetta). Tutte le risposte devono essere positive per procedere.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Pagina di pagamento raggiunta</span>
+    </div>
+    <p class="step-explain">Siamo arrivati al sesto passaggio: la scelta del metodo di pagamento. Sono disponibili carta di credito (Visa, Mastercard) e addebito diretto SEPA. Il pagamento non si conclude perch&eacute; in ambiente di prova non &egrave; collegato il sistema bancario.</p>
+    <div class="step-img">
+        <img src="radar-step6-final.png" alt="Step 6 — scelta pagamento">
+        <div class="step-img-caption">Scelta pagamento: carta di credito o SEPA</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Registro attivit&agrave; funzionante</span>
+    </div>
+    <p class="step-explain">Ogni passaggio del contratto viene registrato automaticamente nel diario delle attivit&agrave; della piattaforma. Il registro mostra chi ha fatto cosa, quando e su quale contratto. Questo permette di monitorare l'avanzamento dei contratti e individuare eventuali problemi.</p>
+    <div class="step-img">
+        <img src="radar-diary.png" alt="Dashboard log piattaforma">
+        <div class="step-img-caption">Dashboard "Log Piattaforma" con tutte le attivit&agrave; registrate</div>
+    </div>
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Riepilogo</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Server</td><td><code>athena (1174648.cloudwaysapps.com)</code></td></tr>
+        <tr><td>App path</td><td><code>/home/1174648.cloudwaysapps.com/estendonexumathena/public_html</code></td></tr>
+        <tr><td>Target URL</td><td><code>estendo.sel.re</code></td></tr>
+        <tr><td>Contratto</td><td><code>#1043</code> — Protezione Smartphone DA+F+R [1001-1200 euro]</td></tr>
+        <tr><td>Prodotto ID</td><td><code>9</code></td></tr>
+        <tr><td>Scenario</td><td>Collaudo — test vendita completa</td></tr>
+        <tr><td>Step completati</td><td>6 su 8 (fino a pagamento)</td></tr>
+        <tr><td>Verdict</td><td style="color: var(--green); font-weight: 600;">HEALTHY</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Diary logs registrati (contract_id: 1043)</h3>
+    <div class="log-block">ID  | EVENT       | STEP                          | TIMESTAMP
+175 | step.next   | 2→3 ClientDataStep               | 2026-03-06 11:04:50
+184 | step.next   | 3→4 SmartphoneStep                | 2026-03-06 11:14:37
+187 | step.next   | 4→5 PrivacyStep V2                | 2026-03-06 11:15:34
+190 | step.next   | 5→6 SuitabilityTestStep           | 2026-03-06 11:16:16
+
+step.enter events: 191 (PaymentChooseStep), 189 (SuitabilityTestStep),
+  186 (PrivacyStep), 183 (SmartphoneStep), 174 (ClientDataStep)
+
+Metadata per ogni log:
+  - step_order, step_class, step_label, product_id
+  - from_step / to_step (per step.next)
+  - user_id: 7</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Automazione Playwright</h3>
+    <div class="log-block">Login: /radar-login/7 (route test automatica)
+Auth: auto-login user_id=7 (giobi@giobi.com, Admin)
+
+Step 1: Presentazione → Avanti (a[wire:click="nextStep()"])
+Step 2: Anagrafica → fill form + CF FSLGNN83C12L746Y → Avanti
+Step 3: Smartphone →
+  - devicePrice: wire:model.live (via #input-text-devicePrice input)
+  - deviceSerial: wire:model.live (via #input-text-deviceSerial input)
+  - Marca: wire:model.live.debounce.500ms="deviceBrandSearch" → autocomplete → selectBrand()
+  - Modello: wire:model.live.debounce.500ms="deviceModelSearch" → autocomplete → selectModel()
+  - ⚠ fill() non triggera wire:model.live — usare type() con delay
+  - ⚠ Dropdown list-group fuori da #input-text-model (sibling nel col-6)
+Step 4: Privacy → click su checkbox answers.privacy + answers.info
+Step 5: Suitability → 6 radio input[value="1"] per domande SI
+Step 6: Payment → raggiunto, non processabile (Zuora non attivo in staging)</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Note tecniche</h3>
+    <ul style="font-size:.78rem; color:var(--text-secondary); padding-left:1.2rem; line-height:1.9;">
+        <li>Issue #28: Diary::log() funziona correttamente su step.enter e step.next</li>
+        <li>Step enter multipli sullo step 3 (ID 176-183) sono dovuti ai re-load durante i tentativi di compilazione</li>
+        <li>Validazione prezzo: range min/max dal prodotto (priceMin/priceMax). 500 rifiutato, 1100 accettato</li>
+        <li>Validazione IMEI: checksum Luhn + lunghezza 15-16 caratteri</li>
+        <li>Validazione CF: checksum nativo, CF fake rifiutati</li>
+        <li>Autocomplete marca/modello: query LIKE su tabella Symbol, debounce 500ms, limit 5/15 risultati</li>
+        <li>Step 7 (firma Namirial) e step 8 (riepilogo finale) non testabili senza pagamento completato</li>
+        <li>Route /radar-login/{userId} presente in staging per test automatici — da rimuovere prima di prod</li>
+    </ul>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
+
+<script>
+function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+</body>
+</html>
