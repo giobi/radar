@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Radar — Fasoli Piante: Sito down (errore critico plugin Nexi)</title>
+<title>Radar — Fasoli Piante: Sito fuori servizio (errore critico Nexi)</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -21,7 +21,7 @@
 body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
 
 .header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
-.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
 .brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
 .brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
 .brand a { color: var(--text-muted); text-decoration: none; }
@@ -109,11 +109,11 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
         <a href="../../dashboard/">Radar</a>
     </div>
-    <h1 class="title">Fasoli Piante — Sito down per errore critico plugin Nexi</h1>
+    <h1 class="title">Fasoli Piante — Sito fuori servizio per errore critico Nexi</h1>
     <div class="meta-row">
         <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>6 marzo 2026</span>
         <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>1 iterazione</span>
-        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Crisis</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Emergenza</span>
         <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>fasolipiante.com</span>
     </div>
 </div>
@@ -132,22 +132,22 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
     </div>
     <div class="score-summary">
         <h2>Problema risolto</h2>
-        <p>Il sito era completamente down a causa di un errore nel plugin dei pagamenti (Nexi XPay). Il plugin v8.3.0 conteneva un file con il nome scritto in modo sbagliato (una lettera maiuscola invece che minuscola), che su Linux causa un blocco totale. Abbiamo aggiornato il plugin alla versione 8.3.1 che corregge l'errore. Tutto funziona: sito, catalogo, e pagamenti Nexi.</p>
+        <p>Il sito era completamente fuori servizio a causa di un errore nel componente dei pagamenti (Nexi XPay). La versione 8.3.0 conteneva un file con il nome scritto in modo sbagliato, che sul server causa un blocco totale. Abbiamo aggiornato il componente alla versione 8.3.1 che corregge l'errore. Tutto funziona: sito, catalogo e pagamenti Nexi.</p>
     </div>
 </div>
 </div>
 
 <div class="timeline">
-    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Timeline intervento</h3>
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Cronologia intervento</h3>
     <div class="tl">
-        <div class="tl-item"><div class="tl-dot red"></div><span class="tl-time">09:22</span><span class="tl-text">Segnalazione: sito down, pagina bianca</span></div>
-        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">09:23</span><span class="tl-text">Diagnosi: HTTP 200 ma 0 bytes. DNS ok. Errore critico WordPress</span></div>
-        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">09:24</span><span class="tl-text">Root cause: fatal error in cartasi-x-pay v8.3.0 (case sensitivity filename)</span></div>
-        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09:25</span><span class="tl-text">Plugin disattivato via filesystem — sito ripristinato</span></div>
-        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09:27</span><span class="tl-text">Screenshot e verifica homepage + negozio + mobile</span></div>
-        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09:38</span><span class="tl-text">Plugin aggiornato a v8.3.1 e riattivato — pagamenti Nexi funzionanti</span></div>
+        <div class="tl-item"><div class="tl-dot red"></div><span class="tl-time">09:22</span><span class="tl-text">Segnalazione: sito fuori servizio, pagina bianca</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">09:23</span><span class="tl-text">Diagnosi: il server risponde ma la pagina e vuota. Rete e dominio funzionanti. Errore critico interno</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">09:24</span><span class="tl-text">Causa individuata: errore nel componente pagamenti Nexi v8.3.0 (nome file scritto male)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09:25</span><span class="tl-text">Componente pagamenti disattivato — sito tornato online</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09:27</span><span class="tl-text">Verifica: homepage, negozio e versione mobile funzionanti</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09:38</span><span class="tl-text">Componente aggiornato a v8.3.1 e riattivato — pagamenti Nexi funzionanti</span></div>
     </div>
-    <div class="tl-duration">Sito down → online: 3 minuti &middot; Fix completo: 16 minuti</div>
+    <div class="tl-duration">Fuori servizio → online: 3 minuti &middot; Risoluzione completa: 16 minuti</div>
 </div>
 
 <div class="tabs">
@@ -175,17 +175,17 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-        <span class="step-title">La causa: un aggiornamento del plugin pagamenti ha rotto tutto</span>
+        <span class="step-title">La causa: un aggiornamento del componente pagamenti ha rotto tutto</span>
     </div>
-    <p class="step-explain">Il plugin che gestisce i pagamenti con carta (Nexi XPay) si era aggiornato alla versione 8.3.0. Questa versione contiene un errore: cerca un file interno con il nome scritto in modo sbagliato (una lettera maiuscola invece che minuscola). Su Linux questo basta per mandare in crash l'intero sito.</p>
+    <p class="step-explain">Il plugin che gestisce i pagamenti con carta (Nexi XPay) si era aggiornato alla versione 8.3.0. Questa versione contiene un errore: cerca un file interno con il nome scritto in modo sbagliato (una lettera maiuscola invece che minuscola). Sul server questo basta per mandare in blocco l'intero sito.</p>
 </div>
 
 <div class="step">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="step-title">Risolto: plugin disattivato, sito tornato online</span>
+        <span class="step-title">Risolto: componente disattivato, sito tornato online</span>
     </div>
-    <p class="step-explain">Abbiamo disattivato il plugin Nexi XPay per far tornare il sito online immediatamente. Il sito funziona normalmente: homepage, catalogo, pagine interne sono tutti accessibili.</p>
+    <p class="step-explain">Abbiamo disattivato il componente Nexi XPay per far tornare il sito online immediatamente. Il sito funziona normalmente: homepage, catalogo, pagine interne sono tutti accessibili.</p>
     <div class="step-img">
         <img src="screenshot-homepage.png" alt="Homepage fasolipiante.com funzionante">
         <div class="step-img-caption">Homepage fasolipiante.com dopo il ripristino</div>
@@ -207,9 +207,9 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="step-title">Plugin aggiornato alla versione corretta</span>
+        <span class="step-title">Componente aggiornato alla versione corretta</span>
     </div>
-    <p class="step-explain">Il plugin dei pagamenti e stato aggiornato alla versione 8.3.1 che corregge l'errore. Il pagamento con carta Nexi, PayPal, Scalapay e tutti gli altri metodi funzionano regolarmente.</p>
+    <p class="step-explain">Il componente dei pagamenti e stato aggiornato alla versione 8.3.1 che corregge l'errore. I pagamenti con carta Nexi, PayPal, Scalapay e tutti gli altri metodi funzionano regolarmente.</p>
 </div>
 
 </div>
