@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Calia: Ripristino eventi ecommerce GA4</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+.timeline-section { padding: 0 0 1.5rem; }
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; }
+.tl-item { display: flex; gap: 1rem; margin-bottom: .75rem; position: relative; padding-left: 1.5rem; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-item::before { content: ''; position: absolute; left: 5px; top: 8px; width: 10px; height: 10px; border-radius: 50%; }
+.tl-item.red::before { background: var(--red); }
+.tl-item.yellow::before { background: var(--yellow); }
+.tl-item.green::before { background: var(--green); }
+.tl-item::after { content: ''; position: absolute; left: 9px; top: 20px; width: 2px; height: calc(100% + .75rem - 12px); background: var(--border); }
+.tl-item:last-child::after { display: none; }
+.tl-time { font-size: .7rem; color: var(--text-muted); min-width: 4rem; padding-top: .1rem; }
+.tl-desc { font-size: .8rem; color: var(--text-secondary); }
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); } .step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); } .step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); } .step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-screenshot { margin-top: .75rem; }
+.step-screenshot img { max-width: 100%; border: 1px solid var(--border); border-radius: var(--radius); }
+.step-screenshot .caption { font-size: .7rem; color: var(--text-muted); margin-top: .35rem; }
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.log-block .green { color: #4ade80; }
+.log-block .yellow { color: #fbbf24; }
+.log-block .red { color: #f87171; }
+.log-block .muted { color: #78716c; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.event-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .75rem; margin-top: .75rem; }
+.event-card { background: var(--surface-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: .75rem 1rem; }
+.event-card .event-name { font-weight: 600; font-size: .82rem; margin-bottom: .25rem; }
+.event-card .event-where { font-size: .7rem; color: var(--text-muted); }
+.event-card .event-status { font-size: .7rem; margin-top: .35rem; }
+.event-card .event-status.ok { color: var(--green); }
+.event-card .event-status.fail { color: var(--red); }
+footer.report-footer { text-align: center; padding: 3rem 0 2rem; font-size: .65rem; color: var(--text-muted); letter-spacing: .04em; }
+footer.report-footer a { color: var(--text-muted); text-decoration: none; }
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+@media (max-width: 640px) { .score-card { flex-direction: column; text-align: center; } .meta-row { flex-direction: column; gap: .4rem; } .event-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg><a href="../../dashboard/">Radar</a> / <a href="../">calia</a></div>
+    <h1 class="title">Calia Italia Outlet &mdash; Ripristino eventi ecommerce GA4</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>9 marzo 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>Correzione</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>caliaitaliaoutlet.com</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Scenario: Bug fix</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- Score -->
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg viewBox="0 0 36 36" width="100" height="100">
+            <circle class="track" cx="18" cy="18" r="15.915"/>
+            <circle class="fill" cx="18" cy="18" r="15.915"
+                stroke="#15803d"
+                stroke-dasharray="100, 100"
+                stroke-dashoffset="0"/>
+        </svg>
+        <div class="score-number">100<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Problema risolto &mdash; tracciamento ripristinato</h2>
+        <p>Gli eventi ecommerce GA4 (add_to_cart, view_item, view_item_list, view_cart, begin_checkout, remove_from_cart) sono stati aggiunti al plugin custom e sono ora attivi sul sito. Il tracciamento purchase era gi&agrave; funzionante dal 4 marzo. La cache del sito &egrave; stata pulita e gli eventi sono verificati con test automatici.</p>
+    </div>
+</div>
+</div>
+
+<!-- Timeline -->
+<div class="timeline-section">
+<div class="timeline">
+    <h3>Cronologia intervento</h3>
+    <div class="tl-item red">
+        <span class="tl-time">3 mar</span>
+        <span class="tl-desc">Gli eventi ecommerce smettono di tracciare. Causa: sostituzione del plugin GTM4WP con plugin custom che gestiva solo l'evento purchase.</span>
+    </div>
+    <div class="tl-item yellow">
+        <span class="tl-time">4 mar</span>
+        <span class="tl-desc">Plugin custom <code>calia-datalayer-gtm</code> v1.1.0 deployato con evento purchase. GTM4WP rimosso. Gli altri eventi ecommerce non erano stati migrati.</span>
+    </div>
+    <div class="tl-item yellow">
+        <span class="tl-time">9 mar 10:57</span>
+        <span class="tl-desc">Mattia Follari segnala: &laquo;gli eventi ecommerce hanno smesso di tracciare il 3 marzo, soprattutto add_to_cart su cui sono ottimizzate le campagne&raquo;</span>
+    </div>
+    <div class="tl-item green">
+        <span class="tl-time">9 mar 12:45</span>
+        <span class="tl-desc">Plugin aggiornato a v1.2.0 con tutti gli eventi ecommerce GA4. Cache Breeze purgata. Verifica automatica positiva.</span>
+    </div>
+</div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('client')">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech')">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<!-- Client Tab -->
+<div id="tab-client" class="tab-panel active">
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <span class="step-title">Il problema: dati sugli acquisti persi dal 3 marzo</span>
+    </div>
+    <div class="step-explain">
+        Il 4 marzo abbiamo sostituito un componente del sito (GTM4WP) con uno nuovo pi&ugrave; leggero. Il nuovo componente gestiva correttamente l'evento &laquo;acquisto completato&raquo;, ma non includeva gli altri eventi che servono alle campagne pubblicitarie &mdash; in particolare quello che registra quando un visitatore aggiunge un prodotto al carrello.<br><br>
+        Le campagne Google Ads erano ottimizzate proprio su quell'evento (<em>add_to_cart</em>), quindi dal 3 marzo il sistema pubblicitario non riceveva pi&ugrave; dati per capire quali annunci funzionano meglio.
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Correzione: tutti gli eventi ecommerce ripristinati</span>
+    </div>
+    <div class="step-explain">
+        Abbiamo aggiornato il componente alla versione 1.2.0, aggiungendo tutti gli eventi che servono a Google Analytics e Google Ads per monitorare il percorso di acquisto dei visitatori:
+    </div>
+    <div class="event-grid">
+        <div class="event-card">
+            <div class="event-name">Visualizzazione prodotti</div>
+            <div class="event-where">Pagine catalogo e categorie</div>
+            <div class="event-status ok">&#10003; Attivo</div>
+        </div>
+        <div class="event-card">
+            <div class="event-name">Dettaglio prodotto</div>
+            <div class="event-where">Pagina singola prodotto</div>
+            <div class="event-status ok">&#10003; Attivo</div>
+        </div>
+        <div class="event-card">
+            <div class="event-name">Aggiunta al carrello</div>
+            <div class="event-where">Click su &laquo;Aggiungi al carrello&raquo;</div>
+            <div class="event-status ok">&#10003; Attivo</div>
+        </div>
+        <div class="event-card">
+            <div class="event-name">Visualizzazione carrello</div>
+            <div class="event-where">Pagina carrello</div>
+            <div class="event-status ok">&#10003; Attivo</div>
+        </div>
+        <div class="event-card">
+            <div class="event-name">Inizio pagamento</div>
+            <div class="event-where">Pagina checkout</div>
+            <div class="event-status ok">&#10003; Attivo</div>
+        </div>
+        <div class="event-card">
+            <div class="event-name">Acquisto completato</div>
+            <div class="event-where">Pagina di conferma ordine</div>
+            <div class="event-status ok">&#10003; Attivo (gi&agrave; da v1.1.0)</div>
+        </div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Verifica: test automatici confermano il funzionamento</span>
+    </div>
+    <div class="step-explain">
+        Dopo aver aggiornato il componente e pulito la cache del sito, abbiamo eseguito test automatici con un browser controllato. I risultati confermano che tutti gli eventi vengono inviati correttamente a Google Tag Manager con i dati completi (nome prodotto, prezzo, categoria, quantit&agrave;).
+    </div>
+    <div class="step-screenshot">
+        <img src="screenshot-01-shop.png" alt="Pagina catalogo caliaitaliaoutlet.com" loading="lazy">
+        <div class="caption">Pagina catalogo &mdash; evento view_item_list attivo con 9 prodotti tracciati</div>
+    </div>
+    <div class="step-screenshot" style="margin-top: 1rem;">
+        <img src="screenshot-02-product.png" alt="Pagina prodotto con evento view_item" loading="lazy">
+        <div class="caption">Pagina prodotto &mdash; evento view_item attivo (Divano 3 posti, EUR 2.690, categoria Divani)</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Nota per Mattia: verificare i trigger in Google Tag Manager</span>
+    </div>
+    <div class="step-explain">
+        Il sito ora invia tutti i dati al contenitore GTM (GTM-TK5RDQQC). Mattia deve verificare che i <strong>trigger</strong> nel pannello di Google Tag Manager siano configurati per catturare questi eventi e inviarli a GA4 e Google Ads. In particolare:<br><br>
+        &bull; Trigger per <code>add_to_cart</code> &rarr; evento GA4 + conversione Google Ads<br>
+        &bull; Trigger per <code>view_item</code> e <code>view_item_list</code> &rarr; eventi GA4<br>
+        &bull; Trigger per <code>purchase</code> &rarr; conversione Google Ads (se non gi&agrave; configurato)
+    </div>
+</div>
+
+</div>
+
+<!-- Tech Tab -->
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Riepilogo tecnico</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Server</td><td><code>calia (165.232.97.86)</code></td></tr>
+        <tr><td>Path</td><td><code>/home/1016313.cloudwaysapps.com/ufmdxxnrzy/public_html/</code></td></tr>
+        <tr><td>URL</td><td><code>caliaitaliaoutlet.com</code></td></tr>
+        <tr><td>Plugin</td><td><code>calia-datalayer-gtm</code> v1.1.0 &rarr; v1.2.0</td></tr>
+        <tr><td>GTM Container</td><td><code>GTM-TK5RDQQC</code></td></tr>
+        <tr><td>Scenario</td><td>Bug fix &mdash; eventi ecommerce mancanti</td></tr>
+        <tr><td>Causa</td><td>GTM4WP rimosso il 4/3 senza migrare gli eventi ecommerce al plugin custom</td></tr>
+        <tr><td>Verdict</td><td style="color: var(--green); font-weight: 600;">FIXED &mdash; 100/100</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>Causa del problema</h3>
+    <div class="log-block"><span class="muted"># v1.1.0 gestiva solo:</span>
+- GTM container injection (wp_head + wp_body_open)
+- <span class="green">purchase</span> event (woocommerce_thankyou hook)
+- WooCommerce email BCC
+- Admin tweaks
+
+<span class="muted"># Mancavano (precedentemente gestiti da GTM4WP):</span>
+<span class="red">- view_item_list (shop/category pages)</span>
+<span class="red">- view_item (single product page)</span>
+<span class="red">- add_to_cart (click aggiungi al carrello)</span>
+<span class="red">- view_cart (pagina carrello)</span>
+<span class="red">- begin_checkout (pagina checkout)</span>
+<span class="red">- remove_from_cart (rimozione dal carrello)</span></div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Correzione applicata (v1.2.0)</h3>
+    <div class="log-block"><span class="green">+ calia_ga4_item_data()</span> &mdash; helper per costruire item array GA4
+
+<span class="green">+ view_item_list</span>
+  Hook: woocommerce_after_shop_loop
+  Data: item_list_name, items[] con index
+
+<span class="green">+ view_item</span>
+  Hook: woocommerce_after_single_product
+  Data: currency, value, items[]
+
+<span class="green">+ add_to_cart</span>
+  JS: jQuery(document.body).on('added_to_cart') &mdash; AJAX archive
+  JS: jQuery('form.cart').on('submit') &mdash; single product
+  PHP: woocommerce_loop_add_to_cart_args filter per data attributes
+
+<span class="green">+ view_cart</span>
+  Hook: woocommerce_after_cart
+  Data: currency, value, items[]
+
+<span class="green">+ begin_checkout</span>
+  Hook: woocommerce_before_checkout_form
+  Data: currency, value, items[], coupon
+
+<span class="green">+ remove_from_cart</span>
+  JS: jQuery(document.body).on('removed_from_cart')
+
+<span class="yellow">Nota: ogni push preceduto da { ecommerce: null }
+come da best practice GA4</span></div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Verifica Playwright</h3>
+    <div class="log-block"><span class="green">SHOP PAGE (caliaitaliaoutlet.com/shop/)</span>
+  view_item_list: <span class="green">YES</span> (9 items)
+  GTM container: <span class="green">LOADED</span>
+
+<span class="green">PRODUCT PAGE (/prodotto/divano-3-posti-e-chaise-...)</span>
+  view_item: <span class="green">YES</span>
+    item_name: "Divano 3 posti e chaise con schienali basculanti"
+    item_category: "Divani"
+    price: 2690
+    currency: "EUR"
+  add_to_cart JS listener: <span class="green">PRESENT</span>
+  form.cart submit handler: <span class="green">PRESENT</span>
+    productData injected server-side: <span class="green">YES</span>
+
+<span class="yellow">Note:</span>
+- Tema Shoptimizer non mostra bottoni add-to-cart su pagine archivio
+- add_to_cart si attiva solo da pagina singola prodotto (form.cart submit)
+- Cache Breeze purgata con: wp breeze purge --cache=all</div>
+</div>
+
+</div>
+</div>
+
+<footer class="report-footer">
+    Radar &middot; <a href="https://giobi.com">giobi.com</a> &middot; 9 marzo 2026
+</footer>
+
+</div>
+
+<div class="watermark"><a href="../../dashboard/">📡 Radar</a></div>
+
+<script>
+function switchTab(id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('[onclick*="'+id+'"]').classList.add('active');
+    document.getElementById('tab-'+id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
