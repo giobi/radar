@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Pirolino Beach: Audit SEO, Privacy e Conformità</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-top: .5rem; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+
+.category { margin-bottom: 1.5rem; }
+.category-title { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; padding-bottom: .35rem; border-bottom: 1px solid var(--border); }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+        <a href="../../dashboard/">Radar</a>
+    </div>
+    <h1 class="title">Pirolino Beach — Audit SEO, Privacy e Conformit&agrave;</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>9 marzo 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>Audit completo</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>pirolinobeach.it</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Dormelletto (NO)</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--yellow)" stroke-dasharray="263.9" stroke-dashoffset="105.56"/>
+        </svg>
+        <div class="score-number">60<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Funziona, ma ci sono problemi importanti</h2>
+        <p>Il sito si apre e le pagine principali funzionano. Per&ograve; mancano le pagine della Privacy Policy e dei Cookie, ci sono errori tecnici che impediscono il caricamento corretto dei caratteri, e la mappa di navigazione per Google (sitemap) punta al protocollo sbagliato. Sono cose che vanno sistemate, sia per la conformit&agrave; alla legge sulla privacy (GDPR) sia per farsi trovare meglio su Google.</p>
+    </div>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo trovato
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech', this)">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-simple" class="tab-panel active">
+
+<!-- PRIVACY & LEGAL -->
+<div class="category">
+<div class="category-title">Privacy e conformit&agrave; legale</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <span class="step-title">Pagina Privacy Policy inesistente</span>
+    </div>
+    <p class="step-explain">Il sito raccoglie dati personali (modulo candidature con nome, email, telefono e curriculum) e usa strumenti di tracciamento (Google Analytics, Facebook Pixel), ma la pagina con l&rsquo;informativa sulla privacy non esiste. Cliccando sul link si finisce su una pagina di errore. <strong>&Egrave; un obbligo di legge (GDPR)</strong> avere un&rsquo;informativa privacy raggiungibile e completa.</p>
+    <div class="step-img">
+        <img src="02-cookie-banner.png" alt="Il banner dei cookie appare ma la privacy policy non esiste">
+        <div class="step-img-caption">Il banner dei cookie funziona, ma rimanda a una pagina che non esiste</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <span class="step-title">Pagina Cookie Policy inesistente</span>
+    </div>
+    <p class="step-explain">Come per la privacy, anche la pagina che spiega quali cookie usa il sito d&agrave; errore 404. Il banner dei cookie (Cookiebot) funziona e appare correttamente, ma il link &ldquo;Cookie Policy&rdquo; nel pi&egrave; di pagina non porta da nessuna parte.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">I link nel pi&egrave; di pagina non sono cliccabili</span>
+    </div>
+    <p class="step-explain">In fondo al sito c&rsquo;&egrave; scritto &ldquo;Cookie Policy | Privacy Policy&rdquo; ma sono solo testo, non link cliccabili. Un visitatore non pu&ograve; raggiungerli. Anche nel modulo candidature c&rsquo;&egrave; la spunta &ldquo;Accetto la Privacy Policy&rdquo; ma non c&rsquo;&egrave; modo di leggerla.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Il banner dei cookie funziona</span>
+    </div>
+    <p class="step-explain">Il sistema Cookiebot &egrave; installato e il banner appare correttamente alla prima visita, con le opzioni per accettare o rifiutare i cookie. Questo &egrave; un buon punto di partenza.</p>
+</div>
+
+</div>
+
+<!-- SEO -->
+<div class="category">
+<div class="category-title">Posizionamento su Google (SEO)</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Titoli e descrizioni delle pagine ben fatti</span>
+    </div>
+    <p class="step-explain">Ogni pagina ha un titolo chiaro e una descrizione pensata per Google. Ad esempio: &ldquo;Ristorante &ndash; Pirolino Beach, piatti e pizza sul Lago Maggiore&rdquo;. Questo aiuta a comparire nei risultati di ricerca con un testo invitante.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Buona condivisione sui social</span>
+    </div>
+    <p class="step-explain">Quando qualcuno condivide il sito su Facebook o WhatsApp, appare un&rsquo;anteprima con titolo, descrizione e immagine. I dati Open Graph sono configurati correttamente.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Mappa del sito (Sitemap) con protocollo sbagliato</span>
+    </div>
+    <p class="step-explain">La mappa che dice a Google quali pagine esistono usa indirizzi che iniziano con &ldquo;http&rdquo; invece di &ldquo;https&rdquo;. &Egrave; come dare a Google un indirizzo vecchio: funziona, ma crea confusione e pu&ograve; rallentare l&rsquo;indicizzazione.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Immagini senza descrizione alternativa</span>
+    </div>
+    <p class="step-explain">Le foto del ristorante, della spiaggia e della terrazza non hanno una descrizione testuale (testo alternativo). Questo significa che Google non sa cosa rappresentano, e chi usa lettori per ipovedenti non riesce a capire il contenuto. Nomi come &ldquo;IMG_1129&rdquo; o &ldquo;13-b&rdquo; non dicono nulla.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Manca la scheda attivit&agrave; per Google (LocalBusiness)</span>
+    </div>
+    <p class="step-explain">Il sito non comunica a Google in formato strutturato che &egrave; un ristorante, con indirizzo, orari e telefono. Aggiungere questi dati (schema LocalBusiness) aiuterebbe a comparire nelle ricerche locali tipo &ldquo;ristorante Lago Maggiore&rdquo; con orari, indirizzo e voto direttamente nei risultati.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Pagina FAQ non raggiungibile</span>
+    </div>
+    <p class="step-explain">Nel menu c&rsquo;&egrave; la voce &ldquo;FAQ&rdquo; ma il link porta a una pagina di errore 404. Le domande frequenti esistono nella pagina Contatti, ma non hanno una pagina dedicata. Una sezione FAQ ben fatta con i dati strutturati potrebbe comparire direttamente nei risultati di Google.</p>
+</div>
+
+</div>
+
+<!-- TECNICO -->
+<div class="category">
+<div class="category-title">Aspetti tecnici</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <span class="step-title">I caratteri del sito non si caricano correttamente</span>
+    </div>
+    <p class="step-explain">Ci sono errori che impediscono il caricamento dei font (i caratteri tipografici). Il sito cerca di caricarli con il protocollo non sicuro (http) invece di quello sicuro (https), e il browser li blocca. Risultato: il testo potrebbe apparire con un carattere diverso da quello previsto dal design.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Il sito &egrave; sicuro (HTTPS)</span>
+    </div>
+    <p class="step-explain">La connessione &egrave; protetta con certificato SSL. Il lucchetto verde appare nel browser. Bene.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Velocit&agrave; di caricamento buona</span>
+    </div>
+    <p class="step-explain">Il server risponde in meno di un decimo di secondo (TTFB 64ms). La pagina si carica in circa 3 secondi, che &egrave; nella norma per un sito con molte immagini.</p>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Versione mobile presente</span>
+    </div>
+    <p class="step-explain">Il sito si adatta correttamente agli schermi dei telefoni. La navigazione funziona e i contenuti sono leggibili.</p>
+    <div class="step-img">
+        <img src="03-mobile-homepage.png" alt="Versione mobile del sito">
+        <div class="step-img-caption">Il sito su smartphone</div>
+    </div>
+</div>
+
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Riepilogo</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Target URL</td><td><code>https://pirolinobeach.it</code></td></tr>
+        <tr><td>IP</td><td><code>35.214.150.229</code></td></tr>
+        <tr><td>Server</td><td><code>nginx</code></td></tr>
+        <tr><td>CMS</td><td><code>WordPress + Elementor Pro</code></td></tr>
+        <tr><td>Tema</td><td><code>Niemeyer (Qode Interactive)</code></td></tr>
+        <tr><td>SEO Plugin</td><td><code>Yoast SEO</code></td></tr>
+        <tr><td>Cookie</td><td><code>Cookiebot (3fcce38f-152e-4e20-812f-9b33f81ea7db)</code></td></tr>
+        <tr><td>Analytics</td><td><code>GA4 (G-Q44P2L5DYD) + Facebook Pixel (3571703469792486)</code></td></tr>
+        <tr><td>SSL</td><td>OK (HTTPS attivo)</td></tr>
+        <tr><td>TTFB</td><td><code>64ms</code></td></tr>
+        <tr><td>Page size</td><td><code>114 KB</code> (HTML)</td></tr>
+        <tr><td>Scenario</td><td>Audit</td></tr>
+        <tr><td>Score</td><td style="color: var(--yellow); font-weight: 600;">60/100</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Problemi critici</h3>
+    <div class="log-block">1. PRIVACY POLICY → 404
+   /privacy-policy/ restituisce HTTP 404
+   Pagina non creata in WordPress
+
+2. COOKIE POLICY → 404
+   /cookie-policy/ restituisce HTTP 404
+   Pagina non creata in WordPress
+
+3. FAQ → 404
+   /faq/ restituisce HTTP 404
+   Link presente nel menu ma la pagina non esiste
+
+4. MIXED CONTENT — 48 richieste bloccate
+   Elementor Google Fonts caricate via HTTP su pagina HTTPS
+   Font affetti: Roboto, Roboto Slab, Noto Serif Display, Inter, Prata, DM Sans
+   Causa: Elementor → Custom Fonts → URL salvate con http://
+   Fix: Impostazioni Elementor → cambiare metodo di caricamento font
+         oppure: search-replace nel DB http:// → https:// per i font
+
+5. SITEMAP — protocollo errato
+   robots.txt: Sitemap: http://pirolinobeach.it/sitemap_index.xml
+   URL nella sitemap usano http:// invece di https://
+   Fix: Yoast SEO → Impostazioni Generali → verifica URL sito
+
+6. FOOTER — link privacy/cookie sono testo, non &lt;a href&gt;
+   Widget di testo con "Cookie Policy | Privacy Policy" come plain text
+   Fix: sostituire con link effettivi alle pagine (dopo averle create)</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Analisi SEO</h3>
+    <div class="log-block">HOMEPAGE
+  Title: "Pirolino Beach - Ristorante e pizzeria sul Lago Maggiore a Dormelletto" ✓
+  Meta desc: presente e pertinente ✓
+  OG tags: title, desc, image, locale ✓
+  OG image: logo 600x40px — troppo piccolo, usare foto 1200x630px
+  Schema: WebPage + BreadcrumbList ✓
+  Schema LocalBusiness: MANCANTE ✗
+
+/RISTORANTE/
+  Title: "Ristorante - Pirolino Beach, piatti e pizza sul Lago Maggiore" ✓
+  Meta desc: presente ✓
+  Alt text immagini: assenti o generici (IMG_1129, 13-b) ✗
+
+/TERRAZZA/
+  Title: "Terrazza - Pirolino Beach, l'aperitivo esclusivo sul Lago Maggiore" ✓
+  Alt text immagini: assenti ✗
+
+/SPIAGGIA/
+  Title: "Spiaggia - Pirolino Beach, sul Lago Maggiore vicino ad Arona" ✓
+  Meta desc: contiene typo "sporde" (→ "sponde") ✗
+  Alt text: assenti (jeff-isaak-ow4QxEMA_zc-unsplash) ✗
+
+/CONTATTI/
+  Title: "Contatti - Pirolino Beach" ✓ (potrebbe essere più descrittivo)
+  Google Maps: NON presente ✗
+  Schema LocalBusiness: MANCANTE ✗
+  Orari: presenti nel testo ma non strutturati ✗
+
+/LAVORA-CON-NOI/
+  Title OK, form presente ✓
+  Schema JobPosting: MANCANTE ✗
+  Privacy checkbox: presente ma link non funzionante ✗
+
+SITEMAP (6 pagine):
+  /, /spiaggia/, /terrazza/, /ristorante/, /contatti/, /lavora-con-noi/
+  Tutte con URL http:// (dovrebbe essere https://)
+  Ultima modifica: 2026-03-08 (lavora-con-noi)
+  Sitemap category (clients, team, testimonials): probabilmente vuote/inutili</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Cosa va bene</h3>
+    <ul style="font-size:.78rem; color:var(--text-secondary); padding-left:1.2rem; line-height:1.9;">
+        <li>HTTPS attivo e funzionante</li>
+        <li>TTFB eccellente (64ms)</li>
+        <li>Meta title e description presenti su tutte le pagine</li>
+        <li>Open Graph tags configurati</li>
+        <li>Yoast SEO installato e attivo</li>
+        <li>Cookiebot installato con banner funzionante</li>
+        <li>Responsive/mobile funzionante</li>
+        <li>Breadcrumb schema su tutte le pagine</li>
+        <li>robots.txt permissivo (nessun blocco)</li>
+        <li>Pagine principali tutte raggiungibili (200)</li>
+    </ul>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Interventi consigliati (priorit&agrave;)</h3>
+    <div class="log-block">URGENTE (legale):
+  1. Creare pagina Privacy Policy con informativa GDPR completa
+     → Titolare, finalità, base giuridica, diritti, retention, contatti DPO
+  2. Creare pagina Cookie Policy
+     → Elenco cookie, categorie, durata, come disattivarli
+  3. Rendere cliccabili i link nel footer
+  4. Verificare che il form "Lavora con noi" linki alla privacy reale
+
+IMPORTANTE (SEO):
+  5. Fix mixed content: Elementor font URL http → https
+  6. Fix sitemap: cambiare URL base in Yoast da http a https
+  7. Aggiungere schema LocalBusiness (Restaurant) con orari, indirizzo, tel
+  8. Fix typo meta description spiaggia: "sporde" → "sponde"
+  9. Aggiungere alt text descrittivi a tutte le immagini
+  10. OG image homepage: usare foto 1200x630 invece del logo 600x40
+
+CONSIGLIATO:
+  11. Creare pagina FAQ dedicata con schema FAQPage
+  12. Aggiungere Google Maps embed in pagina contatti
+  13. Aggiungere schema JobPosting per le posizioni aperte
+  14. Rimuovere sitemap vuote (clients-category, team-category, testimonials)</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>Errori console (48 mixed content)</h3>
+    <div class="log-block">Mixed Content: page loaded over HTTPS but requested insecure stylesheet:
+  http://pirolinobeach.it/wp-content/uploads/elementor/google-fonts/css/roboto.css
+  http://pirolinobeach.it/wp-content/uploads/elementor/google-fonts/css/robotoslab.css
+  http://pirolinobeach.it/wp-content/uploads/elementor/google-fonts/css/notoserifdisplay.css
+  http://pirolinobeach.it/wp-content/uploads/elementor/google-fonts/css/inter.css
+  http://pirolinobeach.it/wp-content/uploads/elementor/google-fonts/css/prata.css
+  http://pirolinobeach.it/wp-content/uploads/elementor/google-fonts/css/dmsans.css
+
+Causa: Elementor salva le URL dei Google Fonts con http://
+Questi font vengono BLOCCATI dal browser → il sito usa font di fallback
+
+Fix rapido:
+  WP Admin → Elementor → Impostazioni → Avanzate
+  → Metodo di caricamento Google Fonts: cambiare a "Default" o "CDN"
+
+Fix definitivo:
+  wp search-replace 'http://pirolinobeach.it' 'https://pirolinobeach.it' --dry-run
+  (poi senza --dry-run se ok)</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="watermark"><a href="https://giobi.com">Radar &middot; giobi.com</a></div>
+
+<script>
+function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+</body>
+</html>
