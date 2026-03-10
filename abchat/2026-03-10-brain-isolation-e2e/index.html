@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — ABChat: Brain Isolation E2E</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+
+/* Score */
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+/* Steps */
+.section { padding: 1.5rem 0; }
+.section-title { font-size: .7rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: .5rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .3rem; }
+.step-icon { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .65rem; flex-shrink: 0; }
+.step-icon.pass { background: var(--green-bg); color: var(--green); border: 1px solid rgba(21,128,61,.2); }
+.step-icon.fail { background: var(--red-bg); color: var(--red); border: 1px solid rgba(185,28,28,.2); }
+.step-name { font-weight: 600; font-size: .82rem; }
+.step-detail { font-size: .75rem; color: var(--text-secondary); padding-left: 1.7rem; }
+.step-time { font-size: .7rem; color: var(--text-muted); margin-left: auto; }
+
+/* Stats grid */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem; }
+.stat { background: var(--surface); padding: 1.25rem; text-align: center; }
+.stat-value { font-size: 1.4rem; font-weight: 700; letter-spacing: -.02em; }
+.stat-value.green { color: var(--green); }
+.stat-label { font-size: .6rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); margin-top: .25rem; }
+
+/* Context box */
+.context-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+.context-box h3 { font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; }
+.kv { display: flex; gap: 1rem; padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); font-size: .82rem; }
+.kv:last-child { border-bottom: none; }
+.kv-k { color: var(--text-muted); width: 140px; flex-shrink: 0; font-size: .72rem; font-weight: 500; text-transform: uppercase; letter-spacing: .05em; }
+.kv-v { color: var(--text); }
+.kv-v code { background: var(--surface-alt); padding: .1rem .4rem; border-radius: 2px; font-size: .78rem; }
+
+/* Screenshots */
+.screenshots { padding: 1.5rem 0; }
+.screenshot-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+.screenshot-item { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: border-color .15s; }
+.screenshot-item:hover { border-color: var(--text-muted); }
+.screenshot-item img { width: 100%; display: block; }
+.screenshot-label { padding: .5rem .75rem; font-size: .65rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; background: var(--surface); border-top: 1px solid var(--border); }
+
+/* Fixes section */
+.fix-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: .5rem; }
+.fix-item .fix-title { font-weight: 600; font-size: .82rem; margin-bottom: .25rem; }
+.fix-item .fix-desc { font-size: .75rem; color: var(--text-secondary); }
+.fix-item .fix-file { font-size: .7rem; color: var(--text-muted); margin-top: .25rem; }
+.fix-item .fix-file code { background: var(--surface-alt); padding: .1rem .35rem; border-radius: 2px; font-size: .7rem; }
+
+/* Lightbox */
+.lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 100; align-items: center; justify-content: center; cursor: pointer; }
+.lightbox.active { display: flex; }
+.lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 4px; }
+
+/* Footer */
+.footer { border-top: 1px solid var(--border); padding: 1.5rem 0; margin-top: 1.5rem; }
+.footer-text { font-size: .65rem; color: var(--text-muted); text-align: center; }
+
+@media (max-width: 640px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .screenshot-grid { grid-template-columns: 1fr; }
+    .score-card { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand"><a href="../">radar / abchat</a></div>
+    <div class="title">Brain Isolation E2E</div>
+    <div class="meta-row">
+        <span>10 Marzo 2026, 18:04</span>
+        <span>Brain: demo</span>
+        <span>Durata: 20.7s</span>
+        <span>Playwright headless</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- Score -->
+<div class="score-section">
+    <div class="score-card">
+        <div class="score-ring">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+                <circle class="track" cx="50" cy="50" r="42"/>
+                <circle class="fill" cx="50" cy="50" r="42" stroke="#15803d"
+                    stroke-dasharray="263.9" stroke-dashoffset="0"/>
+            </svg>
+            <div class="score-number" style="color:var(--green)">10<small>/10</small></div>
+        </div>
+        <div class="score-summary">
+            <h2>Tutti i check superati</h2>
+            <p>Login via magic link, boot Claude CLI, conversazione bidirezionale, upload file con ownership corretta <code>ws-demo:ws-demo</code>. Nessun errore. L'isolamento dei brain funziona end-to-end.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+    <div class="stat"><div class="stat-value green">10</div><div class="stat-label">Pass</div></div>
+    <div class="stat"><div class="stat-value" style="color:var(--red)">0</div><div class="stat-label">Fail</div></div>
+    <div class="stat"><div class="stat-value">20.7s</div><div class="stat-label">Durata</div></div>
+    <div class="stat"><div class="stat-value">8</div><div class="stat-label">Screenshot</div></div>
+</div>
+
+<!-- Test Steps -->
+<div class="section">
+    <div class="section-title">Step del test</div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">Magic Link</div>
+            <div class="step-time">&lt;1s</div>
+        </div>
+        <div class="step-detail">Generato via <code>php artisan radar:login</code> con scadenza 10 min</div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">Login</div>
+            <div class="step-time">1s</div>
+        </div>
+        <div class="step-detail">Redirect automatico a dashboard dopo click magic link</div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">Navigate to Brain</div>
+            <div class="step-time">1s</div>
+        </div>
+        <div class="step-detail">Navigazione a <code>/webssh/demo</code> &mdash; pagina brain caricata</div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">Start Session</div>
+            <div class="step-time">2s</div>
+        </div>
+        <div class="step-detail">Click su "Start" &rarr; sessione tmux avviata, terminal xterm visibile</div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">Claude Boot</div>
+            <div class="step-time">5s</div>
+        </div>
+        <div class="step-detail">Trust prompt auto-accepted &rarr; Claude Code v2.1.71 / Sonnet 4.6 / Claude Max pronto</div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">Send Message</div>
+            <div class="step-time">2s</div>
+        </div>
+        <div class="step-detail">"ciao come ti chiami" digitato nel terminale e inviato con Enter</div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">Claude Response</div>
+            <div class="step-time">8s</div>
+        </div>
+        <div class="step-detail">Risposta ricevuta (391 chars): Claude ha letto boot/, identificato template non configurati, proposto onboarding</div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">File Upload</div>
+            <div class="step-time">2s</div>
+        </div>
+        <div class="step-detail">File <code>radar-test-*.txt</code> caricato via Upload button nel footer WebSSH</div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">File in Inbox</div>
+            <div class="step-time">&lt;1s</div>
+        </div>
+        <div class="step-detail">File trovato in <code>inbox/webssh/</code> del workspace demo</div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-icon pass">&#10003;</div>
+            <div class="step-name">File Ownership</div>
+            <div class="step-time">&lt;1s</div>
+        </div>
+        <div class="step-detail">Owner: <code>ws-demo:ws-demo</code> &mdash; isolamento corretto, nessun leak cross-brain</div>
+    </div>
+</div>
+
+<!-- Context -->
+<div class="section">
+    <div class="section-title">Contesto del test</div>
+    <div class="context-box">
+        <h3>Cosa testa questo radar</h3>
+        <div class="kv"><div class="kv-k">Obiettivo</div><div class="kv-v">Verifica end-to-end dell'isolamento brain dopo la migrazione da permessi 770/660 (gruppo condiviso <code>abchat</code>) a 700/600 (owner-only <code>ws-{slug}:ws-{slug}</code>)</div></div>
+        <div class="kv"><div class="kv-k">Trigger</div><div class="kv-v">INC-001 &mdash; privilege escalation orizzontale dimostrata da Puddu: qualsiasi ws-* poteva leggere .env di tutti gli altri brain</div></div>
+        <div class="kv"><div class="kv-k">Brain target</div><div class="kv-v"><code>demo</code> (5cdab4fd-7b74-43f1-a47d-b6d9a211c485)</div></div>
+        <div class="kv"><div class="kv-k">Test runner</div><div class="kv-v">Playwright (Chromium headless) via <code>radar_abchat.js</code></div></div>
+        <div class="kv"><div class="kv-k">Auth</div><div class="kv-v">Magic link generato server-side con scadenza 10 min</div></div>
+    </div>
+
+    <div class="context-box">
+        <h3>Fix applicati (pre-test)</h3>
+        <div class="kv"><div class="kv-k">Permessi</div><div class="kv-v">Tutti i workspace migrati a 700/600 con owner <code>ws-{slug}:ws-{slug}</code></div></div>
+        <div class="kv"><div class="kv-k">Upload</div><div class="kv-v"><code>server.js</code>: file scritti via <code>sudo -u ws-{slug} tee</code> invece di fs.writeFileSync</div></div>
+        <div class="kv"><div class="kv-k">Launcher</div><div class="kv-v"><code>brain-launcher.sh</code>: sidecar eseguito come <code>sudo -u $WS_OWNER</code> (prima girava come giobi)</div></div>
+        <div class="kv"><div class="kv-k">Auth checks</div><div class="kv-v">AuthCheck + ApiKeyCheck: verifica refreshToken, non accessToken expiry</div></div>
+        <div class="kv"><div class="kv-k">Onboarding</div><div class="kv-v">Nuovo OnboardingCheck: verifica <code>.claude.json</code> con <code>hasCompletedOnboarding</code></div></div>
+        <div class="kv"><div class="kv-k">Provisioning</div><div class="kv-v"><code>BrainProvisioningService.php</code>: nuovi brain nascono isolati (700/600, no gruppo abchat)</div></div>
+    </div>
+</div>
+
+<!-- Screenshots -->
+<div class="section">
+    <div class="section-title">Screenshot</div>
+    <div class="screenshot-grid">
+        <div class="screenshot-item" onclick="openLightbox(this)">
+            <img src="01-login.png" alt="After login" loading="lazy">
+            <div class="screenshot-label">1. Login &mdash; Dashboard</div>
+        </div>
+        <div class="screenshot-item" onclick="openLightbox(this)">
+            <img src="03-terminal.png" alt="Terminal visible" loading="lazy">
+            <div class="screenshot-label">2. Terminal xterm visibile</div>
+        </div>
+        <div class="screenshot-item" onclick="openLightbox(this)">
+            <img src="04-claude-ready.png" alt="Claude ready" loading="lazy">
+            <div class="screenshot-label">3. Claude Code bootato</div>
+        </div>
+        <div class="screenshot-item" onclick="openLightbox(this)">
+            <img src="05-message-sent.png" alt="Message sent" loading="lazy">
+            <div class="screenshot-label">4. Messaggio inviato</div>
+        </div>
+        <div class="screenshot-item" onclick="openLightbox(this)">
+            <img src="06-response.png" alt="Response received" loading="lazy">
+            <div class="screenshot-label">5. Risposta Claude</div>
+        </div>
+        <div class="screenshot-item" onclick="openLightbox(this)">
+            <img src="08-final.png" alt="Final state" loading="lazy">
+            <div class="screenshot-label">6. Stato finale + upload</div>
+        </div>
+    </div>
+</div>
+
+<!-- Verification -->
+<div class="section">
+    <div class="section-title">Verifica isolamento</div>
+    <div class="context-box">
+        <h3>Cross-brain access test</h3>
+        <div class="kv"><div class="kv-k">Comando</div><div class="kv-v"><code>sudo -u ws-puddu cat /var/abchat/workspaces/alyce/.env</code></div></div>
+        <div class="kv"><div class="kv-k">Risultato</div><div class="kv-v" style="color:var(--green); font-weight:600">Permission denied</div></div>
+        <div class="kv"><div class="kv-k">Prima del fix</div><div class="kv-v" style="color:var(--red)">Accesso completo a tutti i .env, secrets esposti</div></div>
+    </div>
+</div>
+
+</div>
+
+<div class="footer">
+<div class="container">
+    <div class="footer-text">Radar ABChat &middot; Generato da Anacleto &middot; 10 Marzo 2026</div>
+</div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+    <img id="lightbox-img" src="" alt="">
+</div>
+<script>
+function openLightbox(el) {
+    const img = el.querySelector('img');
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+}
+</script>
+
+</body>
+</html>
