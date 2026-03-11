@@ -1,0 +1,19 @@
+{
+  "bigiotteria_home": {
+    "found": true,
+    "details": "Oggettistica e bigiotteria artigianale italiana di qualità"
+  },
+  "disclaimer_home": {
+    "found": true,
+    "details": "prodotti al carrello per ricevere un preventivo personalizzato.  Il nostro sito non è un e-commerce ma solo un catalogo visionabile online. Ogni ulteriore informazione tecnico/com"
+  },
+  "disclaimer_catalogo": {
+    "found": true,
+    "details": "foto rappresentano gli articoli veramente presenti in vendita.  Il nostro sito non è un e-commerce ma solo un catalogo visionabile online. Ogni ulteriore informazione tecnico/com"
+  },
+  "foto_reali_catalogo": {
+    "found": false,
+    "details": ""
+  },
+  "catalogo_url": "https://wordpress-1174648-6105957.cloudwaysapps.com/catalogo/"
+}
