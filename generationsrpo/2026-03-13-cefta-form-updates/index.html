@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — CEFTA Application Forms: Emergency Updates (March 13, 2026)</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --blue: #1d4ed8; --blue-bg: rgba(29,78,216,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.section { padding: 1.5rem 0; }
+.section-title { font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+
+/* Index of changes */
+.index-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+.index-card h3 { font-size: .85rem; font-weight: 700; margin-bottom: 1rem; }
+.index-table { width: 100%; border-collapse: collapse; }
+.index-table th { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); text-align: left; padding: .5rem .75rem; border-bottom: 1px solid var(--border); }
+.index-table td { padding: .6rem .75rem; border-bottom: 1px solid var(--surface-alt); font-size: .82rem; vertical-align: top; }
+.index-table tr:last-child td { border-bottom: none; }
+
+.badge { display: inline-block; padding: .15rem .5rem; border-radius: 2px; font-size: .7rem; font-weight: 600; letter-spacing: .04em; }
+.badge-done { background: var(--green-bg); color: var(--green); }
+.badge-open { background: var(--yellow-bg); color: var(--yellow); }
+.badge-blocked { background: var(--red-bg); color: var(--red); }
+.badge-info { background: var(--blue-bg); color: var(--blue); }
+
+/* Steps */
+.step-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
+.step-icon { font-size: 1.1rem; }
+.step-title { font-size: .85rem; font-weight: 600; }
+.step-body { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+.step-body code { background: var(--surface-alt); padding: .1rem .4rem; border-radius: 2px; font-size: .78rem; }
+
+/* Screenshots */
+.screenshot { margin: 1rem 0; }
+.screenshot img { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); }
+.screenshot-caption { font-size: .72rem; color: var(--text-muted); margin-top: .35rem; text-align: center; }
+
+/* Open points */
+.open-point { background: var(--yellow-bg); border: 1px solid rgba(133,77,14,.15); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.open-point h4 { font-size: .82rem; font-weight: 600; color: var(--yellow); margin-bottom: .35rem; }
+.open-point p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+/* Tech details */
+.tech-block { background: #1c1917; color: #d6d3d1; border-radius: var(--radius); padding: 1rem 1.25rem; margin: .75rem 0; font-size: .78rem; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.footer { padding: 2rem 0; margin-top: 2rem; border-top: 1px solid var(--border); text-align: center; font-size: .7rem; color: var(--text-muted); }
+
+/* Responsive */
+@media (max-width: 700px) {
+    .container { padding: 0 1.25rem; }
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .5rem; }
+    .index-table { font-size: .75rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand"><span>&#x1F4E1;</span> <a href="https://radar.giobi.com/dashboard/">Radar</a> &middot; giobi.com</div>
+    <div class="title">CEFTA Application Forms &mdash; Emergency Updates</div>
+    <div class="meta-row">
+        <div class="meta-item">&#128197; March 13, 2026</div>
+        <div class="meta-item">&#127919; forms.grworktech.com</div>
+        <div class="meta-item">&#128293; Crisis / Urgent</div>
+        <div class="meta-item">&#128260; 6 forms affected</div>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- Score -->
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="#854d0e"
+                stroke-dasharray="264" stroke-dashoffset="66"/>
+        </svg>
+        <div class="score-number">75<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Partially Complete &mdash; Open Points Remain</h2>
+        <p>Core changes implemented and verified on all 6 application forms (logo removal, privacy checkbox removal, data protection update, consent text update). Additional changes requested by David require clarification or manual intervention. See open points below.</p>
+    </div>
+</div>
+</div>
+
+<!-- INDEX OF CHANGES -->
+<div class="section">
+<div class="section-title">Index of Changes</div>
+<div class="index-card">
+    <h3>All Requested Changes &mdash; Status Overview</h3>
+    <table class="index-table">
+        <thead>
+            <tr><th>#</th><th>Change Requested</th><th>Source</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Remove Generations Recruitment logo from all 6 application forms</td>
+                <td>David (WhatsApp 10:27)</td>
+                <td><span class="badge badge-done">DONE</span></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Remove Generations Recruitment logo from "Application Received" confirmation email</td>
+                <td>David (email recap)</td>
+                <td><span class="badge badge-done">DONE</span></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Remove second privacy checkbox at bottom of forms (the one linking to Privacy Policy / referencing the GRANT)</td>
+                <td>David (WhatsApp 10:25)</td>
+                <td><span class="badge badge-done">DONE</span></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Update Data Protection Notice &mdash; retention changed from "5 years after Grant closure" to "until 2034" (European Commission obligations)</td>
+                <td>Emilie (email 12 Mar)</td>
+                <td><span class="badge badge-done">DONE</span></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Update consent checkbox text to: "I confirm that I have read and understand the data protection notice and the retention of personal data as outlined above."</td>
+                <td>Emilie (email 12 Mar)</td>
+                <td><span class="badge badge-done">DONE</span></td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Update Privacy Policy page (Section 4 &mdash; Data Retention) with same 2034 retention text</td>
+                <td>Emilie (email 12 Mar)</td>
+                <td><span class="badge badge-done">DONE</span></td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Replace <code>emilie@generationsrecruitment.com</code> with <code>cefta@cefta.int</code></td>
+                <td>David (WhatsApp 10:26)</td>
+                <td><span class="badge badge-open">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>Remove ALL mentions of "Generations" from candidate-facing content</td>
+                <td>David (email recap)</td>
+                <td><span class="badge badge-open">OPEN</span></td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>Delete consent paragraph: "By applying for this position, you consent to the processing and sharing of your personal data by the CEFTA Secretariat and CEFTA Parties..."</td>
+                <td>David (WhatsApp 10:25)</td>
+                <td><span class="badge badge-info">NOT FOUND</span></td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Practical Information: keep first 2 points, delete next 4 points</td>
+                <td>David (WhatsApp 10:28)</td>
+                <td><span class="badge badge-info">DAVID SELF</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="showTab('client')">&#128064; What Was Done</button>
+    <button class="tab-btn" onclick="showTab('open')">&#9888;&#65039; Open Points</button>
+    <button class="tab-btn" onclick="showTab('tech')">&#128295; Technical Details</button>
+</div>
+
+<!-- TAB: What Was Done -->
+<div class="tab-panel active" id="tab-client">
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-icon">&#9989;</span>
+        <span class="step-title">1. Generations Recruitment Logo Removed</span>
+    </div>
+    <div class="step-body">
+        The Generations Recruitment logo has been removed from all 6 application forms and from the "Application Received" confirmation email. Only the CEFTA Secretariat logo remains in the header.
+    </div>
+    <div class="screenshot">
+        <img src="screenshot-header.png" alt="Form header showing only CEFTA logo">
+        <div class="screenshot-caption">Form header &mdash; only CEFTA Secretariat logo (HOA form shown, identical on all 6)</div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-icon">&#9989;</span>
+        <span class="step-title">2. Second Privacy Checkbox Removed</span>
+    </div>
+    <div class="step-body">
+        The checkbox at the bottom of the form ("I have read and I agree to the Privacy Policy...") has been removed from all 6 forms. This was the checkbox that linked to the Privacy Policy page referencing the GRANT. Only the declaration consent checkbox remains.
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-icon">&#9989;</span>
+        <span class="step-title">3. Data Protection Notice Updated</span>
+    </div>
+    <div class="step-body">
+        The Data Protection Notice section (inside "Recruitment Process Information") has been updated on all 6 forms. The old wording about "five (5) years following the closure of the Grant" has been replaced with the new retention wording: data will be retained <strong>until 2034</strong>, as required by CEFTA Secretariat obligations under European Commission agreements.
+    </div>
+    <div class="screenshot">
+        <img src="screenshot-declaration.png" alt="Declaration section with updated data protection text">
+        <div class="screenshot-caption">Declaration section showing updated Data Protection Notice and consent checkbox (HOA form)</div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-icon">&#9989;</span>
+        <span class="step-title">4. Consent Checkbox Text Updated</span>
+    </div>
+    <div class="step-body">
+        The consent checkbox now reads: <em>"I confirm that I have read and understand the data protection notice and the retention of personal data as outlined above."</em> &mdash; updated on all 6 forms.
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-icon">&#9989;</span>
+        <span class="step-title">5. Privacy Policy Page Updated</span>
+    </div>
+    <div class="step-body">
+        Section 4 (Data Retention) of the Privacy Policy page has been updated to reflect the new 2034 retention date, matching the wording on the application forms.
+    </div>
+    <div class="screenshot">
+        <img src="screenshot-privacy.png" alt="Privacy page with updated retention text">
+        <div class="screenshot-caption">Privacy Policy &mdash; Section 4: Data Retention (updated to 2034)</div>
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-icon">&#9989;</span>
+        <span class="step-title">6. All 6 Forms Verified</span>
+    </div>
+    <div class="step-body">
+        Automated Playwright verification confirmed all changes are live on all 6 forms:
+        <br><br>
+        &#9989; HOA (Head of Administration)<br>
+        &#9989; FO (Finance Officer)<br>
+        &#9989; PO (Procurement Officer)<br>
+        &#9989; TO (Trade Officer)<br>
+        &#9989; TE (Trade Expert)<br>
+        &#9989; TES (Trade Expert &mdash; Trade in Services)
+    </div>
+</div>
+
+</div>
+
+<!-- TAB: Open Points -->
+<div class="tab-panel" id="tab-open">
+
+<div class="open-point">
+    <h4>OPEN #7 &mdash; Replace emilie@generationsrecruitment.com with cefta@cefta.int</h4>
+    <p>This email address does <strong>not appear</strong> anywhere in the application forms, confirmation email, or form configuration. It may appear in:
+    <br>&bull; Vacancy notices published on the CEFTA website
+    <br>&bull; PDF documents shared externally
+    <br>&bull; Other pages not managed by FormPilot
+    <br><br><strong>Action needed:</strong> Identify where this email appears and replace it. If it's on the CEFTA website, this needs to be done by CEFTA directly.</p>
+</div>
+
+<div class="open-point">
+    <h4>OPEN #8 &mdash; Remove ALL mentions of "Generations" from candidate-facing content</h4>
+    <p>The GR logo has been removed, but textual references to "Generations RPO" still appear in:</p>
+    <p>
+    <br><strong>Application forms (all 6):</strong>
+    <br>&bull; Data Protection Notice: <em>"Generations RPO acts as Data Processor..."</em>
+    <br><br><strong>Confirmation email:</strong>
+    <br>&bull; Footer: <em>"Generations RPO SRL, Chauss&eacute;e de Waterloo 412/F, 1050 Ixelles, Belgium"</em>
+    <br><br><strong>Privacy Policy page:</strong>
+    <br>&bull; Section 1: <em>"Generations RPO SRL acts as Data Processor..."</em>
+    <br>&bull; Controller block: <em>"Generations RPO SRL, BCE 1034.384.442..."</em>
+    <br>&bull; Section 6: contact email is <code>david@generationsrecruitment.com</code>
+    <br><br><strong>Action needed:</strong> Decide what to replace "Generations RPO" with in legal/GDPR contexts. The Data Processor designation is a legal requirement &mdash; it can't simply be deleted. Options:
+    <br>&bull; Replace with a generic reference (but Data Processor must be identified)
+    <br>&bull; Replace contact email with <code>cefta@cefta.int</code>
+    <br>&bull; Confirm with CEFTA what wording they want for the Processor identification
+    </p>
+</div>
+
+<div class="open-point">
+    <h4>INFO #9 &mdash; Consent paragraph "By applying for this position..."</h4>
+    <p>The text David requested to delete (<em>"By applying for this position, you consent to the processing and sharing of your personal data by the CEFTA Secretariat and CEFTA Parties for the purpose of the recruitment and selection process"</em>) was <strong>not found</strong> in any of the 6 forms. This text may have been from a previous version or from an external document. No action needed unless this text exists elsewhere.</p>
+</div>
+
+<div class="open-point">
+    <h4>INFO #10 &mdash; Practical Information section</h4>
+    <p>David indicated he would handle this change himself (<em>"questa parte la correggo io"</em>). This section does not exist in the FormPilot application forms &mdash; it may be in the vacancy notices or on the CEFTA website.</p>
+</div>
+
+</div>
+
+<!-- TAB: Technical Details -->
+<div class="tab-panel" id="tab-tech">
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-title">Environment</span>
+    </div>
+    <div class="step-body">
+        <strong>Server:</strong> 135.181.144.5 (generations.abchat.it)<br>
+        <strong>App:</strong> Laravel 12 + Livewire, SQLite<br>
+        <strong>Repo:</strong> github.com/giobi/formpilot (branch: generations)<br>
+        <strong>Forms:</strong> Data-driven from <code>forms.config</code> JSON in SQLite<br>
+        <strong>Commit:</strong> 9bcdfb7 (pushed to origin/generations)
+    </div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-title">Database Changes (all 6 forms)</span>
+    </div>
+    <div class="step-body">Python script applied to SQLite database:</div>
+    <div class="tech-block">UPDATE forms SET config = ? WHERE slug LIKE '%cefta%'
+
+Changes per form:
+1. config.logos[] &rarr; removed entry with url containing "GenerationsRecruitment"
+2. config.privacy_url &rarr; deleted key (removes second checkbox)
+3. config.sections[declaration].sections[Data Protection Notice].text &rarr; replaced
+4. config.sections[declaration].consent_text &rarr; replaced</div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-title">File Changes (committed + pushed)</span>
+    </div>
+    <div class="tech-block">resources/views/emails/application-confirmation.blade.php
+  &rarr; Removed GR logo &lt;img&gt; tag
+
+resources/views/public/privacy.blade.php
+  &rarr; Section 4 retention text: "five (5) years" &rarr; "until 2034"</div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-title">Verification (Playwright)</span>
+    </div>
+    <div class="tech-block">All 6 forms verified:
+  GR logo:        REMOVED on all 6
+  Privacy checkbox: REMOVED on all 6
+  "2034" text:     PRESENT on all 6
+  Old "Grant" text: ABSENT on all 6
+  Consent text:    UPDATED on all 6
+  Privacy page:    UPDATED (2034 retention)</div>
+</div>
+
+<div class="step-card">
+    <div class="step-header">
+        <span class="step-title">Remaining "Generations" References</span>
+    </div>
+    <div class="step-body">If ZERO Generations mentions is required, these locations need updating:</div>
+    <div class="tech-block">1. DB config (all 6 forms) &rarr; declaration.sections[1].text
+   "Generations RPO acts as Data Processor..."
+
+2. views/emails/application-confirmation.blade.php &rarr; footer
+   "Generations RPO SRL, Chauss&eacute;e de Waterloo 412/F..."
+
+3. views/public/privacy.blade.php &rarr; Sections 1, controller-block, Section 6
+   Multiple references to Generations RPO SRL + david@generationsrecruitment.com
+
+4. public/logos/GenerationsRecruitment_Logo.png
+   File still exists (unused but present on disk)</div>
+</div>
+
+</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>&#x1F4E1; Radar &middot; giobi.com &middot; Generated March 13, 2026 11:15 CET</p>
+</div>
+
+</div>
+
+<script>
+function showTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
