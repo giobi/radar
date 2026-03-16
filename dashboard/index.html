@@ -1,238 +1,52 @@
 <!DOCTYPE html>
-<html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<title>Dashboard &#8212; Radar</title>
+<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Radar — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-    --bg: #fafaf9; --surface: #ffffff;
-    --border: #e5e5e0; --border-strong: #d0d0c8;
-    --green: #15803d; --yellow: #854d0e; --red: #b91c1c;
-    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
-    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
-    --radius: 3px;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.65; font-size:14px; }
-
-header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2.5rem 0 2rem; }
-.container { max-width: 860px; margin:0 auto; padding:0 2rem; }
-.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
-.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
-h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; }
-.subtitle { font-size: .78rem; color: var(--text-muted); margin-top: .25rem; }
-.stats { display: flex; gap: 2rem; margin-top: 1rem; font-size: .7rem; color: var(--text-muted); }
-.stats strong { color: var(--text); }
-main { padding: 2rem 0 4rem; }
-
-.project { display: flex; align-items: center; justify-content: space-between; padding: .85rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: background .1s; }
-.project:first-child { border-top: 1px solid var(--border); }
-.project:hover { background: rgba(0,0,0,.02); padding-left: .5rem; padding-right: .5rem; margin-left: -.5rem; margin-right: -.5rem; border-radius: var(--radius); }
-.project-left { flex: 1; }
-.project-name { font-weight: 600; font-size: .85rem; }
-.project-url { font-size: .68rem; color: var(--text-muted); margin-top: .15rem; }
-.project-right { text-align: right; flex-shrink: 0; margin-left: 1rem; }
-.project-score { font-size: .85rem; font-weight: 700; }
-.project-runs { font-size: .65rem; color: var(--text-muted); margin-top: .15rem; }
-.score-green { color: var(--green); }
-.score-yellow { color: var(--yellow); }
-.score-red { color: var(--red); }
-
-.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
-.watermark a { color: var(--text-muted); text-decoration: none; }
-.watermark a:hover { color: var(--text-secondary); }
-</style>
-</head>
-<body>
-<header>
-<div class="container">
-    <div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>Radar</div>
-    <h1>Dashboard</h1>
-    <p class="subtitle">Progetti monitorati e report di collaudo</p>
-    <div class="stats">
-        <span><strong>17</strong> progetti</span>
-        <span><strong>24</strong> report</span>
-        <span>ultimo: <strong>11 marzo 2026</strong></span>
-    </div>
+:root { --bg:#fafaf9;--surface:#fff;--border:#e5e5e0;--text:#1c1917;--text-secondary:#57534e;--text-muted:#a8a29e;--green:#15803d;--yellow:#854d0e;--red:#b91c1c;--mono:'IBM Plex Mono',monospace;--radius:3px }
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:14px}
+.header{background:var(--surface);border-bottom:2px solid var(--text);padding:2rem 0 1.75rem}
+.container{max-width:1080px;margin:0 auto;padding:0 2.5rem}
+.brand{font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.75rem}
+.brand a{color:var(--text-muted);text-decoration:none}
+h1{font-size:1.3rem;font-weight:700;margin-bottom:.35rem}
+.stats{display:flex;gap:2rem;font-size:.75rem;color:var(--text-secondary);margin-top:.5rem}
+table{width:100%;border-collapse:collapse;margin-top:1.5rem;font-size:.82rem}
+th{text-align:left;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);padding:.6rem 0;border-bottom:1px solid var(--border)}
+td{padding:.6rem 0;border-bottom:1px solid #f5f5f4}
+a{color:var(--text);text-decoration:none}a:hover{text-decoration:underline}
+</style></head><body>
+<div class="header"><div class="container">
+<div class="brand">📡 <a href="https://radar.giobi.com/">Radar</a></div>
+<h1>Dashboard</h1>
+<div class="stats">
+<span>20 progetti</span>
+<span>30 report</span>
+<span>Ultimo: 2026-03-16</span>
 </div>
-</header>
-<main>
-<div class="container">
-    <a class="project" href="../abchat/2026-03-11-generations-500-permission-fix/">
-        <div class="project-left">
-            <div class="project-name">ABChat</div>
-            <div class="project-url">11 marzo 2026 &middot; ABChat Generations — Sito inaccessibile per errore permessi</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">4 report</div>
-        </div>
-    </a>
-    <a class="project" href="../pessano/2026-03-11-verifica-banners/">
-        <div class="project-left">
-            <div class="project-name">Pessano</div>
-            <div class="project-url">11 marzo 2026 &middot; Pessano: Verifica banners e disclaimer</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">2 report</div>
-        </div>
-    </a>
-    <a class="project" href="../pirolinobeach/2026-03-09-audit-seo-privacy/">
-        <div class="project-left">
-            <div class="project-name">Pirolino Beach</div>
-            <div class="project-url">9 marzo 2026 &middot; Pirolino Beach — Audit SEO, Privacy e Conformit&agrave;</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-yellow">60</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../calia/2026-03-09-ga4-ecommerce-events-fix/">
-        <div class="project-left">
-            <div class="project-name">Calia</div>
-            <div class="project-url">9 marzo 2026 &middot; Ripristino eventi ecommerce GA4</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">2 report</div>
-        </div>
-    </a>
-    <a class="project" href="../nexum/2026-03-06-contract-sale-test/">
-        <div class="project-left">
-            <div class="project-name">Nexum</div>
-            <div class="project-url">6 marzo 2026 &middot; Test vendita contratto end-to-end</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">3 report</div>
-        </div>
-    </a>
-    <a class="project" href="../ticinotraverso/2026-03-06-post-translation-check/">
-        <div class="project-left">
-            <div class="project-name">Ticino Traverso</div>
-            <div class="project-url">6 marzo 2026 &middot; 2026 03 06 post translation check</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../fasoli/2026-03-06-crisis-cartasi-xpay-fatal/">
-        <div class="project-left">
-            <div class="project-name">Fasoli</div>
-            <div class="project-url">6 marzo 2026 &middot; Fasoli Piante — Sito fuori servizio per errore critico Nexi</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../inenergy/2026-03-05-landing-dinamiche-fix/">
-        <div class="project-left">
-            <div class="project-name">InEnergy</div>
-            <div class="project-url">5 marzo 2026 &middot; Landing dinamiche fix</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">85</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../pornhub/2026-03-04-site-audit/">
-        <div class="project-left">
-            <div class="project-name">Pornhub</div>
-            <div class="project-url">4 marzo 2026 &middot; Site Audit</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">90</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../ledger/2026-03-04-gantt-chart/">
-        <div class="project-left">
-            <div class="project-name">Ledger</div>
-            <div class="project-url">4 marzo 2026 &middot; Gantt Chart Budget Portal</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../lacasadipiero.org/2026-03-04-ssl-redirect-loop/">
-        <div class="project-left">
-            <div class="project-name">La Casa di Piero</div>
-            <div class="project-url">4 marzo 2026 &middot; La Casa di Piero — Sito in down (redirect loop)</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../filippomarcodini/2026-03-03-post-migration/">
-        <div class="project-left">
-            <div class="project-name">Filippo Marcodini</div>
-            <div class="project-url">3 marzo 2026 &middot; filippomarcodini.com — Post-Migration Check</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">90</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../eleonoramari/2026-03-03-post-migration/">
-        <div class="project-left">
-            <div class="project-name">Eleonora Mari</div>
-            <div class="project-url">3 marzo 2026 &middot; Eleonora Mari — Post-migration check</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../robertomotta/2026-03-03-post-migration/">
-        <div class="project-left">
-            <div class="project-name">Roberto Motta</div>
-            <div class="project-url">3 marzo 2026 &middot; Roberto Motta — Post-migration check</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">95</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../tanuki/2026-03-03-cache-benchmark/">
-        <div class="project-left">
-            <div class="project-name">Tanuki</div>
-            <div class="project-url">3 marzo 2026 &middot; Cache Benchmark</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">100</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../veterinariogravellona/2026-03-03-post-migration/">
-        <div class="project-left">
-            <div class="project-name">Veterinario Gravellona</div>
-            <div class="project-url">3 marzo 2026 &middot; Veterinario Gravellona — Post-migrazione Hetzner</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">90</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-    <a class="project" href="../digitag/2026-02-27-full-check/">
-        <div class="project-left">
-            <div class="project-name">DigiTag</div>
-            <div class="project-url">27 febbraio 2026 &middot; 2026 02 27 full check</div>
-        </div>
-        <div class="project-right">
-            <div class="project-score score-green">&mdash;</div>
-            <div class="project-runs">1 report</div>
-        </div>
-    </a>
-</div>
-</main>
-<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
-</body>
-</html>
+</div></div>
+<div class="container" style="padding-top:1.5rem">
+<table><tr><th>Progetto</th><th>Ultimo report</th><th>Caso</th><th>Score</th><th>#</th></tr>
+<tr><td><a href="../abchat/">abchat</a></td><td>2026-03-11</td><td><a href="../abchat/2026-03-11-generations-isolation-e2e/">generations-isolation-e2e</a></td><td style="color:var(--text-muted);font-weight:600">—/100</td><td>5</td></tr>
+<tr><td><a href="../calia/">calia</a></td><td>2026-03-11</td><td><a href="../calia/2026-03-11-anomalia-regale-prodotto-esaurito/">anomalia-regale-prodotto-esaurito</a></td><td style="color:var(--green);font-weight:600">85/100</td><td>3</td></tr>
+<tr><td><a href="../caliaitaliaoutlet/">caliaitaliaoutlet</a></td><td>2026-03-11</td><td><a href="../caliaitaliaoutlet/2026-03-11-prodotto-esaurito-visibile/">prodotto-esaurito-visibile</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
+<tr><td><a href="../caliaitaliaoutlet.com/">caliaitaliaoutlet.com</a></td><td>2026-03-11</td><td><a href="../caliaitaliaoutlet.com/2026-03-11-stock-anomaly-regale/">stock-anomaly-regale</a></td><td style="color:var(--green);font-weight:600">90/100</td><td>1</td></tr>
+<tr><td><a href="../digitag/">digitag</a></td><td>2026-02-27</td><td><a href="../digitag/2026-02-27-full-check/">full-check</a></td><td style="color:var(--text-muted);font-weight:600">—/100</td><td>1</td></tr>
+<tr><td><a href="../eleonoramari/">eleonoramari</a></td><td>2026-03-03</td><td><a href="../eleonoramari/2026-03-03-post-migration/">post-migration</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
+<tr><td><a href="../fasoli/">fasoli</a></td><td>2026-03-06</td><td><a href="../fasoli/2026-03-06-crisis-cartasi-xpay-fatal/">crisis-cartasi-xpay-fatal</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
+<tr><td><a href="../filippomarcodini/">filippomarcodini</a></td><td>2026-03-03</td><td><a href="../filippomarcodini/2026-03-03-post-migration/">post-migration</a></td><td style="color:var(--green);font-weight:600">90/100</td><td>1</td></tr>
+<tr><td><a href="../generationsrpo/">generationsrpo</a></td><td>2026-03-13</td><td><a href="../generationsrpo/2026-03-13-cefta-form-updates/">cefta-form-updates</a></td><td style="color:var(--yellow);font-weight:600">75/100</td><td>1</td></tr>
+<tr><td><a href="../inenergy/">inenergy</a></td><td>2026-03-05</td><td><a href="../inenergy/2026-03-05-landing-dinamiche-fix/">landing-dinamiche-fix</a></td><td style="color:var(--green);font-weight:600">85/100</td><td>1</td></tr>
+<tr><td><a href="../lacasadipiero.org/">lacasadipiero.org</a></td><td>2026-03-04</td><td><a href="../lacasadipiero.org/2026-03-04-ssl-redirect-loop/">ssl-redirect-loop</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
+<tr><td><a href="../ledger/">ledger</a></td><td>2026-03-04</td><td><a href="../ledger/2026-03-04-gantt-chart/">gantt-chart</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
+<tr><td><a href="../nexum/">nexum</a></td><td>2026-03-06</td><td><a href="../nexum/2026-03-06-contract-sale-test/">contract-sale-test</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>3</td></tr>
+<tr><td><a href="../pessano/">pessano</a></td><td>2026-03-16</td><td><a href="../pessano/2026-03-16-fix-colori-carrello/">fix-colori-carrello</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>3</td></tr>
+<tr><td><a href="../pirolinobeach/">pirolinobeach</a></td><td>2026-03-09</td><td><a href="../pirolinobeach/2026-03-09-audit-seo-privacy/">audit-seo-privacy</a></td><td style="color:var(--yellow);font-weight:600">60/100</td><td>1</td></tr>
+<tr><td><a href="../pornhub/">pornhub</a></td><td>2026-03-04</td><td><a href="../pornhub/2026-03-04-site-audit/">site-audit</a></td><td style="color:var(--green);font-weight:600">90/100</td><td>1</td></tr>
+<tr><td><a href="../robertomotta/">robertomotta</a></td><td>2026-03-03</td><td><a href="../robertomotta/2026-03-03-post-migration/">post-migration</a></td><td style="color:var(--green);font-weight:600">95/100</td><td>1</td></tr>
+<tr><td><a href="../tanuki/">tanuki</a></td><td>2026-03-03</td><td><a href="../tanuki/2026-03-03-cache-benchmark/">cache-benchmark</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
+<tr><td><a href="../ticinotraverso/">ticinotraverso</a></td><td>2026-03-06</td><td><a href="../ticinotraverso/2026-03-06-post-translation-check/">post-translation-check</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
+<tr><td><a href="../veterinariogravellona/">veterinariogravellona</a></td><td>2026-03-03</td><td><a href="../veterinariogravellona/2026-03-03-post-migration/">post-migration</a></td><td style="color:var(--green);font-weight:600">90/100</td><td>1</td></tr>
+</table>
+</div></body></html>
