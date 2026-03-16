@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Pessano: Correzione colori carrello</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: .7rem; }
+.step-icon.ok { background: var(--green-bg); color: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); color: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); color: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-top: .5rem; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+
+.before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: .75rem; }
+.before-after .label { font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .35rem; }
+.before-after .label.before { color: var(--red); }
+.before-after .label.after { color: var(--green); }
+
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: .02em; }
+.tl { position: relative; padding-left: 1.5rem; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--border-strong); }
+.tl-item { position: relative; margin-bottom: .75rem; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot { position: absolute; left: -1.5rem; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); }
+.tl-dot.red { border-color: var(--red); background: var(--red-bg); }
+.tl-dot.yellow { border-color: var(--yellow); background: var(--yellow-bg); }
+.tl-dot.green { border-color: var(--green); background: var(--green-bg); }
+.tl-time { font-size: .72rem; font-weight: 600; color: var(--text-muted); }
+.tl-text { font-size: .8rem; color: var(--text-secondary); }
+.tl-duration { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; background: var(--green-bg); color: var(--green); font-size: .68rem; font-weight: 600; border-radius: 2px; }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+    .before-after { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <div class="brand">📡 <a href="https://radar.giobi.com/">Radar</a> · <a href="https://radar.giobi.com/pessano/">pessano</a></div>
+        <h1 class="title">Correzione colori carrello laterale</h1>
+        <div class="meta-row">
+            <span class="meta-item">📅 16 marzo 2026</span>
+            <span class="meta-item">🎯 wordpress-1174648-6105957.cloudwaysapps.com</span>
+            <span class="meta-item">🔧 Bug fix</span>
+            <span class="meta-item">🔄 1 iterazione</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="score-section">
+        <div class="score-card">
+            <div class="score-ring">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <circle class="track" cx="50" cy="50" r="42"/>
+                    <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="0"/>
+                </svg>
+                <div class="score-number">100<small>/100</small></div>
+            </div>
+            <div class="score-summary">
+                <h2>Tutto risolto</h2>
+                <p>I colori del pannello carrello erano illeggibili: bottoni grigi su sfondo bianco e testo quantità quasi invisibile. Ora i bottoni sono nel colore del sito e tutto il testo è ben leggibile.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline">
+        <h3>⏱ Cronologia intervento</h3>
+        <div class="tl">
+            <div class="tl-item">
+                <div class="tl-dot red"></div>
+                <div><span class="tl-time">00:00</span><br><span class="tl-text">Segnalazione: carrello con colori illeggibili (bianco su bianco, grigio su grigio)</span></div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-dot yellow"></div>
+                <div><span class="tl-time">01:30</span><br><span class="tl-text">Diagnosi: bottoni con sfondo grigio generico, quantità in grigio chiarissimo, pulsante rimuovi invisibile</span></div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-dot green"></div>
+                <div><span class="tl-time">03:00</span><br><span class="tl-text">Correzione CSS applicata: bottoni noce scuro, testo scuro, pulsante rimuovi visibile</span></div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-dot green"></div>
+                <div><span class="tl-time">04:00</span><br><span class="tl-text">Verifica visiva completata — tutto leggibile e coerente</span></div>
+            </div>
+        </div>
+        <div class="tl-duration">Durata totale: ~4 minuti</div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('client')">👀 Cosa abbiamo fatto</button>
+            <button class="tab-btn" onclick="switchTab('tech')">🔧 Dettagli tecnici</button>
+        </div>
+
+        <div id="tab-client" class="tab-panel active">
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-icon fail">✗</div>
+                    <div class="step-title">Il problema: testo e bottoni invisibili nel carrello</div>
+                </div>
+                <p class="step-explain">Aprendo il pannello del carrello (cliccando sull'icona in alto a destra), i due bottoni in fondo erano di un grigio sbiadito, quasi invisibili sullo sfondo bianco. Anche il numero dei pezzi ("1 ×") era scritto in un grigio chiarissimo, praticamente illeggibile.</p>
+                <div class="step-img">
+                    <img src="before.png" alt="Carrello prima della correzione">
+                    <div class="step-img-caption">Prima: i bottoni si confondono con lo sfondo, il testo quantità è quasi invisibile</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-icon ok">✓</div>
+                    <div class="step-title">Correzione: colori allineati al resto del sito</div>
+                </div>
+                <p class="step-explain">Abbiamo corretto i colori del pannello carrello: i bottoni ora sono nello stesso marrone scuro usato nel resto del sito, con testo bianco ben leggibile. Il numero dei pezzi è ora in colore scuro. Il pulsante per rimuovere un prodotto è visibile e cambia colore al passaggio del mouse.</p>
+                <div class="step-img">
+                    <img src="after.png" alt="Carrello dopo la correzione">
+                    <div class="step-img-caption">Dopo: bottoni ben visibili in marrone scuro, testo leggibile</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="tab-tech" class="tab-panel">
+
+            <div class="tech-section">
+                <h3>📋 Riepilogo</h3>
+                <table class="tech-table">
+                    <tr><th>Campo</th><th>Valore</th></tr>
+                    <tr><td>Server</td><td><code>athena</code> (Cloudways)</td></tr>
+                    <tr><td>Path</td><td><code>/home/master/applications/njtxuppngd/public_html</code></td></tr>
+                    <tr><td>URL</td><td><code>wordpress-1174648-6105957.cloudwaysapps.com</code></td></tr>
+                    <tr><td>Scenario</td><td>Bug fix</td></tr>
+                    <tr><td>Iterazioni</td><td>1</td></tr>
+                    <tr><td>Verdict</td><td>FIXED</td></tr>
+                </table>
+            </div>
+
+            <div class="tech-section">
+                <h3>🔍 Diagnosi</h3>
+                <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:.75rem;">Il mini-cart sidebar di Elementor usava colori di default non personalizzati, mentre il resto del tema aveva override specifici per WooCommerce.</p>
+                <div class="log-block">Problemi identificati (computed styles):
+
+1. .elementor-button--view-cart / --checkout
+   bg: rgb(105, 114, 125)  ← grigio generico Elementor
+   Dovrebbe: #3E2723 (noce scuro, come gli altri bottoni WooCommerce)
+
+2. .quantity / .product-quantity
+   color: rgb(213, 216, 220)  ← grigio chiarissimo su bianco
+   Dovrebbe: #353131 (testo standard)
+
+3. .remove / .remove_from_cart_button
+   Invisibile — nessun colore specifico
+   Dovrebbe: #786a56 (marrone brand)</div>
+            </div>
+
+            <div class="tech-section">
+                <h3>🔧 Fix applicato</h3>
+                <div class="log-block">File: wp-content/themes/hello-theme-child-master/style.css
+
+/* Bottoni mini-cart → noce scuro */
+.elementor-menu-cart__footer-buttons .elementor-button {
+    background-color: #3E2723 !important;
+    color: #fff !important;
+}
+
+/* Quantità → testo scuro leggibile */
+.elementor-menu-cart__product .product-quantity,
+.elementor-menu-cart__product .quantity {
+    color: #353131 !important;
+}
+
+/* Bottone rimuovi → visibile */
+.elementor-menu-cart__product .remove,
+.elementor-menu-cart__product .remove_from_cart_button {
+    color: #786a56 !important;
+    opacity: 1 !important;
+}</div>
+            </div>
+
+            <div class="tech-section">
+                <h3>📝 Note</h3>
+                <p style="font-size:.82rem;color:var(--text-secondary);">Il child theme aveva già override per i bottoni WooCommerce generici (<code>.woocommerce .button.alt</code>) ma mancavano quelli specifici per il widget mini-cart di Elementor (<code>.elementor-menu-cart__footer-buttons</code>). Aggiunto CSS con selettori specifici per coprire il sidebar cart.</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="watermark">📡 <a href="https://radar.giobi.com/">Radar</a> · giobi.com · 16 marzo 2026</div>
+
+<script>
+function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
