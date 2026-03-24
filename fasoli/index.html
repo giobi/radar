@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Fasoli Piante</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.container { max-width: 1080px; margin: 0 auto; padding: 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .5rem; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; }
+.report-list { list-style: none; }
+.report-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: .5rem; display: flex; justify-content: space-between; align-items: center; }
+.report-item:hover { border-color: var(--text-muted); }
+.report-item a { color: var(--text); text-decoration: none; font-weight: 500; font-size: .85rem; }
+.report-date { font-size: .72rem; color: var(--text-muted); }
+.score { font-weight: 700; font-size: .82rem; }
+.score.green { color: var(--green); }
+.score.yellow { color: var(--yellow); }
+.score.red { color: var(--red); }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="brand"><a href="https://radar.giobi.com/dashboard/">Radar &larr; Dashboard</a></div>
+    <h1>Fasoli Piante</h1>
+    <ul class="report-list">
+        <li class="report-item">
+            <div>
+                <a href="2026-03-24-nexi-postfix/">Verifica pagamento Nexi XPay</a>
+                <div class="report-date">24 marzo 2026 &mdash; post-fix</div>
+            </div>
+            <span class="score yellow">80/100</span>
+        </li>
+        <li class="report-item">
+            <div>
+                <a href="2026-03-06-crisis-cartasi-xpay-fatal/">Sito fuori servizio (errore critico Nexi)</a>
+                <div class="report-date">6 marzo 2026 &mdash; emergenza</div>
+            </div>
+            <span class="score green">100/100</span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
