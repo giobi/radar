@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Pessano.it: Verifica categorie e colori</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-top: .5rem; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.timeline h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.tl { position: relative; padding-left: 1.5rem; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--border-strong); }
+.tl-item { position: relative; margin-bottom: .75rem; display: flex; align-items: baseline; gap: .75rem; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot { position: absolute; left: -1.5rem; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); flex-shrink: 0; }
+.tl-dot.red { border-color: var(--red); background: var(--red-bg); }
+.tl-dot.yellow { border-color: var(--yellow); background: var(--yellow-bg); }
+.tl-dot.green { border-color: var(--green); background: var(--green-bg); }
+.tl-time { font-size: .72rem; font-weight: 600; color: var(--text-muted); min-width: 42px; flex-shrink: 0; }
+.tl-text { font-size: .8rem; color: var(--text-secondary); }
+.tl-duration { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; background: var(--yellow-bg); color: var(--yellow); font-size: .68rem; font-weight: 600; border-radius: 2px; letter-spacing: .03em; }
+
+.cat-table { width: 100%; border-collapse: collapse; font-size: .78rem; margin: .75rem 0; }
+.cat-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .5rem .4rem; border-bottom: 1px solid var(--border); }
+.cat-table td { padding: .45rem .4rem; border-bottom: 1px solid var(--surface-alt); }
+.cat-table tr.problem td { background: var(--red-bg); }
+.badge { display: inline-block; padding: .1rem .4rem; border-radius: 2px; font-size: .65rem; font-weight: 600; }
+.badge.red { background: var(--red-bg); color: var(--red); }
+.badge.yellow { background: var(--yellow-bg); color: var(--yellow); }
+.badge.green { background: var(--green-bg); color: var(--green); }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+        <a href="../../dashboard/">Radar</a>
+    </div>
+    <h1 class="title">Pessano.it &mdash; Verifica categorie e colori</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>24 marzo 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>1 iterazione</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Verifica segnalazione</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>pessano.it</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--yellow)" stroke-dasharray="263.9" stroke-dashoffset="79.2"/>
+        </svg>
+        <div class="score-number">70<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Due problemi trovati, da correggere</h2>
+        <p>La homepage funziona correttamente. Abbiamo trovato due problemi segnalati dal cliente: (1) la pagina del catalogo non si apre su pessano.it, mostrando invece una pagina di errore con sfondo scuro (il &ldquo;colore viola&rdquo;); (2) le categorie del catalogo sono in ordine sbagliato perch&eacute; cinque categorie nuove non hanno il numero d'ordine impostato. Entrambi i problemi sono risolvibili.</p>
+    </div>
+</div>
+</div>
+
+<div class="timeline">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Cronologia intervento</h3>
+    <div class="tl">
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:00</span><span class="tl-text">Segnalazione cliente: categorie fuori posto e colore viola</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:02</span><span class="tl-text">Verifica homepage: funziona correttamente, nessun colore viola</span></div>
+        <div class="tl-item"><div class="tl-dot red"></div><span class="tl-time">10:03</span><span class="tl-text">Pagina /catalogo/ e /shop/ danno errore 404 con sfondo rosso scuro</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:05</span><span class="tl-text">Causa individuata: indirizzo interno del sito punta ancora alla versione di prova</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:08</span><span class="tl-text">Verifica categorie su versione di prova: 5 categorie senza numero d'ordine</span></div>
+    </div>
+    <div class="tl-duration">Diagnosi completata &middot; Correzioni da applicare</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech', this)">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-simple" class="tab-panel active">
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">La homepage funziona bene</span>
+    </div>
+    <p class="step-explain">La pagina principale del sito si apre correttamente: il logo, il menu, le immagini e tutti i contenuti si vedono senza problemi. Non c&rsquo;&egrave; nessun colore viola sulla homepage.</p>
+    <div class="step-img">
+        <img src="screenshot-1-homepage.png" alt="Homepage pessano.it funzionante">
+        <div class="step-img-caption">Homepage pessano.it &mdash; tutto a posto</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <span class="step-title">Problema 1: la pagina del catalogo non si apre</span>
+    </div>
+    <p class="step-explain">Cliccando su &ldquo;Catalogo&rdquo; il sito mostra una pagina di errore (&ldquo;La pagina non pu&ograve; essere trovata&rdquo;) con uno sfondo rosso molto scuro. Questo sfondo &egrave; probabilmente quello che viene percepito come &ldquo;colore viola&rdquo;. Il problema si verifica perch&eacute; l&rsquo;indirizzo interno del sito punta ancora alla versione di prova, e non al dominio definitivo pessano.it.</p>
+    <div class="step-img">
+        <img src="screenshot-2-catalogo-404.png" alt="Pagina catalogo errore 404 con sfondo scuro">
+        <div class="step-img-caption">La pagina /catalogo/ su pessano.it mostra errore 404 con sfondo rosso scuro (il &ldquo;viola&rdquo; segnalato)</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Problema 2: cinque categorie sono fuori ordine</span>
+    </div>
+    <p class="step-explain">Le categorie del catalogo hanno un numero d&rsquo;ordine che decide in che posizione appaiono. Cinque categorie (Cammei, Candele Accendila, Eco candele di soia, Price's Candles, Old Sheffield) non hanno questo numero impostato, quindi finiscono tutte in cima al catalogo invece che nella posizione giusta.</p>
+    <div class="step-img">
+        <img src="screenshot-3-staging-catalogo.png" alt="Catalogo sulla versione di prova con categorie fuori ordine">
+        <div class="step-img-caption">Catalogo sulla versione di prova: le prime 5 categorie sono fuori posto (dovrebbero stare pi&ugrave; in basso)</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Ordine attuale delle categorie vs ordine corretto</span>
+    </div>
+    <p class="step-explain">Ecco come appaiono le categorie ora e come dovrebbero apparire. Le categorie evidenziate in rosso sono quelle senza ordine impostato che vanno a finire in cima.</p>
+
+    <table class="cat-table">
+        <thead>
+            <tr><th>#</th><th>Categoria</th><th>Ordine impostato</th><th>Stato</th></tr>
+        </thead>
+        <tbody>
+            <tr class="problem"><td>1</td><td>Cammei</td><td>0 (non impostato)</td><td><span class="badge red">Fuori posto</span></td></tr>
+            <tr class="problem"><td>2</td><td>Candele Artigianali - Accendila</td><td>0 (non impostato)</td><td><span class="badge red">Fuori posto</span></td></tr>
+            <tr class="problem"><td>3</td><td>Candele Artigianali - Eco candele di soia</td><td>0 (non impostato)</td><td><span class="badge red">Fuori posto</span></td></tr>
+            <tr class="problem"><td>4</td><td>Candele Artigianali - Price's Candles</td><td>0 (non impostato)</td><td><span class="badge red">Fuori posto</span></td></tr>
+            <tr class="problem"><td>5</td><td>Old Sheffield</td><td>0 (non impostato)</td><td><span class="badge red">Fuori posto</span></td></tr>
+            <tr><td>6</td><td>Le Nostre Novit&agrave;</td><td>1</td><td><span class="badge green">OK</span></td></tr>
+            <tr><td>7</td><td>Le Nostre Offerte</td><td>2</td><td><span class="badge green">OK</span></td></tr>
+            <tr><td>8</td><td>Ambra</td><td>3</td><td><span class="badge green">OK</span></td></tr>
+            <tr><td>9</td><td>Collane Pietra dura e Corallo</td><td>4</td><td><span class="badge green">OK</span></td></tr>
+            <tr><td>10</td><td>Candele - Creazioni di Sabrina</td><td>6</td><td><span class="badge green">OK</span></td></tr>
+            <tr><td>11</td><td>Sculture in legno Made in Italy</td><td>7</td><td><span class="badge green">OK</span></td></tr>
+            <tr><td>12</td><td>Mosaici Fiorentini</td><td>8</td><td><span class="badge green">OK</span></td></tr>
+            <tr><td>13</td><td>Nativit&agrave; in terracotta</td><td>9</td><td><span class="badge green">OK</span></td></tr>
+            <tr><td>14</td><td>Uccelli e Animali porcellana</td><td>10</td><td><span class="badge green">OK</span></td></tr>
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Riepilogo tecnico</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Server</td><td><code>athena</code> (Cloudways)</td></tr>
+        <tr><td>App ID</td><td><code>njtxuppngd</code></td></tr>
+        <tr><td>Path</td><td><code>/home/master/applications/njtxuppngd/public_html</code></td></tr>
+        <tr><td>URL produzione</td><td><code>https://pessano.it</code></td></tr>
+        <tr><td>URL staging</td><td><code>https://wordpress-1174648-6105957.cloudwaysapps.com</code></td></tr>
+        <tr><td>Tema attivo</td><td><code>hello-theme-child-master</code></td></tr>
+        <tr><td>Scenario</td><td>Verifica segnalazione (search)</td></tr>
+        <tr><td>Iterazioni</td><td>1</td></tr>
+        <tr><td>Verdict</td><td><span class="badge yellow">ISSUES</span></td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Problema 1: siteurl/home puntano a staging</h3>
+    <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:.75rem;">Le opzioni WordPress <code>siteurl</code> e <code>home</code> sono ancora impostate sull'URL di staging Cloudways. Questo causa 404 sulle pagine interne quando si naviga da pessano.it, perch&eacute; WordPress genera link interni verso il dominio sbagliato.</p>
+    <div class="log-block">wp option get siteurl
+→ https://wordpress-1174648-6105957.cloudwaysapps.com
+
+wp option get home
+→ https://wordpress-1174648-6105957.cloudwaysapps.com
+
+# Dovrebbe essere:
+# https://pessano.it</div>
+    <p style="font-size:.82rem;color:var(--text-secondary);margin-top:.75rem;"><strong>Fix:</strong></p>
+    <div class="log-block">wp option update siteurl 'https://pessano.it'
+wp option update home 'https://pessano.it'
+wp rewrite flush</div>
+    <p style="font-size:.78rem;color:var(--text-muted);margin-top:.5rem;">Nota: la pagina 404 ha sfondo <code>rgb(101, 19, 19)</code> (rosso scuro/burgundy) + link <code>rgb(204, 51, 102)</code> (rosa/magenta). Questo &egrave; il template 404 del vecchio tema non Elementor. Dopo il fix siteurl non dovrebbe pi&ugrave; apparire.</p>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Problema 2: pessano_cat_order mancante su 5 categorie</h3>
+    <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:.75rem;">Il <code>CategoryService</code> ordina per meta <code>pessano_cat_order</code>. 5 categorie hanno questo campo a 0 (non impostato), finendo in cima al catalogo ordinate per nome.</p>
+    <div class="log-block"># Categorie con pessano_cat_order = 0:
+51 | Cammei              | pessano_cat_order: 0 | order: 7
+54 | Candele - Accendila | pessano_cat_order: 0 | order: 5
+52 | Candele - Eco soia  | pessano_cat_order: 0 | order: 4
+53 | Candele - Price's   | pessano_cat_order: 0 | order: 6
+50 | Old Sheffield       | pessano_cat_order: 0 | order: 13
+
+# Nota: esiste anche un meta "order" con valori diversi
+# ma CategoryService legge solo "pessano_cat_order"</div>
+    <p style="font-size:.82rem;color:var(--text-secondary);margin-top:.75rem;"><strong>Fix:</strong> impostare il campo Ordine dall'admin WP (Prodotti &rarr; Categorie &rarr; Modifica) oppure via WP-CLI:</p>
+    <div class="log-block">wp term meta update 51 pessano_cat_order 5   # Cammei
+wp term meta update 54 pessano_cat_order 11  # Candele - Accendila
+wp term meta update 52 pessano_cat_order 12  # Candele - Eco soia
+wp term meta update 53 pessano_cat_order 13  # Candele - Price's Candles
+wp term meta update 50 pessano_cat_order 14  # Old Sheffield</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Colore viola &mdash; Analisi CSS</h3>
+    <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:.75rem;">Nessun colore viola (#7b2d8e, #9b59b6, #663399 o simili) trovato nel CSS del tema, nello style.css del child theme, o nei computed styles delle pagine. I bottoni WooCommerce sono correttamente in noce scuro (<code>#3E2723</code>). Il &ldquo;viola&rdquo; segnalato dal cliente &egrave; lo sfondo della pagina 404 (<code>rgb(101, 19, 19)</code>) che appare quando /catalogo/ non viene trovato.</p>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></svg>Nota: WooCommerce shop page</h3>
+    <p style="font-size:.82rem;color:var(--text-secondary);">La shop page WooCommerce (ID 187, slug &ldquo;negozio&rdquo;) &egrave; in <strong>draft</strong>. La pagina Catalogo (ID 410) &egrave; pubblicata ma non &egrave; assegnata come shop page WooCommerce. Dopo il fix siteurl, valutare se assegnare la pagina 410 come shop page: <code>wp option update woocommerce_shop_page_id 410</code></p>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="watermark"><a href="https://radar.giobi.com">Radar</a> &middot; giobi.com &middot; 24 marzo 2026</div>
+
+<script>
+function switchTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+</body>
+</html>
