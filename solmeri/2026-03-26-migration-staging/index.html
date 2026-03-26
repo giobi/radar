@@ -138,13 +138,13 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
     <div class="score-ring">
         <svg width="100" height="100" viewBox="0 0 100 100">
             <circle class="track" cx="50" cy="50" r="42"/>
-            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="264" stroke-dashoffset="26.4"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="264" stroke-dashoffset="13.2"/>
         </svg>
-        <div class="score-number">90<small>/100</small></div>
+        <div class="score-number">95<small>/100</small></div>
     </div>
     <div class="score-summary">
-        <h2>Migrazione riuscita — tutti i siti funzionano</h2>
-        <p>I 5 siti WordPress di Solmeri sono stati trasferiti dal vecchio server Cloudways al nuovo server Hetzner. Tutti si aprono correttamente e mostrano i contenuti giusti. Un'estensione su un sito (HVAC) ha avuto bisogno di una correzione per la nuova versione di PHP. Le prestazioni andranno ottimizzate con la cache, ma il trasferimento in s&eacute; &egrave; andato a buon fine.</p>
+        <h2>Migrazione riuscita — 5 siti funzionanti su HTTPS</h2>
+        <p>I 5 siti WordPress di Solmeri sono stati trasferiti dal vecchio server Cloudways al nuovo server Hetzner. Tutti funzionano su HTTPS con certificato Cloudflare. 3 siti su 5 sono perfetti, 2 hanno qualche immagine mancante da verificare (probabilmente gi&agrave; assente sul vecchio server). I font e gli stili sono stati rigenerati per il nuovo indirizzo. Un'estensione su HVAC &egrave; stata disattivata per incompatibilit&agrave; PHP 8.3.</p>
     </div>
 </div>
 </div>
@@ -175,8 +175,13 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
         <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:25</span><span class="tl-text">Rimossa configurazione cache vecchio server (incompatibile)</span></div>
         <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:27</span><span class="tl-text">Corretta estensione Code Snippets su HVAC (errore PHP 8.3)</span></div>
         <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:30</span><span class="tl-text">Tutti e 5 i siti funzionanti su indirizzi temporanei</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:35</span><span class="tl-text">Attivato proxy Cloudflare (HTTPS) sui sottodomini temporanei</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:40</span><span class="tl-text">Corretto mixed content (http/https) e redirect loop</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:50</span><span class="tl-text">Sostituzione profonda URL in tutte le tabelle database (~27.000 sostituzioni)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:55</span><span class="tl-text">Rigenerati font e stili Elementor per i nuovi indirizzi</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">11:00</span><span class="tl-text">Verifica finale: 5/5 siti HTTPS funzionanti</span></div>
     </div>
-    <div class="tl-duration">Durata totale: ~30 minuti</div>
+    <div class="tl-duration">Durata totale: ~60 minuti</div>
 </div>
 
 <!-- Tabs -->
@@ -281,11 +286,11 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
     <h3><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Performance (senza cache)</h3>
     <table class="tech-table">
         <tr><th>Sito</th><th>HTTP</th><th>TTFB</th><th>Caricamento</th><th>Note</th></tr>
-        <tr><td>solmeri.com</td><td>200</td><td>1480 ms</td><td>2112 ms</td><td>OK</td></tr>
-        <tr><td>blastmanitalia.com</td><td>200</td><td>1939 ms</td><td>2582 ms</td><td>OK</td></tr>
+        <tr><td>solmeri.com</td><td>200</td><td>1480 ms</td><td>2112 ms</td><td>1 img mancante (da verificare)</td></tr>
+        <tr><td>blastmanitalia.com</td><td>200</td><td>1939 ms</td><td>2582 ms</td><td>Perfetto</td></tr>
         <tr><td>hvac-solmeri.com</td><td>200</td><td>2119 ms</td><td>2636 ms</td><td>Code Snippets disabilitato</td></tr>
-        <tr><td>portonigiganti-solmeri.com</td><td>200</td><td>2369 ms</td><td>2939 ms</td><td>OK</td></tr>
-        <tr><td>cavi-solmeri.com</td><td>200</td><td>2826 ms</td><td>2826 ms</td><td>OK</td></tr>
+        <tr><td>portonigiganti-solmeri.com</td><td>200</td><td>2369 ms</td><td>2939 ms</td><td>2 img mancanti (da verificare)</td></tr>
+        <tr><td>cavi-solmeri.com</td><td>200</td><td>2826 ms</td><td>2826 ms</td><td>Perfetto</td></tr>
     </table>
     <p style="margin-top: .75rem; font-size: .75rem; color: var(--text-muted);">TTFB alto perch&eacute; nessuna cache attiva (FastCGI, Redis Object Cache, NitroPack). Atteso miglioramento 5-10x con caching.</p>
 </div>
@@ -317,7 +322,17 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 
 3. Forge provisioning Ubuntu version mismatch
    Primo tentativo fallito: Forge creato con Ubuntu 22.04,
-   server era 24.04. Ricreato con versione corretta.</div>
+   server era 24.04. Ricreato con versione corretta.
+
+4. Mixed content + redirect loop (HTTPS)
+   Attivato proxy Cloudflare per HTTPS sui temporanei.
+   WordPress vedeva HTTP dall'origin, redirect loop infinito.
+   Fix: aggiunto X-Forwarded-Proto detection in wp-config.php.
+
+5. URL vecchie in dati serializzati Elementor
+   Il primo search-replace non copriva tutte le tabelle.
+   Secondo passaggio con --all-tables: ~27.000 sostituzioni.
+   Font Elementor rigenerati da Google CDN.</div>
 </div>
 
 <div class="tech-section">
