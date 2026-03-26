@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Solmeri: Migrazione server (verifica staging)</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: .5rem; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.timeline h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.tl { position: relative; padding-left: 1.5rem; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--border-strong); }
+.tl-item { position: relative; margin-bottom: .75rem; display: flex; align-items: baseline; gap: .75rem; }
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot { position: absolute; left: -1.5rem; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); flex-shrink: 0; }
+.tl-dot.red { border-color: var(--red); background: var(--red-bg); }
+.tl-dot.yellow { border-color: var(--yellow); background: var(--yellow-bg); }
+.tl-dot.green { border-color: var(--green); background: var(--green-bg); }
+.tl-time { font-size: .72rem; font-weight: 600; color: var(--text-muted); min-width: 42px; flex-shrink: 0; }
+.tl-text { font-size: .8rem; color: var(--text-secondary); }
+.tl-duration { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; background: var(--green-bg); color: var(--green); font-size: .68rem; font-weight: 600; border-radius: 2px; letter-spacing: .03em; }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+    .container { padding: 0 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <a href="https://radar.giobi.com/solmeri/">RADAR / SOLMERI</a>
+    </div>
+    <h1 class="title">Migrazione server: verifica staging</h1>
+    <div class="meta-row">
+        <span class="meta-item">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            26 marzo 2026
+        </span>
+        <span class="meta-item">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            5 siti WordPress
+        </span>
+        <span class="meta-item">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Verifica post-migrazione
+        </span>
+        <span class="meta-item">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Cloudways &rarr; Hetzner
+        </span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="264" stroke-dashoffset="26.4"/>
+        </svg>
+        <div class="score-number">90<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Migrazione riuscita — tutti i siti funzionano</h2>
+        <p>I 5 siti WordPress di Solmeri sono stati trasferiti dal vecchio server Cloudways al nuovo server Hetzner. Tutti si aprono correttamente e mostrano i contenuti giusti. Un'estensione su un sito (HVAC) ha avuto bisogno di una correzione per la nuova versione di PHP. Le prestazioni andranno ottimizzate con la cache, ma il trasferimento in s&eacute; &egrave; andato a buon fine.</p>
+    </div>
+</div>
+</div>
+
+<!-- Timeline -->
+<div class="timeline">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Cronologia intervento</h3>
+    <div class="tl">
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:01</span><span class="tl-text">Creazione server Hetzner (16 GB RAM, Norimberga)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:03</span><span class="tl-text">Server aggiunto a Laravel Forge per la gestione</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:07</span><span class="tl-text">Installazione automatica: nginx, PHP 8.3, MySQL 8, Redis</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:14</span><span class="tl-text">5 siti configurati con sottodomini temporanei</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:17</span><span class="tl-text">Database esportati dal vecchio server</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:20</span><span class="tl-text">Database importati sul nuovo server</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:22</span><span class="tl-text">File WordPress trasferiti (3.5 GB totali)</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:25</span><span class="tl-text">Rimossa configurazione cache vecchio server (incompatibile)</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">10:27</span><span class="tl-text">Corretta estensione Code Snippets su HVAC (errore PHP 8.3)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:30</span><span class="tl-text">Tutti e 5 i siti funzionanti su indirizzi temporanei</span></div>
+    </div>
+    <div class="tl-duration">Durata totale: ~30 minuti</div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="showTab('client')">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="showTab('tech')">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-client" class="tab-panel active">
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">solmeri.com &mdash; Sito principale</span>
+    </div>
+    <p class="step-explain">La pagina principale di Solmeri si apre correttamente: tutti i contenuti, le immagini e il menu di navigazione funzionano. Tempo di caricamento nella norma.</p>
+    <div class="step-img">
+        <img src="screenshots/solmeri_main-home.png" alt="solmeri.com homepage">
+        <div class="step-img-caption">Homepage solmeri.com sul nuovo server (indirizzo temporaneo)</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">blastmanitalia.com &mdash; Blastman Robotics</span>
+    </div>
+    <p class="step-explain">Il sito Blastman si carica senza problemi. Immagini dei robot industriali, testi e impaginazione sono tutti al loro posto.</p>
+    <div class="step-img">
+        <img src="screenshots/blastman-home.png" alt="blastmanitalia.com homepage">
+        <div class="step-img-caption">Homepage Blastman Robotics sul nuovo server</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">hvac-solmeri.com &mdash; Halton Marine</span>
+    </div>
+    <p class="step-explain">Il sito si apre correttamente dopo aver disattivato un'estensione (Code Snippets) che non era compatibile con la versione pi&ugrave; recente di PHP sul nuovo server. Il contenuto e l'aspetto visivo sono intatti. L'estensione andr&agrave; aggiornata prima di riattivare gli snippet personalizzati.</p>
+    <div class="step-img">
+        <img src="screenshots/hvac-home.png" alt="hvac-solmeri.com homepage">
+        <div class="step-img-caption">Homepage HVAC Halton Marine &mdash; funzionante dopo correzione</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">portonigiganti-solmeri.com &mdash; Champion Door</span>
+    </div>
+    <p class="step-explain">Champion Door Italia funziona perfettamente. Le pagine dei portoni, le gallerie fotografiche e i moduli di contatto sono tutti raggiungibili.</p>
+    <div class="step-img">
+        <img src="screenshots/portoni-home.png" alt="portonigiganti-solmeri.com homepage">
+        <div class="step-img-caption">Homepage Champion Door sul nuovo server</div>
+    </div>
+</div>
+
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">cavi-solmeri.com &mdash; Helmacab</span>
+    </div>
+    <p class="step-explain">Il sito Helmacab per i cavi elettrici si carica senza problemi. Menu, contenuti e immagini tutti presenti e corretti.</p>
+    <div class="step-img">
+        <img src="screenshots/cavi-home.png" alt="cavi-solmeri.com homepage">
+        <div class="step-img-caption">Homepage Helmacab Italia sul nuovo server</div>
+    </div>
+</div>
+
+</div><!-- /tab-client -->
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Riepilogo infrastruttura</h3>
+    <table class="tech-table">
+        <tr><th>Parametro</th><th>Vecchio server</th><th>Nuovo server</th></tr>
+        <tr><td>Provider</td><td>Cloudways (DigitalOcean)</td><td>Hetzner Cloud</td></tr>
+        <tr><td>IP</td><td><code>64.227.112.206</code></td><td><code>46.225.78.132</code></td></tr>
+        <tr><td>RAM</td><td>2 GB</td><td>16 GB</td></tr>
+        <tr><td>CPU</td><td>1 vCPU</td><td>8 vCPU</td></tr>
+        <tr><td>Disco</td><td>50 GB</td><td>160 GB NVMe</td></tr>
+        <tr><td>PHP</td><td>7.4 (EOL)</td><td>8.3.30</td></tr>
+        <tr><td>MySQL</td><td>MariaDB</td><td>MySQL 8.0.45</td></tr>
+        <tr><td>Management</td><td>Cloudways</td><td>Laravel Forge</td></tr>
+        <tr><td>Costo</td><td>$24/mese</td><td>&euro;8.99/mese (~$10)</td></tr>
+        <tr><td>Location</td><td>Amsterdam</td><td>Norimberga</td></tr>
+        <tr><td>Forge Server ID</td><td>&mdash;</td><td><code>1182168</code></td></tr>
+        <tr><td>Hetzner Server ID</td><td>&mdash;</td><td><code>124962996</code></td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Performance (senza cache)</h3>
+    <table class="tech-table">
+        <tr><th>Sito</th><th>HTTP</th><th>TTFB</th><th>Caricamento</th><th>Note</th></tr>
+        <tr><td>solmeri.com</td><td>200</td><td>1480 ms</td><td>2112 ms</td><td>OK</td></tr>
+        <tr><td>blastmanitalia.com</td><td>200</td><td>1939 ms</td><td>2582 ms</td><td>OK</td></tr>
+        <tr><td>hvac-solmeri.com</td><td>200</td><td>2119 ms</td><td>2636 ms</td><td>Code Snippets disabilitato</td></tr>
+        <tr><td>portonigiganti-solmeri.com</td><td>200</td><td>2369 ms</td><td>2939 ms</td><td>OK</td></tr>
+        <tr><td>cavi-solmeri.com</td><td>200</td><td>2826 ms</td><td>2826 ms</td><td>OK</td></tr>
+    </table>
+    <p style="margin-top: .75rem; font-size: .75rem; color: var(--text-muted);">TTFB alto perch&eacute; nessuna cache attiva (FastCGI, Redis Object Cache, NitroPack). Atteso miglioramento 5-10x con caching.</p>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Mapping siti</h3>
+    <table class="tech-table">
+        <tr><th>Dominio reale</th><th>Temporaneo</th><th>Database</th><th>Forge Site ID</th></tr>
+        <tr><td>solmeri.com</td><td><code>26.solmeri.com</code></td><td><code>solmeri_main</code></td><td>3101553</td></tr>
+        <tr><td>blastmanitalia.com</td><td><code>blastman26.solmeri.com</code></td><td><code>solmeri_blastman</code></td><td>3101554</td></tr>
+        <tr><td>hvac-solmeri.com</td><td><code>hvac26.solmeri.com</code></td><td><code>solmeri_hvac</code></td><td>3101555</td></tr>
+        <tr><td>portonigiganti-solmeri.com</td><td><code>portoni26.solmeri.com</code></td><td><code>solmeri_portoni</code></td><td>3101556</td></tr>
+        <tr><td>cavi-solmeri.com</td><td><code>cavi26.solmeri.com</code></td><td><code>solmeri_cavi</code></td><td>3101557</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Problemi risolti durante la migrazione</h3>
+    <div class="log-block">1. Object Cache Pro (Redis)
+   Tutti i siti usavano Object Cache Pro con Redis di Cloudways.
+   Le credenziali Redis erano hardcoded in wp-config.php.
+   Rimosso il drop-in object-cache.php e le configurazioni Redis.
+   Da riconfigurare con Redis locale post-switch.
+
+2. Code Snippets su hvac-solmeri.com
+   Uno snippet PHP personalizzato usava sintassi incompatibile con PHP 8.3.
+   Plugin disabilitato temporaneamente.
+   Snippet da verificare/aggiornare prima del go-live.
+
+3. Forge provisioning Ubuntu version mismatch
+   Primo tentativo fallito: Forge creato con Ubuntu 22.04,
+   server era 24.04. Ricreato con versione corretta.</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Prossimi passi</h3>
+    <div class="log-block">1. Verifica visuale pagine interne (Elementor layouts)
+2. Fix Code Snippets su HVAC (aggiornamento plugin o snippet)
+3. Setup caching: Redis Object Cache + FastCGI
+4. Rimuovere plugin Object Cache Pro (licenza Cloudways)
+5. Quando tutto OK: switch DNS reali + SSL
+6. Tenere Cloudways vivo 1 settimana come rollback</div>
+</div>
+
+</div><!-- /tab-tech -->
+
+</div><!-- /tabs -->
+
+</div><!-- /container -->
+
+<div class="watermark"><a href="https://radar.giobi.com">radar</a> &middot; giobi.com &middot; 26 mar 2026</div>
+
+<script>
+function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.closest('.tab-btn').classList.add('active');
+}
+</script>
+
+</body>
+</html>
