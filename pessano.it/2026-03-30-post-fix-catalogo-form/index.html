@@ -37,8 +37,15 @@ body{font-family:'IBM Plex Mono',monospace;background:#fafaf9;color:#1c1917;font
 .step-ok{border-left:3px solid #10b981}
 .step-warn{border-left:3px solid #f59e0b}
 .screenshot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
-.screenshot-item img{width:100%;height:200px;object-fit:cover;object-position:top;border:1px solid #e5e5e0;border-radius:3px;display:block}
+.screenshot-item a{display:block;cursor:zoom-in}
+.screenshot-item img{width:100%;height:200px;object-fit:cover;object-position:top;border:1px solid #e5e5e0;border-radius:3px;display:block;transition:opacity .15s}
+.screenshot-item a:hover img{opacity:.85}
 .screenshot-label{font-size:11px;color:#78716c;margin-top:6px;text-align:center}
+/* Lightbox */
+.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out}
+.lb-overlay.open{display:flex}
+.lb-overlay img{max-width:92vw;max-height:92vh;border-radius:3px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.lb-close{position:fixed;top:20px;right:24px;color:#fff;font-size:28px;cursor:pointer;line-height:1;font-family:monospace;background:none;border:none}
 .tech-block{background:#1c1917;color:#e5e5e0;border-radius:3px;padding:20px;margin:16px 0;font-size:12px;overflow-x:auto}
 .kv-table{width:100%;border-collapse:collapse;margin:16px 0}
 .kv-table td{padding:8px 12px;border-bottom:1px solid #f0ebe3;font-size:13px;vertical-align:top}
@@ -129,25 +136,31 @@ body{font-family:'IBM Plex Mono',monospace;background:#fafaf9;color:#1c1917;font
 
     <div class="screenshot-grid">
       <div class="screenshot-item">
-        <img src="01-homepage.png" alt="Homepage">
+        <a href="01-homepage.png" class="lb-trigger"><img src="01-homepage.png" alt="Homepage"></a>
         <div class="screenshot-label">Homepage</div>
       </div>
       <div class="screenshot-item">
-        <img src="02-negozio.png" alt="Negozio">
+        <a href="02-negozio.png" class="lb-trigger"><img src="02-negozio.png" alt="Negozio"></a>
         <div class="screenshot-label">Pagina negozio con categorie</div>
       </div>
       <div class="screenshot-item">
-        <img src="03-categoria.png" alt="Categoria">
+        <a href="03-categoria.png" class="lb-trigger"><img src="03-categoria.png" alt="Categoria"></a>
         <div class="screenshot-label">Pagina categoria "Le Nostre Novità"</div>
       </div>
       <div class="screenshot-item">
-        <img src="04-prodotto-attrs.png" alt="Prodotto con attributi">
+        <a href="04-prodotto-attrs.png" class="lb-trigger"><img src="04-prodotto-attrs.png" alt="Prodotto con attributi"></a>
         <div class="screenshot-label">Prodotto con scheda tecnica visibile</div>
       </div>
       <div class="screenshot-item">
-        <img src="05b-form-compilato.png" alt="Form preventivo">
+        <a href="05b-form-compilato.png" class="lb-trigger"><img src="05b-form-compilato.png" alt="Form preventivo"></a>
         <div class="screenshot-label">Form richiesta informazioni</div>
       </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lb-overlay" id="lb-overlay" onclick="closeLb()">
+      <button class="lb-close" onclick="closeLb()">✕</button>
+      <img id="lb-img" src="" alt="">
     </div>
 
   </div>
@@ -212,6 +225,18 @@ function showTab(name, btn) {
   document.getElementById('tab-' + name).classList.add('active');
   btn.classList.add('active');
 }
+document.querySelectorAll('.lb-trigger').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('lb-img').src = this.href;
+    document.getElementById('lb-overlay').classList.add('open');
+  });
+});
+function closeLb() {
+  document.getElementById('lb-overlay').classList.remove('open');
+  document.getElementById('lb-img').src = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
 </script>
 </body>
 </html>
