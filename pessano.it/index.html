@@ -2,23 +2,38 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Radar — pessano.it</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-body{font-family:'IBM Plex Mono',monospace;background:#fafaf9;color:#1c1917;font-size:14px;max-width:800px;margin:40px auto;padding:0 24px}
-h1{font-size:18px;font-weight:600;margin-bottom:4px}
-.sub{color:#78716c;font-size:12px;margin-bottom:32px}
-a{color:#1c1917;text-decoration:none}
-.report{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #e5e5e0}
-.report:hover{background:#f5f5f4;margin:0 -8px;padding:12px 8px;border-radius:2px}
-.report-title{font-weight:500}
-.report-meta{font-size:11px;color:#78716c}
-.score{font-weight:600;color:#10b981}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Mono',monospace;background:#fafaf9;color:#1c1917;font-size:14px;line-height:1.6}
+.container{max-width:1080px;margin:0 auto;padding:32px 24px}
+h1{font-size:20px;font-weight:600;margin-bottom:8px}
+.meta{font-size:12px;color:#78716c;margin-bottom:32px}
+.report-list{list-style:none}
+.report-list li{padding:12px 0;border-bottom:1px solid #e5e5e0;display:flex;gap:16px;align-items:baseline}
+.report-list a{font-weight:500;color:#1c1917;text-decoration:none}
+.report-list a:hover{text-decoration:underline}
+.report-date{font-size:11px;color:#78716c;width:100px;flex-shrink:0}
+.badge{display:inline-block;padding:2px 8px;border-radius:2px;font-size:11px;font-weight:500;margin-left:8px}
+.badge-ok{background:#d1fae5;color:#065f46}
 </style>
 </head>
 <body>
-<h1>Radar — pessano.it</h1>
-<div class="sub">Tutti i report Radar per questo progetto</div>
-<div class="report"><div><div class="report-title"><a href="2026-03-30-post-fix-catalogo-form/">Post-fix catalogo e form preventivo</a></div><div class="report-meta">30/03/2026 · staging</div></div><span class="score">95/100</span></div>
-<div class="report"><div><div class="report-title"><a href="2026-03-24-categorie-viola-check/">Fix categorie e viola</a></div><div class="report-meta">24/03/2026 · staging</div></div><span class="score">—</span></div>
-</body></html>
+<div class="container">
+<h1>pessano.it</h1>
+<div class="meta">Tutti i report Radar per questo progetto</div>
+<ul class="report-list">
+  <li>
+    <span class="report-date">2026-03-31</span>
+    <span><a href="2026-03-31-postfix-stefano-3-issues/">Verifica post-fix segnalazioni Stefano (3 punti)</a><span class="badge badge-ok">95/100</span></span>
+  </li>
+  <li>
+    <span class="report-date">2026-03-30</span>
+    <span><a href="2026-03-30-post-fix-catalogo-form/">Post-fix catalogo e form preventivo</a><span class="badge badge-ok">95/100</span></span>
+  </li>
+</ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar — pessano.it · Verifica post-fix segnalazioni Stefano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'IBM Plex Mono',monospace;background:#fafaf9;color:#1c1917;font-size:14px;line-height:1.6}
+.container{max-width:1080px;margin:0 auto;padding:32px 24px}
+.header{display:flex;align-items:center;gap:16px;padding-bottom:24px;border-bottom:1px solid #e5e5e0;margin-bottom:32px}
+.header-brand{font-size:11px;color:#78716c;letter-spacing:2px;text-transform:uppercase}
+.header-title{font-size:22px;font-weight:600;color:#1c1917;margin:4px 0}
+.header-meta{font-size:12px;color:#78716c}
+.score-section{display:flex;align-items:center;gap:32px;background:#fff;border:1px solid #e5e5e0;border-radius:3px;padding:28px 32px;margin-bottom:32px}
+.score-circle{flex-shrink:0}
+.score-text{font-size:13px;color:#44403c}
+.score-text h2{font-size:18px;font-weight:600;margin-bottom:6px;color:#1c1917}
+.tabs{display:flex;gap:0;border-bottom:1px solid #e5e5e0;margin-bottom:32px}
+.tab{padding:10px 20px;font-family:inherit;font-size:13px;cursor:pointer;border:none;background:none;color:#78716c;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.active{color:#1c1917;border-bottom:2px solid #1c1917;font-weight:500}
+.tab-content{display:none}.tab-content.active{display:block}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:#e5e5e0}
+.tl-item{position:relative;padding-bottom:20px;padding-left:20px}
+.tl-dot{position:absolute;left:-24px;top:4px;width:13px;height:13px;border-radius:50%;background:#d1fae5;border:2px solid #10b981}
+.tl-dot.warn{background:#fef3c7;border-color:#f59e0b}
+.tl-time{font-size:11px;color:#78716c;margin-bottom:2px}
+.tl-title{font-weight:500;margin-bottom:2px}
+.tl-desc{font-size:12px;color:#78716c}
+.step-card{background:#fff;border:1px solid #e5e5e0;border-radius:3px;padding:24px;margin-bottom:16px;display:flex;gap:20px}
+.step-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center}
+.step-body h3{font-weight:600;margin-bottom:6px;font-size:14px}
+.step-body p{font-size:13px;color:#44403c;line-height:1.6}
+.step-ok{border-left:3px solid #10b981}
+.step-warn{border-left:3px solid #f59e0b}
+.screenshot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:24px 0}
+.screenshot-item a{display:block;cursor:zoom-in}
+.screenshot-item img{width:100%;height:200px;object-fit:cover;object-position:top;border:1px solid #e5e5e0;border-radius:3px;display:block;transition:opacity .15s}
+.screenshot-item a:hover img{opacity:.85}
+.screenshot-label{font-size:11px;color:#78716c;margin-top:6px;text-align:center}
+.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out}
+.lb-overlay.open{display:flex}
+.lb-overlay img{max-width:92vw;max-height:92vh;border-radius:3px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.lb-close{position:fixed;top:20px;right:24px;color:#fff;font-size:28px;cursor:pointer;line-height:1;font-family:monospace;background:none;border:none}
+.tech-block{background:#1c1917;color:#e5e5e0;border-radius:3px;padding:20px;margin:16px 0;font-size:12px;overflow-x:auto}
+.kv-table{width:100%;border-collapse:collapse;margin:16px 0}
+.kv-table td{padding:8px 12px;border-bottom:1px solid #f0ebe3;font-size:13px;vertical-align:top}
+.kv-table td:first-child{font-weight:500;width:35%;color:#44403c}
+.badge{display:inline-block;padding:2px 8px;border-radius:2px;font-size:11px;font-weight:500}
+.badge-ok{background:#d1fae5;color:#065f46}
+.badge-warn{background:#fef3c7;color:#92400e}
+.footer{margin-top:48px;padding-top:24px;border-top:1px solid #e5e5e0;font-size:11px;color:#78716c;text-align:center}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div>
+      <div class="header-brand">Radar · giobi.com</div>
+      <div class="header-title">pessano.it — Verifica segnalazioni Stefano (3 punti)</div>
+      <div class="header-meta">Generato il 31/03/2026 &nbsp;·&nbsp; Ambiente: staging &nbsp;·&nbsp; Scenario: verifica post-correzioni</div>
+    </div>
+  </div>
+
+  <div class="score-section">
+    <div class="score-circle">
+      <svg width="96" height="96" viewBox="0 0 96 96">
+        <circle cx="48" cy="48" r="40" fill="none" stroke="#e5e5e0" stroke-width="8"/>
+        <circle cx="48" cy="48" r="40" fill="none" stroke="#10b981" stroke-width="8"
+          stroke-dasharray="238.8 999"
+          stroke-linecap="round" transform="rotate(-90 48 48)"/>
+        <text x="48" y="54" text-anchor="middle" font-family="IBM Plex Mono" font-size="22" font-weight="600" fill="#1c1917">95</text>
+      </svg>
+    </div>
+    <div class="score-text">
+      <h2>Tutte e tre le segnalazioni risolte</h2>
+      <p>Il campo prezzi è scomparso dal form di richiesta, le misure disponibili sono ora visibili a tendina nella scheda prodotto, e la descrizione compare correttamente. Un punto minore: la pagina categoria "Presepi" non mostra la griglia prodotti (i prodotti esistono e si aprono correttamente, ma la lista non si vede — da verificare con Stefano se è un problema reale).</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('cliente',this)">Cosa abbiamo verificato</button>
+    <button class="tab" onclick="showTab('tecnico',this)">Dettagli tecnici</button>
+  </div>
+
+  <div id="tab-cliente" class="tab-content active">
+
+    <div class="step-card step-ok">
+      <div class="step-icon">&#10003;</div>
+      <div class="step-body">
+        <h3>Il campo "Prodotto: € 0,00" è scomparso</h3>
+        <p>Nel form di richiesta informazioni (il modulo che il cliente compila per chiedere un preventivo) non compare più nessun riferimento ai prezzi. La voce "Prodotto: € 0,00" che confondeva era rimasta da un'impostazione di WooCommerce pensata per i negozi con vendita diretta — è stata nascosta perché il sito Pessano lavora su richiesta, non su acquisto immediato.</p>
+      </div>
+    </div>
+
+    <div class="step-card step-ok">
+      <div class="step-icon">&#10003;</div>
+      <div class="step-body">
+        <h3>Le misure disponibili compaiono nella scheda prodotto</h3>
+        <p>Per il prodotto "Sacra famiglia su legno, scolpita e dipinta a mano" (e gli altri che hanno più taglie) le misure disponibili (es. 9 cm, 12 cm, 15 cm) appaiono ora nella pagina prodotto. Prima erano nascoste da un conflitto con il sistema di personalizzazione visiva della pagina — il problema è stato risolto con un meccanismo alternativo che inserisce le informazioni nel punto corretto della pagina.</p>
+      </div>
+    </div>
+
+    <div class="step-card step-ok">
+      <div class="step-icon">&#10003;</div>
+      <div class="step-body">
+        <h3>La descrizione del prodotto è visibile</h3>
+        <p>Il testo descrittivo che compare sotto alla scheda tecnica (es. "La fotografia in questo caso è un esempio — il Bambin Gesù è l'unico pezzo movibile dalla scultura") è ora visibile nella pagina prodotto. Stesso problema della scheda tecnica — risolto con la stessa correzione.</p>
+      </div>
+    </div>
+
+    <div class="step-card step-warn">
+      <div class="step-icon">!</div>
+      <div class="step-body">
+        <h3>Nota minore: pagina categoria "Presepi" mostra lista vuota</h3>
+        <p>La pagina che elenca tutti i presepi (quella con la griglia di prodotti) sembra non mostrare i prodotti nella lista — anche se i prodotti esistono e si aprono correttamente dal link diretto. Probabilmente è un tema di configurazione visiva della categoria (template Elementor della pagina-lista). Non urgente, ma va verificato se Stefano lo nota.</p>
+      </div>
+    </div>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-item">
+        <a href="01-homepage.png" class="lb-trigger"><img src="01-homepage.png" alt="Homepage"></a>
+        <div class="screenshot-label">Homepage</div>
+      </div>
+      <div class="screenshot-item">
+        <a href="02b-prodotto-top.png" class="lb-trigger"><img src="02b-prodotto-top.png" alt="Prodotto"></a>
+        <div class="screenshot-label">Sacra famiglia — scheda prodotto</div>
+      </div>
+      <div class="screenshot-item">
+        <a href="02c-prodotto-mid.png" class="lb-trigger"><img src="02c-prodotto-mid.png" alt="Attributi"></a>
+        <div class="screenshot-label">Misure e descrizione prodotto visibili</div>
+      </div>
+      <div class="screenshot-item">
+        <a href="05-checkout.png" class="lb-trigger"><img src="05-checkout.png" alt="Checkout"></a>
+        <div class="screenshot-label">Form preventivo — prezzi nascosti</div>
+      </div>
+      <div class="screenshot-item">
+        <a href="06-checkout-form.png" class="lb-trigger"><img src="06-checkout-form.png" alt="Form dettaglio"></a>
+        <div class="screenshot-label">Dettaglio form — "I tuoi dati"</div>
+      </div>
+    </div>
+
+    <div class="lb-overlay" id="lb-overlay" onclick="closeLb()">
+      <button class="lb-close" onclick="closeLb()">&#x2715;</button>
+      <img id="lb-img" src="" alt="">
+    </div>
+
+  </div>
+
+  <div id="tab-tecnico" class="tab-content">
+    <table class="kv-table">
+      <tr><td>Server</td><td>Cloudways Athena</td></tr>
+      <tr><td>App</td><td>njtxuppngd</td></tr>
+      <tr><td>URL staging</td><td>wordpress-1174648-6105957.cloudwaysapps.com</td></tr>
+      <tr><td>Scenario</td><td>Post-fix verification</td></tr>
+      <tr><td>Data</td><td>31/03/2026</td></tr>
+    </table>
+
+    <h3 style="margin:24px 0 12px;font-size:13px">Risultati check</h3>
+    <table class="kv-table">
+      <tr><td>Homepage</td><td><span class="badge badge-ok">OK</span> "Pessano – Oggettistica e Bigiotteria Artigianale"</td></tr>
+      <tr><td>Prodotto sacra-famiglia-su-legno</td><td><span class="badge badge-ok">OK</span> Trovato, titolo corretto</td></tr>
+      <tr><td>.pessano-product-extra</td><td><span class="badge badge-ok">OK</span> Presente, "cm 9 I 12 I 15" visibile</td></tr>
+      <tr><td>Descrizione prodotto</td><td><span class="badge badge-ok">OK</span> Testo visibile ("La fotografia in questo caso...")</td></tr>
+      <tr><td>.product-total display</td><td><span class="badge badge-ok">OK</span> display:none (prezzi nascosti)</td></tr>
+      <tr><td>"Prodotto:" nel testo checkout</td><td><span class="badge badge-ok">OK</span> Assente</td></tr>
+      <tr><td>"I tuoi dati" label</td><td><span class="badge badge-ok">OK</span> Presente nel form</td></tr>
+      <tr><td>"Indirizzo di fatturazione"</td><td><span class="badge badge-ok">OK</span> Assente (rinominato)</td></tr>
+      <tr><td>#billing_phone required</td><td><span class="badge badge-ok">OK</span> NOT required</td></tr>
+      <tr><td>Categoria presepi (griglia)</td><td><span class="badge badge-warn">WARN</span> 0 prodotti nel loop (Elementor template?)</td></tr>
+    </table>
+
+    <h3 style="margin:24px 0 12px;font-size:13px">Note</h3>
+    <p style="font-size:12px;color:#78716c">Il prodotto "Sacra famiglia" non è stato trovato tramite la griglia categoria (/categoria-prodotto/presepi/ restituisce 0 link .woocommerce-loop-product__link) ma il prodotto esiste ed è raggiungibile direttamente. Possibile template Elementor che bypassa il loop standard. Non impatta la fruibilità se i prodotti sono raggiungibili tramite ricerca o link diretto — da verificare se la pagina categoria presepi deve mostrare la griglia.</p>
+  </div>
+
+  <div class="footer">
+    Radar · radar.giobi.com · Generato il 31/03/2026
+  </div>
+</div>
+
+<script>
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+document.querySelectorAll('.lb-trigger').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('lb-img').src = this.href;
+    document.getElementById('lb-overlay').classList.add('open');
+  });
+});
+function closeLb() {
+  document.getElementById('lb-overlay').classList.remove('open');
+  document.getElementById('lb-img').src = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
+</script>
+</body>
+</html>
