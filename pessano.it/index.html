@@ -3,37 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>Radar — pessano.it</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'IBM Plex Mono',monospace;background:#fafaf9;color:#1c1917;font-size:14px;line-height:1.6}
-.container{max-width:1080px;margin:0 auto;padding:32px 24px}
-h1{font-size:20px;font-weight:600;margin-bottom:8px}
-.meta{font-size:12px;color:#78716c;margin-bottom:32px}
-.report-list{list-style:none}
-.report-list li{padding:12px 0;border-bottom:1px solid #e5e5e0;display:flex;gap:16px;align-items:baseline}
-.report-list a{font-weight:500;color:#1c1917;text-decoration:none}
-.report-list a:hover{text-decoration:underline}
-.report-date{font-size:11px;color:#78716c;width:100px;flex-shrink:0}
-.badge{display:inline-block;padding:2px 8px;border-radius:2px;font-size:11px;font-weight:500;margin-left:8px}
-.badge-ok{background:#d1fae5;color:#065f46}
+:root { --bg:#fafaf9; --surface:#fff; --border:#e5e5e0; --text:#1c1917; --text-sec:#57534e; --text-muted:#a8a29e; --green:#15803d; --mono:'IBM Plex Mono',monospace; --radius:3px; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:14px}
+.container{max-width:1080px;margin:0 auto;padding:2rem 2.5rem}
+h1{font-size:1.2rem;margin-bottom:1.5rem}
+.report{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:.5rem;display:flex;align-items:center;gap:1rem;text-decoration:none;color:var(--text);transition:border-color .15s}
+.report:hover{border-color:var(--text)}
+.score{font-size:1.1rem;font-weight:700;min-width:45px}
+.score.perfect{color:var(--green)}
+.info{flex:1}
+.info .title{font-weight:600;font-size:.82rem}
+.info .date{font-size:.72rem;color:var(--text-muted)}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>pessano.it</h1>
-<div class="meta">Tutti i report Radar per questo progetto</div>
-<ul class="report-list">
-  <li>
-    <span class="report-date">2026-03-31</span>
-    <span><a href="2026-03-31-postfix-stefano-3-issues/">Verifica post-fix segnalazioni Stefano (3 punti)</a><span class="badge badge-ok">95/100</span></span>
-  </li>
-  <li>
-    <span class="report-date">2026-03-30</span>
-    <span><a href="2026-03-30-post-fix-catalogo-form/">Post-fix catalogo e form preventivo</a><span class="badge badge-ok">95/100</span></span>
-  </li>
-</ul>
+<h1>pessano.it &mdash; Report Radar</h1>
+<a class="report" href="2026-03-31-postfix-stefano-3-issues/">
+    <span class="score ">?</span>
+    <div class="info">
+        <div class="title">pessano.it · Verifica post-fix segnalazioni Stefano</div>
+        <div class="date">2026-03-31</div>
+    </div>
+</a>
+<a class="report" href="2026-03-31-postfix-sottotitoli-form/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="title">Verifica correzioni sito (sottotitoli, form, catalogo)</div>
+        <div class="date">2026-03-31</div>
+    </div>
+</a>
+<a class="report" href="2026-03-30-post-fix-catalogo-form/">
+    <span class="score ">?</span>
+    <div class="info">
+        <div class="title">pessano.it · Post-fix catalogo e form preventivo</div>
+        <div class="date">2026-03-30</div>
+    </div>
+</a>
+<a class="report" href="2026-03-24-categorie-viola-check/">
+    <span class="score ">70</span>
+    <div class="info">
+        <div class="title">Verifica categorie e colori</div>
+        <div class="date">2026-03-24</div>
+    </div>
+</a>
 </div>
 </body>
 </html>

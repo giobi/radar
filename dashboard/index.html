@@ -1,52 +1,214 @@
 <!DOCTYPE html>
-<html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>Radar — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root { --bg:#fafaf9;--surface:#fff;--border:#e5e5e0;--text:#1c1917;--text-secondary:#57534e;--text-muted:#a8a29e;--green:#15803d;--yellow:#854d0e;--red:#b91c1c;--mono:'IBM Plex Mono',monospace;--radius:3px }
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:14px}
-.header{background:var(--surface);border-bottom:2px solid var(--text);padding:2rem 0 1.75rem}
-.container{max-width:1080px;margin:0 auto;padding:0 2.5rem}
-.brand{font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.75rem}
-.brand a{color:var(--text-muted);text-decoration:none}
-h1{font-size:1.3rem;font-weight:700;margin-bottom:.35rem}
-.stats{display:flex;gap:2rem;font-size:.75rem;color:var(--text-secondary);margin-top:.5rem}
-table{width:100%;border-collapse:collapse;margin-top:1.5rem;font-size:.82rem}
-th{text-align:left;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);padding:.6rem 0;border-bottom:1px solid var(--border)}
-td{padding:.6rem 0;border-bottom:1px solid #f5f5f4}
-a{color:var(--text);text-decoration:none}a:hover{text-decoration:underline}
-</style></head><body>
-<div class="header"><div class="container">
-<div class="brand">📡 <a href="https://radar.giobi.com/">Radar</a></div>
-<h1>Dashboard</h1>
-<div class="stats">
-<span>20 progetti</span>
-<span>30 report</span>
-<span>Ultimo: 2026-03-16</span>
+:root { --bg:#fafaf9; --surface:#fff; --border:#e5e5e0; --text:#1c1917; --text-sec:#57534e; --text-muted:#a8a29e; --green:#15803d; --mono:'IBM Plex Mono',monospace; --radius:3px; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:14px}
+.container{max-width:1080px;margin:0 auto;padding:2rem 2.5rem}
+h1{font-size:1.2rem;margin-bottom:1.5rem}
+.project{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:.5rem;display:flex;align-items:center;gap:1rem;text-decoration:none;color:var(--text);transition:border-color .15s}
+.project:hover{border-color:var(--text)}
+.score{font-size:1.1rem;font-weight:700;min-width:45px}
+.score.perfect{color:var(--green)}
+.info{flex:1}
+.name{font-weight:600;font-size:.85rem}
+.detail{font-size:.72rem;color:var(--text-muted)}
+.count{font-size:.72rem;color:var(--text-muted);background:var(--bg);padding:.15rem .5rem;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Radar Dashboard</h1>
+<a class="project" href="../abchat/">
+    <span class="score ">?</span>
+    <div class="info">
+        <div class="name">abchat</div>
+        <div class="detail">Ultimo: 2026-03-11 &mdash; 2026-03-11-generations-isolation-e2e</div>
+    </div>
+    <span class="count">5 report</span>
+</a>
+<a class="project" href="../calia/">
+    <span class="score ">85</span>
+    <div class="info">
+        <div class="name">calia</div>
+        <div class="detail">Ultimo: 2026-03-11 &mdash; Verifica anomalia prodotto Regal_e</div>
+    </div>
+    <span class="count">3 report</span>
+</a>
+<a class="project" href="../caliaitaliaoutlet/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="name">caliaitaliaoutlet</div>
+        <div class="detail">Ultimo: 2026-03-11 &mdash; Prodotto esaurito ancora visibile nel catalogo</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../caliaitaliaoutlet.com/">
+    <span class="score ">90</span>
+    <div class="info">
+        <div class="name">caliaitaliaoutlet.com</div>
+        <div class="detail">Ultimo: 2026-03-11 &mdash; 2026-03-11-stock-anomaly-regale</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../digitag/">
+    <span class="score ">?</span>
+    <div class="info">
+        <div class="name">digitag</div>
+        <div class="detail">Ultimo: 2026-02-27 &mdash; 2026-02-27-full-check</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../eleonoramari/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="name">eleonoramari</div>
+        <div class="detail">Ultimo: 2026-03-03 &mdash; Post-migration check</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../fasoli/">
+    <span class="score ">80</span>
+    <div class="info">
+        <div class="name">fasoli</div>
+        <div class="detail">Ultimo: 2026-03-24 &mdash; Verifica pagamento Nexi XPay</div>
+    </div>
+    <span class="count">2 report</span>
+</a>
+<a class="project" href="../filippomarcodini/">
+    <span class="score ">90</span>
+    <div class="info">
+        <div class="name">filippomarcodini</div>
+        <div class="detail">Ultimo: 2026-03-03 &mdash; Post-Migration Check</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../finasi.com/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="name">finasi.com</div>
+        <div class="detail">Ultimo: 2026-03-24 &mdash; Pagina provvisoria online</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../generationsrpo/">
+    <span class="score ">75</span>
+    <div class="info">
+        <div class="name">generationsrpo</div>
+        <div class="detail">Ultimo: 2026-03-13 &mdash; Emergency Updates (March 13, 2026)</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../inenergy/">
+    <span class="score ">85</span>
+    <div class="info">
+        <div class="name">inenergy</div>
+        <div class="detail">Ultimo: 2026-03-05 &mdash; Landing dinamiche fix</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../lacasadipiero.org/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="name">lacasadipiero.org</div>
+        <div class="detail">Ultimo: 2026-03-04 &mdash; Sito in down (redirect loop)</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../ledger/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="name">ledger</div>
+        <div class="detail">Ultimo: 2026-03-04 &mdash; Gantt Chart Budget Portal</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../nexum/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="name">nexum</div>
+        <div class="detail">Ultimo: 2026-03-06 &mdash; Test vendita contratto end-to-end</div>
+    </div>
+    <span class="count">3 report</span>
+</a>
+<a class="project" href="../pessano/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="name">pessano</div>
+        <div class="detail">Ultimo: 2026-03-16 &mdash; Correzione colori carrello</div>
+    </div>
+    <span class="count">3 report</span>
+</a>
+<a class="project" href="../pessano.it/">
+    <span class="score ">?</span>
+    <div class="info">
+        <div class="name">pessano.it</div>
+        <div class="detail">Ultimo: 2026-03-31 &mdash; pessano.it · Verifica post-fix segnalazioni Stefano</div>
+    </div>
+    <span class="count">4 report</span>
+</a>
+<a class="project" href="../pirolinobeach/">
+    <span class="score ">60</span>
+    <div class="info">
+        <div class="name">pirolinobeach</div>
+        <div class="detail">Ultimo: 2026-03-09 &mdash; Audit SEO, Privacy e Conformità</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../pornhub/">
+    <span class="score ">90</span>
+    <div class="info">
+        <div class="name">pornhub</div>
+        <div class="detail">Ultimo: 2026-03-04 &mdash; Site Audit</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../robertomotta/">
+    <span class="score ">95</span>
+    <div class="info">
+        <div class="name">robertomotta</div>
+        <div class="detail">Ultimo: 2026-03-03 &mdash; Post-migration check</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../solmeri/">
+    <span class="score ">95</span>
+    <div class="info">
+        <div class="name">solmeri</div>
+        <div class="detail">Ultimo: 2026-03-26 &mdash; Migrazione server (verifica staging)</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../tanuki/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="name">tanuki</div>
+        <div class="detail">Ultimo: 2026-03-03 &mdash; Cache Benchmark</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../ticinotraverso/">
+    <span class="score perfect">100</span>
+    <div class="info">
+        <div class="name">ticinotraverso</div>
+        <div class="detail">Ultimo: 2026-03-06 &mdash; Traduzioni DE/FR + CTA</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
+<a class="project" href="../veterinariogravellona/">
+    <span class="score ">90</span>
+    <div class="info">
+        <div class="name">veterinariogravellona</div>
+        <div class="detail">Ultimo: 2026-03-03 &mdash; migrazione post-deploy</div>
+    </div>
+    <span class="count">1 report</span>
+</a>
 </div>
-</div></div>
-<div class="container" style="padding-top:1.5rem">
-<table><tr><th>Progetto</th><th>Ultimo report</th><th>Caso</th><th>Score</th><th>#</th></tr>
-<tr><td><a href="../abchat/">abchat</a></td><td>2026-03-11</td><td><a href="../abchat/2026-03-11-generations-isolation-e2e/">generations-isolation-e2e</a></td><td style="color:var(--text-muted);font-weight:600">—/100</td><td>5</td></tr>
-<tr><td><a href="../calia/">calia</a></td><td>2026-03-11</td><td><a href="../calia/2026-03-11-anomalia-regale-prodotto-esaurito/">anomalia-regale-prodotto-esaurito</a></td><td style="color:var(--green);font-weight:600">85/100</td><td>3</td></tr>
-<tr><td><a href="../caliaitaliaoutlet/">caliaitaliaoutlet</a></td><td>2026-03-11</td><td><a href="../caliaitaliaoutlet/2026-03-11-prodotto-esaurito-visibile/">prodotto-esaurito-visibile</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
-<tr><td><a href="../caliaitaliaoutlet.com/">caliaitaliaoutlet.com</a></td><td>2026-03-11</td><td><a href="../caliaitaliaoutlet.com/2026-03-11-stock-anomaly-regale/">stock-anomaly-regale</a></td><td style="color:var(--green);font-weight:600">90/100</td><td>1</td></tr>
-<tr><td><a href="../digitag/">digitag</a></td><td>2026-02-27</td><td><a href="../digitag/2026-02-27-full-check/">full-check</a></td><td style="color:var(--text-muted);font-weight:600">—/100</td><td>1</td></tr>
-<tr><td><a href="../eleonoramari/">eleonoramari</a></td><td>2026-03-03</td><td><a href="../eleonoramari/2026-03-03-post-migration/">post-migration</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
-<tr><td><a href="../fasoli/">fasoli</a></td><td>2026-03-06</td><td><a href="../fasoli/2026-03-06-crisis-cartasi-xpay-fatal/">crisis-cartasi-xpay-fatal</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
-<tr><td><a href="../filippomarcodini/">filippomarcodini</a></td><td>2026-03-03</td><td><a href="../filippomarcodini/2026-03-03-post-migration/">post-migration</a></td><td style="color:var(--green);font-weight:600">90/100</td><td>1</td></tr>
-<tr><td><a href="../generationsrpo/">generationsrpo</a></td><td>2026-03-13</td><td><a href="../generationsrpo/2026-03-13-cefta-form-updates/">cefta-form-updates</a></td><td style="color:var(--yellow);font-weight:600">75/100</td><td>1</td></tr>
-<tr><td><a href="../inenergy/">inenergy</a></td><td>2026-03-05</td><td><a href="../inenergy/2026-03-05-landing-dinamiche-fix/">landing-dinamiche-fix</a></td><td style="color:var(--green);font-weight:600">85/100</td><td>1</td></tr>
-<tr><td><a href="../lacasadipiero.org/">lacasadipiero.org</a></td><td>2026-03-04</td><td><a href="../lacasadipiero.org/2026-03-04-ssl-redirect-loop/">ssl-redirect-loop</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
-<tr><td><a href="../ledger/">ledger</a></td><td>2026-03-04</td><td><a href="../ledger/2026-03-04-gantt-chart/">gantt-chart</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
-<tr><td><a href="../nexum/">nexum</a></td><td>2026-03-06</td><td><a href="../nexum/2026-03-06-contract-sale-test/">contract-sale-test</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>3</td></tr>
-<tr><td><a href="../pessano/">pessano</a></td><td>2026-03-16</td><td><a href="../pessano/2026-03-16-fix-colori-carrello/">fix-colori-carrello</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>3</td></tr>
-<tr><td><a href="../pirolinobeach/">pirolinobeach</a></td><td>2026-03-09</td><td><a href="../pirolinobeach/2026-03-09-audit-seo-privacy/">audit-seo-privacy</a></td><td style="color:var(--yellow);font-weight:600">60/100</td><td>1</td></tr>
-<tr><td><a href="../pornhub/">pornhub</a></td><td>2026-03-04</td><td><a href="../pornhub/2026-03-04-site-audit/">site-audit</a></td><td style="color:var(--green);font-weight:600">90/100</td><td>1</td></tr>
-<tr><td><a href="../robertomotta/">robertomotta</a></td><td>2026-03-03</td><td><a href="../robertomotta/2026-03-03-post-migration/">post-migration</a></td><td style="color:var(--green);font-weight:600">95/100</td><td>1</td></tr>
-<tr><td><a href="../tanuki/">tanuki</a></td><td>2026-03-03</td><td><a href="../tanuki/2026-03-03-cache-benchmark/">cache-benchmark</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
-<tr><td><a href="../ticinotraverso/">ticinotraverso</a></td><td>2026-03-06</td><td><a href="../ticinotraverso/2026-03-06-post-translation-check/">post-translation-check</a></td><td style="color:var(--green);font-weight:600">100/100</td><td>1</td></tr>
-<tr><td><a href="../veterinariogravellona/">veterinariogravellona</a></td><td>2026-03-03</td><td><a href="../veterinariogravellona/2026-03-03-post-migration/">post-migration</a></td><td style="color:var(--green);font-weight:600">90/100</td><td>1</td></tr>
-</table>
-</div></body></html>
+</body>
+</html>
