@@ -1,0 +1,12 @@
+score=95
+js_errors=0
+Homepage|200|https://pessano.tanuki.giobi.com/
+Catalogo|200|https://pessano.tanuki.giobi.com/catalogo/
+La nostra storia|200|https://pessano.tanuki.giobi.com/la-nostra-storia/
+Carrello|200|https://pessano.tanuki.giobi.com/carrello/
+Categoria Novità|200|https://pessano.tanuki.giobi.com/categoria-prodotto/novita/
+Prodotto singolo|200|https://pessano.tanuki.giobi.com/catalogo/
+Aggiungi al carrello|0|button not found
+Checkout|200|https://pessano.tanuki.giobi.com/carrello/
+Mobile Home|200|https://pessano.tanuki.giobi.com/
+Mobile Catalogo|200|https://pessano.tanuki.giobi.com/catalogo/
