@@ -1,0 +1,12 @@
+{
+  "score": 100,
+  "js_errors": 0,
+  "performance": {
+    "ttfb": 425,
+    "dom_loaded": 607,
+    "load": 611,
+    "fcp": 576,
+    "resources": 84
+  },
+  "homepage_time": 3.79
+}

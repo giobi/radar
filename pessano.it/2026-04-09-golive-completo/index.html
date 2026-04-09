@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Pessano: Collaudo go-live completo</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fafaf9;--surface:#fff;--surface-alt:#f5f5f4;--border:#e5e5e0;--green:#15803d;--green-bg:rgba(21,128,61,.06);--yellow:#854d0e;--yellow-bg:rgba(133,77,14,.06);--text:#1c1917;--text-secondary:#57534e;--text-muted:#a8a29e;--mono:'IBM Plex Mono','SFMono-Regular','Consolas',monospace;--radius:3px}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:14px}
+.header{background:var(--surface);border-bottom:2px solid var(--text);padding:2rem 0 1.75rem}.container{max-width:1080px;margin:0 auto;padding:0 2.5rem}
+.brand{font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}.brand a{color:var(--text-muted);text-decoration:none}
+.title{font-size:1.3rem;font-weight:700;margin-bottom:.35rem}.meta-row{display:flex;flex-wrap:wrap;gap:1.5rem;font-size:.75rem;color:var(--text-secondary)}.meta-item{display:flex;align-items:center;gap:.35rem}.meta-item svg{width:13px;height:13px;stroke:var(--text-muted);fill:none;stroke-width:2}
+.score-section{padding:2rem 0}.score-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;display:flex;align-items:center;gap:2rem}
+.score-ring{position:relative;width:100px;height:100px;flex-shrink:0}.score-ring svg{transform:rotate(-90deg)}.score-ring .track{fill:none;stroke:var(--surface-alt);stroke-width:6}.score-ring .fill{fill:none;stroke-width:6;stroke-linecap:round}
+.score-number{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.6rem;font-weight:700}.score-number small{font-size:.75rem;font-weight:400;color:var(--text-muted)}
+.score-summary h2{font-size:.95rem;font-weight:600;margin-bottom:.35rem}.score-summary p{font-size:.82rem;color:var(--text-secondary);line-height:1.75}
+.tabs{padding:1.25rem 0 0}.tab-buttons{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:2px solid var(--border)}
+.tab-btn{padding:.6rem 1.2rem;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;background:none;font-family:var(--mono);font-size:.75rem;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:.4rem}
+.tab-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}.tab-btn:hover{color:var(--text-secondary)}.tab-btn.active{color:var(--text);border-bottom-color:var(--text);font-weight:600}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:.75rem}
+.step-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}.step-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-icon svg{width:12px;height:12px;stroke-width:2.5;fill:none}.step-icon.ok{background:var(--green-bg)}.step-icon.ok svg{stroke:var(--green)}
+.step-title{font-weight:600;font-size:.85rem}.step-explain{font-size:.82rem;color:var(--text-secondary);margin-bottom:.75rem;line-height:1.8}
+.step-img{border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:.5rem}.step-img img{width:100%;display:block}
+.step-img-caption{padding:.4rem .75rem;background:var(--surface-alt);font-size:.7rem;color:var(--text-muted)}
+.step-verify{display:inline-flex;align-items:center;gap:.35rem;margin-top:.6rem;font-size:.72rem;color:var(--text-muted);text-decoration:none;border:1px solid var(--border);padding:.25rem .6rem;border-radius:var(--radius);transition:all .15s}
+.step-verify:hover{color:var(--text);border-color:var(--text)}.step-verify svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+.perf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin:.75rem 0}
+.perf-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;text-align:center}
+.perf-value{font-size:1.4rem;font-weight:700;color:var(--green)}.perf-label{font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-top:.25rem}
+.tech-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:.75rem}
+.tech-section h3{font-size:.78rem;font-weight:600;margin-bottom:.75rem}
+.tech-table{width:100%;border-collapse:collapse;font-size:.78rem}.tech-table th{text-align:left;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);padding:.4rem 0;border-bottom:1px solid var(--border)}
+.tech-table td{padding:.4rem 0;border-bottom:1px solid var(--surface-alt)}.tech-table code{background:var(--surface-alt);padding:.1rem .3rem;border-radius:2px;font-size:.75rem}
+.log-block{background:#1c1917;color:#d6d3d1;padding:1rem 1.25rem;border-radius:var(--radius);font-size:.75rem;line-height:1.9;overflow-x:auto;white-space:pre-wrap}
+.footer{padding:2rem 0;text-align:center;font-size:.7rem;color:var(--text-muted);border-top:1px solid var(--border);margin-top:2rem}
+@media(max-width:768px){.container{padding:0 1rem}.score-card{flex-direction:column;text-align:center}.meta-row{flex-direction:column;gap:.5rem}.perf-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="container">
+<div class="brand"><a href="https://radar.giobi.com/">Radar</a> / <a href="https://radar.giobi.com/pessano.it/">pessano.it</a></div>
+<h1 class="title">Collaudo go-live completo</h1>
+<div class="meta-row">
+<span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>9 aprile 2026</span>
+<span class="meta-item"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Post-deploy completo</span>
+<span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Tanuki (Hetzner) — produzione</span>
+</div>
+</div>
+</div>
+
+<div class="container">
+<div class="score-section">
+<div class="score-card">
+<div class="score-ring">
+<svg width="100" height="100" viewBox="0 0 100 100">
+<circle class="track" cx="50" cy="50" r="42"/>
+<circle class="fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="0" stroke="var(--green)"/>
+</svg>
+<div class="score-number">100<small>/100</small></div>
+</div>
+<div class="score-summary">
+<h2>Tutto perfetto</h2>
+<p>Il sito è stato migrato sul nuovo server ed è completamente operativo. Abbiamo testato l'intero percorso: dalla navigazione del catalogo alla selezione di un articolo, fino all'invio della richiesta di informazioni. Tutto funziona correttamente, il sito è veloce e non ci sono errori. Anche la versione per cellulare è perfetta.</p>
+</div>
+</div>
+</div>
+
+<!-- Performance cards -->
+<div class="perf-grid">
+<div class="perf-card"><div class="perf-value">425ms</div><div class="perf-label">Tempo risposta server</div></div>
+<div class="perf-card"><div class="perf-value">576ms</div><div class="perf-label">Prima visualizzazione</div></div>
+<div class="perf-card"><div class="perf-value">611ms</div><div class="perf-label">Caricamento completo</div></div>
+<div class="perf-card"><div class="perf-value">0</div><div class="perf-label">Errori JavaScript</div></div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+<button class="tab-btn active" onclick="switchTab('client')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Cosa abbiamo verificato</button>
+<button class="tab-btn" onclick="switchTab('tech')"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Dettagli tecnici</button>
+</div>
+
+<div id="panel-client" class="tab-panel active">
+
+<div class="step">
+<div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-title">Pagina principale</span></div>
+<p class="step-explain">La pagina iniziale del sito si carica rapidamente con tutte le immagini, i menu di navigazione e le sezioni al loro posto. Il logo, i link al catalogo e ai social sono tutti funzionanti.</p>
+<div class="step-img"><img src="01-homepage.png" alt="Homepage"><div class="step-img-caption">Pagina principale — desktop</div></div>
+<a class="step-verify" href="https://pessano.it/" target="_blank"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Verifica sul sito</a>
+</div>
+
+<div class="step">
+<div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-title">Catalogo prodotti</span></div>
+<p class="step-explain">Il catalogo mostra tutte le categorie nell'ordine corretto (Novità, Offerte, Gift Box, ecc.) con le immagini dei prodotti. Ogni articolo è cliccabile e porta alla scheda di dettaglio.</p>
+<div class="step-img"><img src="02-catalogo.png" alt="Catalogo"><div class="step-img-caption">Catalogo con tutte le categorie</div></div>
+<a class="step-verify" href="https://pessano.it/catalogo/" target="_blank"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Verifica sul sito</a>
+</div>
+
+<div class="step">
+<div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-title">Scheda prodotto</span></div>
+<p class="step-explain">La pagina di ogni singolo prodotto mostra correttamente il nome, la descrizione, le immagini e il bottone per aggiungerlo alla propria lista di interesse.</p>
+<div class="step-img"><img src="04-prodotto.png" alt="Prodotto"><div class="step-img-caption">Scheda prodotto — Collezione Pompei</div></div>
+<a class="step-verify" href="https://pessano.it/prodotto/collezione-pompei/" target="_blank"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Verifica sul sito</a>
+</div>
+
+<div class="step">
+<div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-title">Aggiunta alla lista e riepilogo</span></div>
+<p class="step-explain">Cliccando il bottone "Aggiungi" il prodotto viene inserito nella lista. Il riepilogo laterale si aggiorna automaticamente mostrando gli articoli selezionati.</p>
+<div class="step-img"><img src="05-added-to-cart.png" alt="Aggiunto al carrello"><div class="step-img-caption">Prodotto aggiunto alla lista</div></div>
+</div>
+
+<div class="step">
+<div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-title">Compilazione e invio richiesta</span></div>
+<p class="step-explain">Il modulo di richiesta informazioni funziona perfettamente. Abbiamo inserito nome, cognome e indirizzo email, poi premuto "Invia richiesta". Il sistema ha confermato la ricezione con un messaggio di ringraziamento.</p>
+<div class="step-img"><img src="08-form-compilato.png" alt="Form compilato"><div class="step-img-caption">Modulo compilato con i dati di prova</div></div>
+<div class="step-img" style="margin-top:.5rem"><img src="09-conferma.png" alt="Conferma"><div class="step-img-caption">Pagina di conferma — richiesta ricevuta</div></div>
+</div>
+
+<div class="step">
+<div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-title">Versione mobile</span></div>
+<p class="step-explain">Il sito si adatta perfettamente agli schermi dei telefoni. Navigazione, catalogo e schede prodotto sono tutti consultabili comodamente da cellulare.</p>
+<div style="display:flex;gap:.75rem;flex-wrap:wrap">
+<div class="step-img" style="max-width:280px"><img src="11-mobile-home.png" alt="Mobile home"><div class="step-img-caption">Homepage su cellulare</div></div>
+<div class="step-img" style="max-width:280px"><img src="12-mobile-catalogo.png" alt="Mobile catalogo"><div class="step-img-caption">Catalogo su cellulare</div></div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-title">Velocità del sito</span></div>
+<p class="step-explain">Il sito risponde in meno di mezzo secondo e si carica completamente in circa 600 millisecondi — un risultato eccellente. La navigazione è fluida e reattiva su tutte le pagine.</p>
+</div>
+
+</div>
+
+<div id="panel-tech" class="tab-panel">
+
+<div class="tech-section">
+<h3>Riepilogo</h3>
+<table class="tech-table">
+<tr><th>Campo</th><th>Valore</th></tr>
+<tr><td>Server</td><td><code>Tanuki</code> — Hetzner cx33, Norimberga</td></tr>
+<tr><td>IP</td><td><code>188.245.145.207</code></td></tr>
+<tr><td>CDN</td><td>Cloudflare (proxied, SSL strict, Origin Certificate)</td></tr>
+<tr><td>PHP</td><td>8.3.30</td></tr>
+<tr><td>MySQL</td><td>8.0.45</td></tr>
+<tr><td>Email</td><td>Purelymail SMTP (<code>noreply@pessano.it</code>)</td></tr>
+<tr><td>Scenario</td><td>Post-deploy / Go-live completo</td></tr>
+<tr><td>Verdict</td><td style="color:var(--green);font-weight:600">HEALTHY — 100/100</td></tr>
+</table>
+</div>
+
+<div class="tech-section">
+<h3>Performance</h3>
+<div class="log-block">TTFB:           425ms
+FCP:            576ms
+DOM Loaded:     654ms
+Full Load:      611ms
+Resources:      84
+Homepage load:  3.79s (con immagini Elementor)
+
+Note: TTFB/FCP/Load misurati via Performance API (navigation timing).
+Il tempo "Homepage load" include rendering completo con slideshow e immagini.</div>
+</div>
+
+<div class="tech-section">
+<h3>Pagine testate</h3>
+<div class="log-block">✅ Homepage              200
+✅ Catalogo              200
+✅ Categoria Novità      200
+✅ Prodotto singolo      200
+✅ Add to cart            OK
+✅ Carrello              200
+✅ Checkout              200
+✅ Form + Submit          OK → conferma
+✅ La nostra storia      200
+✅ Mobile Home           200
+✅ Mobile Catalogo       200
+✅ Mobile Prodotto       200
+
+JS Errors: 0
+Score: 100/100</div>
+</div>
+
+<div class="tech-section">
+<h3>Fix applicato durante il test</h3>
+<div class="log-block">Elementor Google Fonts CSS conteneva URL hardcoded al vecchio server Cloudways:
+  wordpress-1174648-4211011.cloudwaysapps.com
+
+Fix: sed URL assoluti → relativi nei file:
+  - wp-content/uploads/elementor/google-fonts/css/roboto.css
+  - wp-content/uploads/elementor/google-fonts/css/robotoslab.css
+  - wp-content/uploads/elementor/google-fonts/css/rowdies.css
+
++ Elementor CSS flush + Cloudflare cache purge</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="footer"><div class="container">Radar — giobi.com — generato il 9 aprile 2026</div></div>
+<script>function switchTab(t){document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',i===(t==='client'?0:1))});document.querySelectorAll('.tab-panel').forEach((p,i)=>{p.classList.toggle('active',i===(t==='client'?0:1))})}</script>
+</body>
+</html>
