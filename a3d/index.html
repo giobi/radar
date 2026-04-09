@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — A3D</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #fafaf9; --surface: #fff; --border: #e5e5e0; --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e; --mono: 'IBM Plex Mono', monospace; --radius: 3px; --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.container { max-width: 1080px; margin: 0 auto; padding: 2rem 2.5rem; }
+h1 { font-size: 1.2rem; margin-bottom: .5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.report { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: .5rem; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text); }
+.report:hover { border-color: var(--text-muted); }
+.report-title { font-weight: 600; font-size: .85rem; }
+.report-meta { font-size: .72rem; color: var(--text-muted); }
+.score { font-weight: 700; font-size: .9rem; padding: .2rem .6rem; border-radius: 2px; background: var(--yellow-bg); color: var(--yellow); }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="brand"><a href="../dashboard/">Radar</a></div>
+    <h1>A3D</h1>
+    <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:1.5rem;">Piattaforma assessment competenze — cresco26.a3d.it / mule.a3d.it</p>
+    
+    <a class="report" href="2026-04-09-bugfix-round/">
+        <div>
+            <div class="report-title">Migrazione s0 + round di correzioni</div>
+            <div class="report-meta">9 aprile 2026 — bugfix — 5 fix, 2 aperti</div>
+        </div>
+        <span class="score">75</span>
+    </a>
+</div>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — A3D: Migrazione s0 + bugfix round (7-9 aprile 2026)</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon.ok { background: var(--green-bg); color: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); color: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); color: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: .5rem; }
+.step-img img { width: 100%; height: auto; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+.step-verify { display: inline-flex; align-items: center; gap: .3rem; font-size: .72rem; color: var(--text-secondary); text-decoration: none; margin-top: .5rem; padding: .25rem .5rem; border: 1px solid var(--border); border-radius: 2px; }
+.step-verify:hover { border-color: var(--text-muted); }
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; }
+.tl { position: relative; padding-left: 1.5rem; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--border-strong); }
+.tl-item { position: relative; margin-bottom: .75rem; display: flex; align-items: baseline; gap: .75rem; }
+.tl-dot { position: absolute; left: -1.5rem; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); }
+.tl-dot.red { border-color: var(--red); background: var(--red-bg); }
+.tl-dot.yellow { border-color: var(--yellow); background: var(--yellow-bg); }
+.tl-dot.green { border-color: var(--green); background: var(--green-bg); }
+.tl-time { font-size: .72rem; font-weight: 600; color: var(--text-muted); min-width: 42px; }
+.tl-text { font-size: .8rem; color: var(--text-secondary); }
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+footer { padding: 2rem 0; text-align: center; font-size: .68rem; color: var(--text-muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+@media (max-width: 640px) { .score-card { flex-direction: column; text-align: center; } .meta-row { flex-direction: column; gap: .4rem; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand"><a href="../../dashboard/">Radar</a> / <a href="../">a3d</a></div>
+    <h1 class="title">A3D — Migrazione s0 + round di correzioni</h1>
+    <div class="meta-row">
+        <span class="meta-item">7-9 aprile 2026</span>
+        <span class="meta-item">Scenario: bugfix</span>
+        <span class="meta-item">Target: cresco26.a3d.it / mule.a3d.it</span>
+        <span class="meta-item">5 fix, 2 aperti</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--yellow)" stroke-dasharray="263.9" stroke-dashoffset="66"/>
+        </svg>
+        <div class="score-number">75<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Piattaforma funzionante, alcune cose da sistemare</h2>
+        <p>Migrazione cresco26 completata su server dedicato. 5 errori corretti su 7 segnalati. Rimangono il menu nel PDF e il logo mancante dopo la migrazione.</p>
+    </div>
+</div>
+</div>
+
+<div class="timeline">
+    <h3>Cronologia intervento</h3>
+    <div class="tl">
+        <div class="tl-item"><div class="tl-dot red"></div><span class="tl-time">07/04</span><span class="tl-text">cresco26.a3d.it irraggiungibile (522) — avocado spento</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">07/04</span><span class="tl-text">Server temporaneo da snapshot, DNS puntato</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">07/04</span><span class="tl-text">Dump database cresco + migrazione su s0</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">07/04</span><span class="tl-text">cresco26.a3d.it live su s0 con SSL Let's Encrypt</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">07/04</span><span class="tl-text">Fix #1796, #1797, #1798 pushati</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">08/04</span><span class="tl-text">Indagine berco sub 52 + recovery input</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">09/04</span><span class="tl-text">Fix #1789/#1792 (import crash) + radar verifica</span></div>
+    </div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('client')">Cosa abbiamo fatto</button>
+    <button class="tab-btn" onclick="switchTab('tech')">Dettagli tecnici</button>
+</div>
+
+<div id="tab-client" class="tab-panel active">
+
+<!-- FIX 1 -->
+<div class="step">
+    <div class="step-header"><div class="step-icon ok">&#10003;</div><span class="step-title">Migrazione cresco26 su server dedicato</span></div>
+    <p class="step-explain">Il sito di produzione era irraggiungibile perche il vecchio server era stato spento. Abbiamo spostato tutto (database, file, configurazione) sul nuovo server dedicato A3D. Ora il sito e raggiungibile e protetto con certificato SSL.</p>
+    <div class="step-img"><img src="07-settings.png" alt="Settings con nuovo server"><div class="step-img-caption">Pagina impostazioni — il server ora mostra s0.a3d.it (Hetzner CX23, Forge)</div></div>
+    <a class="step-verify" href="https://cresco26.a3d.it/app/setting" target="_blank">&#8599; Verifica sul sito</a>
+</div>
+
+<!-- FIX 2 -->
+<div class="step">
+    <div class="step-header"><div class="step-icon ok">&#10003;</div><span class="step-title">Correzione: le date della campagna ora si salvano</span></div>
+    <p class="step-explain">Quando si impostavano le date di apertura e chiusura di una campagna, il sistema non le registrava. Ora le date vengono salvate correttamente. (Issue #1796)</p>
+    <div class="step-img"><img src="22-campaign-form.png" alt="Form campagna"><div class="step-img-caption">Pagina modifica campagna con campi data</div></div>
+    <a class="step-verify" href="https://cresco26.a3d.it/app/campaign/1" target="_blank">&#8599; Verifica sul sito</a>
+</div>
+
+<!-- FIX 3 -->
+<div class="step">
+    <div class="step-header"><div class="step-icon ok">&#10003;</div><span class="step-title">Correzione: la pagina Tag della campagna ora si apre velocemente</span></div>
+    <p class="step-explain">La pagina dei tag era molto lenta perche caricava tutti i 228 tag della piattaforma. Ora carica solo quelli rilevanti per la campagna selezionata (circa 23), con un miglioramento di 10 volte. (Issue #1797)</p>
+    <div class="step-img"><img src="04-campaign-usertag.png" alt="Usertag campagna"><div class="step-img-caption">Pagina tag campagna su cresco26 — caricata con i tag filtrati</div></div>
+    <a class="step-verify" href="https://cresco26.a3d.it/app/campaign/1/usertag" target="_blank">&#8599; Verifica sul sito</a>
+</div>
+
+<!-- FIX 4 -->
+<div class="step">
+    <div class="step-header"><div class="step-icon ok">&#10003;</div><span class="step-title">Correzione: l'esportazione CSV per tag ora include tutti i tag</span></div>
+    <p class="step-explain">I file CSV esportati per tag mostravano solo 3 tag invece di tutti quelli con utenti assegnati. Il filtro era troppo restrittivo. Ora vengono inclusi tutti i tag che hanno utenti nella campagna. (Issue #1798)</p>
+    <div class="step-img"><img src="06-export-global.png" alt="Export CSV"><div class="step-img-caption">Pagina export globale — tutti gli 8 export generati correttamente</div></div>
+    <a class="step-verify" href="https://cresco26.a3d.it/app/export" target="_blank">&#8599; Verifica sul sito</a>
+</div>
+
+<!-- FIX 5 -->
+<div class="step">
+    <div class="step-header"><div class="step-icon ok">&#10003;</div><span class="step-title">Correzione: la pagina "Duplica sessione" non si apriva</span></div>
+    <p class="step-explain">La pagina per duplicare una sessione esistente mostrava un errore e non permetteva di procedere. Il problema era legato a un'impostazione di sistema incompatibile con il nuovo server. Ora funziona correttamente. (Issue #1789 e #1792)</p>
+    <div class="step-img"><img src="10-session-import-mule.png" alt="Import prima del fix"><div class="step-img-caption">PRIMA: pagina con errore</div></div>
+    <div class="step-img"><img src="20-import-after-fix.png" alt="Import dopo il fix"><div class="step-img-caption">DOPO: lista sessioni caricata, bottone Importa funzionante</div></div>
+    <a class="step-verify" href="https://mule.a3d.it/app/session/import?domain=self" target="_blank">&#8599; Verifica sul sito</a>
+</div>
+
+<!-- OPEN 1 -->
+<div class="step">
+    <div class="step-header"><div class="step-icon warn">!</div><span class="step-title">Ancora da risolvere: il menu compare nel PDF scaricato</span></div>
+    <p class="step-explain">Quando si scarica il report PDF di una compilazione, la prima pagina include il menu di navigazione del sito che non dovrebbe essere visibile nel documento. Il contenuto del report (grafico e punteggi) e corretto. (Issue #1790)</p>
+</div>
+
+<!-- OPEN 2 -->
+<div class="step">
+    <div class="step-header"><div class="step-icon warn">!</div><span class="step-title">Ancora da risolvere: logo mancante dopo la migrazione</span></div>
+    <p class="step-explain">Il logo della piattaforma non viene visualizzato nella pagina di accesso e in altre pagine. Il file immagine non e stato trasferito durante la migrazione al nuovo server. (Issue #1787)</p>
+    <div class="step-img"><img src="01-login.png" alt="Login senza logo"><div class="step-img-caption">Pagina di accesso — icona immagine rotta in alto a sinistra</div></div>
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+<h3>Riepilogo tecnico</h3>
+<table class="tech-table">
+<tr><th>Campo</th><th>Valore</th></tr>
+<tr><td>Server</td><td><code>s0.a3d.it</code> (Hetzner CX23, 5.75.135.34)</td></tr>
+<tr><td>Forge</td><td>Server 1182698, Site cresco26: 3120804</td></tr>
+<tr><td>Database</td><td><code>a3dcresco</code> (dump da avocado 07/04)</td></tr>
+<tr><td>PHP</td><td>8.3.30</td></tr>
+<tr><td>Laravel</td><td>9.52.21</td></tr>
+<tr><td>SSL</td><td>Let's Encrypt (Forge managed)</td></tr>
+<tr><td>Scenario</td><td>bugfix</td></tr>
+<tr><td>Iterazioni</td><td>3 giorni (7-9 aprile)</td></tr>
+</table>
+</div>
+
+<div class="tech-section">
+<h3>Fix #1789/#1792 — SessionImport crash</h3>
+<div class="log-block">file_get_contents(https:///api/v1/sessions): Failed to open stream
+Causa: env('APP_URL') ritorna null con config cachata
+Fix: str_replace('https://', '', config('app.url'))</div>
+</div>
+
+<div class="tech-section">
+<h3>Fix #1796 — Date campagna non salvate</h3>
+<div class="log-block">InputDatetimeTz emette evento 'modelSaving' ma ModelForm non ascoltava.
+Fix: aggiunto listener 'modelSaving' => 'onModelSaving' in ModelForm.php</div>
+</div>
+
+<div class="tech-section">
+<h3>Fix #1797 — Usertag campagna lento</h3>
+<div class="log-block">CampaignUsertag caricava tutti i 228 tag (Usertag::has('users'))
+Fix: filtra per utenti con subscription nella campagna (228 -> 23 tag)</div>
+</div>
+
+<div class="tech-section">
+<h3>Fix #1798 — Export tag incompleto</h3>
+<div class="log-block">AbstractTagBuilder::getTags() usava has('sessions') — solo 3 tag su 249
+Fix: cambiato in has('users') — ora include tutti i tag con utenti</div>
+</div>
+
+<div class="tech-section">
+<h3>Bug #1790 — PDF con menu navigazione</h3>
+<div class="log-block">DashboardProfileSubscriptionsController::pdf() passa $data['media'] = 'pdf'
+ma la view non controlla $media per nascondere il nav.
+Fix da fare: @if(($media ?? null) !== 'pdf') nel template report</div>
+</div>
+
+<div class="tech-section">
+<h3>Bug #1787 — Logo mancante</h3>
+<div class="log-block">Media ID 65 (Screenshot-2025-04-16-alle-17.41.06.png) non trasferito durante migrazione.
+Il file e in storage/app/public/65/ — la directory non esiste su s0.
+Immagine originale su avocado (ancora acceso, snapshot 372905032).</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<footer>Radar — giobi.com — generato il 9 aprile 2026</footer>
+<div class="watermark"><a href="https://giobi.com">Radar / giobi.com</a></div>
+
+<script>
+function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
