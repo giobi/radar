@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar — Residence Usignolo — Go Live Check</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'IBM Plex Mono',monospace;background:#fafaf9;color:#1c1917;line-height:1.6}
+.container{max-width:1080px;margin:0 auto;padding:2rem 1.5rem}
+header{border-bottom:2px solid #1c1917;padding-bottom:1rem;margin-bottom:2rem;display:flex;justify-content:space-between;align-items:flex-end}
+.brand{font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:#78716c}
+h1{font-size:1.5rem;font-weight:600}
+.meta{font-size:.8rem;color:#78716c;margin-bottom:2rem}
+.meta span{margin-right:1.5rem}
+.score-card{display:flex;align-items:center;gap:2rem;background:#fff;border:1px solid #e5e5e0;border-radius:3px;padding:2rem;margin-bottom:2rem}
+.score-circle{position:relative;width:120px;height:120px;flex-shrink:0}
+.score-circle svg{transform:rotate(-90deg)}
+.score-circle .bg{fill:none;stroke:#e5e5e0;stroke-width:8}
+.score-circle .fg{fill:none;stroke:#16a34a;stroke-width:8;stroke-linecap:round;stroke-dasharray:314;stroke-dashoffset:0;transition:stroke-dashoffset .5s}
+.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;font-weight:600}
+.score-text h2{font-size:1.1rem;margin-bottom:.5rem}
+.score-text p{font-size:.85rem;color:#57534e}
+.tabs{display:flex;gap:0;margin-bottom:0;border-bottom:2px solid #1c1917}
+.tab{padding:.75rem 1.5rem;cursor:pointer;font-size:.85rem;font-weight:500;border:1px solid transparent;border-bottom:none;background:transparent;font-family:inherit;color:#78716c}
+.tab.active{background:#fff;border-color:#e5e5e0;border-bottom:2px solid #fff;margin-bottom:-2px;color:#1c1917}
+.tab-content{display:none;background:#fff;border:1px solid #e5e5e0;border-top:none;padding:2rem;border-radius:0 0 3px 3px}
+.tab-content.active{display:block}
+.step{margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid #f5f5f4}
+.step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.step h3{font-size:1rem;margin-bottom:.5rem}
+.step p{font-size:.85rem;color:#57534e;margin-bottom:1rem}
+.step img{width:100%;height:auto;border:1px solid #e5e5e0;border-radius:3px;margin-bottom:.5rem;cursor:pointer}
+.step img:hover{opacity:.9}
+.step-verify{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;color:#2563eb;text-decoration:none;border:1px solid #2563eb;padding:.3rem .7rem;border-radius:3px}
+.step-verify:hover{background:#eff6ff}
+.step-verify svg{width:14px;height:14px}
+.tech-block{background:#1c1917;color:#a8a29e;padding:1rem;border-radius:3px;font-size:.8rem;margin:1rem 0;overflow-x:auto;white-space:pre-wrap}
+.timeline{margin-bottom:2rem}
+.tl-item{display:flex;gap:1rem;margin-bottom:1rem;font-size:.85rem}
+.tl-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tl-green{background:#16a34a}
+.tl-time{color:#78716c;min-width:5ch}
+footer{text-align:center;padding:2rem 0;font-size:.75rem;color:#a8a29e;border-top:1px solid #e5e5e0;margin-top:2rem}
+@media(max-width:640px){.score-card{flex-direction:column;text-align:center}.meta span{display:block}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div><span class="brand">Radar</span><h1>Residence Usignolo</h1></div>
+<span class="brand">giobi.com</span>
+</header>
+
+<div class="meta">
+<span>22 aprile 2026</span>
+<span>residenceusignolo.it</span>
+<span>Scenario: post-deploy</span>
+</div>
+
+<div class="score-card">
+<div class="score-circle">
+<svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="50"/><circle class="fg" cx="60" cy="60" r="50"/></svg>
+<div class="score-num">100</div>
+</div>
+<div class="score-text">
+<h2>Tutto perfetto</h2>
+<p>Il sito e stato messo online con successo. Tutte le pagine rispondono correttamente, nessun errore, caricamento veloce su desktop e mobile.</p>
+</div>
+</div>
+
+<div class="timeline">
+<div class="tl-item"><span class="tl-time">15:15</span><div class="tl-dot tl-green"></div><div>Zona DNS creata su Cloudflare, nameserver migrati</div></div>
+<div class="tl-item"><span class="tl-time">15:20</span><div class="tl-dot tl-green"></div><div>Server Tanuki configurato, dominio aggiunto a Nginx</div></div>
+<div class="tl-item"><span class="tl-time">15:21</span><div class="tl-dot tl-green"></div><div>Indirizzi aggiornati nel database WordPress (1025 sostituzioni)</div></div>
+<div class="tl-item"><span class="tl-time">15:22</span><div class="tl-dot tl-green"></div><div>Certificato SSL attivo via Cloudflare, sito raggiungibile</div></div>
+<div class="tl-item"><span class="tl-time">15:30</span><div class="tl-dot tl-green"></div><div>Monitoraggio Uptime Kuma attivato</div></div>
+</div>
+
+<div class="tabs">
+<button class="tab active" onclick="switchTab(0)">Cosa abbiamo fatto</button>
+<button class="tab" onclick="switchTab(1)">Dettagli tecnici</button>
+</div>
+
+<div class="tab-content active" id="tab0">
+
+<div class="step">
+<h3>1. Sito visibile su residenceusignolo.it</h3>
+<p>Il sito era raggiungibile solo tramite un indirizzo temporaneo. Ora risponde correttamente all'indirizzo definitivo residenceusignolo.it, con certificato di sicurezza attivo.</p>
+<img src="01-home-desktop.png" alt="Homepage desktop">
+<a class="step-verify" href="https://residenceusignolo.it/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Verifica sul sito</a>
+</div>
+
+<div class="step">
+<h3>2. Pagina "Chi siamo" funzionante</h3>
+<p>La pagina di presentazione della struttura si carica correttamente con testi e immagini.</p>
+<img src="02-chi-siamo.png" alt="Chi siamo">
+<a class="step-verify" href="https://residenceusignolo.it/chi-siamo/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Verifica sul sito</a>
+</div>
+
+<div class="step">
+<h3>3. Pagina contatti raggiungibile</h3>
+<p>La pagina con i recapiti e le informazioni di contatto funziona senza errori.</p>
+<img src="03-contatti.png" alt="Contatti">
+<a class="step-verify" href="https://residenceusignolo.it/contatti/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Verifica sul sito</a>
+</div>
+
+<div class="step">
+<h3>4. Versione mobile verificata</h3>
+<p>Il sito si adatta correttamente allo schermo del telefono. Menu, testi e immagini sono leggibili e navigabili.</p>
+<img src="04-home-mobile.png" alt="Homepage mobile" style="max-width:375px">
+<a class="step-verify" href="https://residenceusignolo.it/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Verifica sul sito</a>
+</div>
+
+</div>
+
+<div class="tab-content" id="tab1">
+<h3>Riepilogo tecnico</h3>
+<div class="tech-block">Server: Tanuki (188.245.145.207) — Hetzner cx33
+Stack: Nginx + PHP 8.3 + MySQL 8 + Redis
+Path: /home/forge/usignolo.staging.re
+DNS: Cloudflare (zone 646a0b9c4710148f451ac1581b5dfb74)
+SSL: Flexible (Cloudflare edge → HTTP origin)
+Monitoring: Uptime Kuma (ID 124, check 60s)
+WP search-replace: 1025 sostituzioni
+Tempo di caricamento: 0.96s
+Errori JS: nessuno
+Link interni trovati: 12</div>
+
+<h3>Cronologia DNS</h3>
+<div class="tech-block">NS originali: ns1/2/3.dnshostingperte.it
+NS attuali: jeff.ns.cloudflare.com, roxy.ns.cloudflare.com
+A record: 5.134.122.60 → 188.245.145.207
+Backup DNS: dns-backup-20260422.residenceusignolo.it (TXT)</div>
+</div>
+
+<footer>Radar — giobi.com — 22 aprile 2026</footer>
+</div>
+<script>
+function switchTab(n){document.querySelectorAll('.tab').forEach((t,i)=>{t.classList.toggle('active',i===n)});document.querySelectorAll('.tab-content').forEach((t,i)=>{t.classList.toggle('active',i===n)})}
+</script>
+</body>
+</html>
