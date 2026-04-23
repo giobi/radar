@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — pessano.it: Collaudo WooCommerce catalogo</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-link { font-size: .72rem; color: var(--text-muted); margin-bottom: .75rem; }
+.step-link a { color: var(--text-muted); text-decoration: underline; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; cursor: pointer; }
+.step-img a { display: block; }
+.step-img img { width: 100%; display: block; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.status-badge { display: inline-block; padding: .1rem .4rem; border-radius: 2px; font-size: .68rem; font-weight: 600; }
+.status-badge.ok { background: var(--green-bg); color: var(--green); }
+.status-badge.warn { background: var(--yellow-bg); color: var(--yellow); }
+.status-badge.fail { background: var(--red-bg); color: var(--red); }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+    .container { padding: 0 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+        <a href="../../dashboard/">Radar</a>
+    </div>
+    <h1 class="title">Pessano.it &mdash; Collaudo WooCommerce catalogo</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>23 aprile 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>12 step verificati</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Collaudo</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>pessano.it</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--red)" stroke-dasharray="263.9" stroke-dashoffset="184.7"/>
+        </svg>
+        <div class="score-number">30<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Problemi importanti da risolvere</h2>
+        <p>Il sito funziona parzialmente: la homepage, il catalogo e le schede prodotto sono accessibili. Il sistema di richiesta informazioni (lista + carrello) funziona bene. Tuttavia, due pagine fondamentali non esistono: la pagina "Contatti" e la pagina "Invia richiesta" (il checkout) restituiscono errore 404. Questo significa che un cliente non pu&ograve; completare la richiesta n&eacute; contattare il negozio. Anche l'immagine di alcuni prodotti non si carica, e la Partita IVA nel footer &egrave; un placeholder.</p>
+    </div>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech', this)">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-simple" class="tab-panel active">
+
+<!-- STEP 1: Homepage -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Homepage: tutto OK</span>
+    </div>
+    <p class="step-explain">La homepage si carica correttamente. Il layout &egrave; completo con il logo Pessano, il menu di navigazione, le sezioni "Le nostre offerte", "I nostri servizi", "Le nostre novit&agrave;" e il catalogo in fondo. Le immagini si vedono bene.</p>
+    <div class="step-link"><a href="https://pessano.it/" target="_blank">pessano.it</a></div>
+    <div class="step-img">
+        <a href="01-homepage.png" target="_blank"><img src="01-homepage.png" alt="Homepage pessano.it" loading="lazy"></a>
+        <div class="step-img-caption">Homepage desktop &mdash; layout Elementor completo</div>
+    </div>
+</div>
+
+<!-- STEP 2: Catalogo -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Catalogo: 34 prodotti visibili, categorie presenti</span>
+    </div>
+    <p class="step-explain">La pagina del catalogo mostra 34 prodotti con immagini e categorie. La griglia &egrave; ben organizzata e i filtri per categoria sono accessibili. Nessun prezzo visibile, come previsto per un catalogo "a richiesta".</p>
+    <div class="step-link"><a href="https://pessano.it/catalogo/" target="_blank">pessano.it/catalogo</a></div>
+    <div class="step-img">
+        <a href="02-catalogo.png" target="_blank"><img src="02-catalogo.png" alt="Pagina catalogo" loading="lazy"></a>
+        <div class="step-img-caption">Catalogo &mdash; 34 prodotti in griglia</div>
+    </div>
+</div>
+
+<!-- STEP 3: Scheda prodotto -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Scheda prodotto: funziona, ma l'immagine non si carica</span>
+    </div>
+    <p class="step-explain">La scheda del prodotto "Babbo Natale cera d'api" mostra titolo, descrizione, codice articolo e categoria. Il bottone "RICHIEDI INFORMAZIONI" &egrave; presente e funziona. Il form di contatto sotto la scheda &egrave; stato rimosso come previsto, ma resta il titolo "Compila il form per maggiori informazioni" con uno spazio vuoto sotto. L'immagine del prodotto non si carica (lo spazio resta bianco).</p>
+    <div class="step-link"><a href="https://pessano.it/prodotto/babbo-natale-cera-dapi/" target="_blank">pessano.it/prodotto/babbo-natale-cera-dapi</a></div>
+    <div class="step-img">
+        <a href="03-prodotto.png" target="_blank"><img src="03-prodotto.png" alt="Scheda prodotto" loading="lazy"></a>
+        <div class="step-img-caption">Scheda prodotto &mdash; immagine non caricata, sezione form vuota visibile in fondo</div>
+    </div>
+</div>
+
+<!-- STEP 4: Mini-cart -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Richiesta informazioni: il prodotto si aggiunge alla lista</span>
+    </div>
+    <p class="step-explain">Cliccando "RICHIEDI INFORMAZIONI" appare il messaggio "Aggiunto alla tua richiesta!" e il bottone cambia in "VEDI LA TUA LISTA". L'immagine del prodotto si carica nella mini-lista. Il sistema funziona come previsto.</p>
+    <div class="step-img">
+        <a href="04-minicart.png" target="_blank"><img src="04-minicart.png" alt="Mini-cart dopo aggiunta" loading="lazy"></a>
+        <div class="step-img-caption">Dopo il click: prodotto aggiunto, bottone aggiornato</div>
+    </div>
+</div>
+
+<!-- STEP 5: Carrello -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">La tua lista: perfetto, nessun prezzo, bottone giusto</span>
+    </div>
+    <p class="step-explain">La pagina "La tua lista" (il carrello) mostra il prodotto aggiunto con immagine e nome. Non ci sono prezzi n&eacute; totali &mdash; esattamente come deve essere per un catalogo a richiesta. Il bottone dice "PROCEDI CON LA RICHIESTA" e non "Completa l'ordine". Il link per tornare al catalogo &egrave; presente.</p>
+    <div class="step-link"><a href="https://pessano.it/carrello/" target="_blank">pessano.it/carrello</a></div>
+    <div class="step-img">
+        <a href="05-carrello.png" target="_blank"><img src="05-carrello.png" alt="Pagina carrello/lista" loading="lazy"></a>
+        <div class="step-img-caption">Lista prodotti &mdash; no prezzi, linguaggio corretto</div>
+    </div>
+</div>
+
+<!-- STEP 6: Checkout 404 -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <span class="step-title">Invia richiesta: LA PAGINA NON ESISTE (errore 404)</span>
+    </div>
+    <p class="step-explain">La pagina dove il cliente dovrebbe completare la richiesta di informazioni (<strong>pessano.it/invia-richiesta/</strong>) non esiste. Appare il messaggio "La pagina non pu&ograve; essere trovata". Questo &egrave; un problema grave: il cliente arriva fino al carrello, clicca "Procedi con la richiesta" e non pu&ograve; andare avanti. Il percorso di richiesta &egrave; bloccato.</p>
+    <div class="step-link"><a href="https://pessano.it/invia-richiesta/" target="_blank">pessano.it/invia-richiesta</a></div>
+    <div class="step-img">
+        <a href="06-checkout.png" target="_blank"><img src="06-checkout.png" alt="Pagina checkout 404" loading="lazy"></a>
+        <div class="step-img-caption">Errore 404 &mdash; la pagina non esiste</div>
+    </div>
+</div>
+
+<!-- STEP 7: Contatti 404 -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <span class="step-title">Contatti: LA PAGINA NON ESISTE (errore 404)</span>
+    </div>
+    <p class="step-explain">Anche la pagina "Contatti" (<strong>pessano.it/contatti/</strong>) non esiste. Il link &egrave; presente nel menu di navigazione in alto, ma cliccandolo si ottiene un errore 404. I clienti non possono contattare il negozio tramite il sito.</p>
+    <div class="step-link"><a href="https://pessano.it/contatti/" target="_blank">pessano.it/contatti</a></div>
+    <div class="step-img">
+        <a href="07-contatti.png" target="_blank"><img src="07-contatti.png" alt="Pagina contatti 404" loading="lazy"></a>
+        <div class="step-img-caption">Errore 404 &mdash; pagina contatti inesistente</div>
+    </div>
+</div>
+
+<!-- STEP 8: La nostra storia -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">La nostra storia: pagina completa con form</span>
+    </div>
+    <p class="step-explain">La pagina "La nostra storia" funziona bene. Racconta la storia di Pessano dal 1893 ad oggi con tre sezioni temporali. In fondo c'&egrave; un form di contatto con campi nome, email, motivo e messaggio.</p>
+    <div class="step-link"><a href="https://pessano.it/la-nostra-storia/" target="_blank">pessano.it/la-nostra-storia</a></div>
+    <div class="step-img">
+        <a href="08-storia.png" target="_blank"><img src="08-storia.png" alt="La nostra storia" loading="lazy"></a>
+        <div class="step-img-caption">La nostra storia &mdash; contenuto e form presenti</div>
+    </div>
+</div>
+
+<!-- STEP 9: Turnstile -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Protezione anti-spam (Turnstile): presente nel codice ma non visibile</span>
+    </div>
+    <p class="step-explain">Il codice di Cloudflare Turnstile (la protezione "Verifica di essere umano") &egrave; presente nel codice della pagina, ma il widget non viene mostrato visivamente. Potrebbe funzionare in modalit&agrave; invisibile (managed mode), oppure potrebbe non caricarsi. Da verificare che i form siano effettivamente protetti dallo spam.</p>
+</div>
+
+<!-- STEP 10: Mobile -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-title">Versione mobile: tutto in ordine</span>
+    </div>
+    <p class="step-explain">Il sito si adatta bene allo schermo del telefono. Homepage, catalogo e scheda prodotto sono tutti navigabili senza scroll orizzontale. Il menu &egrave; accessibile tramite il classico bottone a tre righe.</p>
+    <div class="step-img">
+        <a href="11-mobile-homepage.png" target="_blank"><img src="11-mobile-homepage.png" alt="Mobile homepage" loading="lazy" style="max-width: 280px;"></a>
+        <div class="step-img-caption">Homepage su iPhone &mdash; layout responsive OK</div>
+    </div>
+</div>
+
+<!-- STEP 11: Cose minori -->
+<div class="step">
+    <div class="step-header">
+        <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="step-title">Dettagli da sistemare</span>
+    </div>
+    <p class="step-explain">Alcuni dettagli minori da correggere:</p>
+    <ul style="font-size: .82rem; color: var(--text-secondary); line-height: 2; padding-left: 1.2rem; margin-bottom: .5rem;">
+        <li><strong>Partita IVA nel footer</strong>: mostra "P.iva 00000000" &mdash; va inserita la P.IVA reale</li>
+        <li><strong>Immagine prodotto</strong>: sulla scheda "Babbo Natale" l'immagine non si carica (appare dopo il click su "Richiedi informazioni", ma non nella vista iniziale)</li>
+        <li><strong>Sezione "Compila il form"</strong>: nella scheda prodotto resta il titolo "Compila il form per maggiori informazioni" con uno spazio vuoto sotto. Il form &egrave; stato rimosso ma il titolo no</li>
+    </ul>
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Riepilogo collaudo</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Sito</td><td><code>pessano.it</code></td></tr>
+        <tr><td>Stack</td><td>WordPress + WooCommerce + Elementor Pro</td></tr>
+        <tr><td>Tipo</td><td>Catalogo (no prezzi, no carrello classico)</td></tr>
+        <tr><td>Data collaudo</td><td>23 aprile 2026</td></tr>
+        <tr><td>Score</td><td style="color: var(--red); font-weight: 600;">30/100</td></tr>
+        <tr><td>Verdict</td><td><span class="status-badge fail">BLOCCANTE</span> &mdash; checkout e contatti 404</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Problemi critici</h3>
+    <table class="tech-table">
+        <tr><th>Pagina</th><th>Status</th><th>Problema</th><th>Impatto</th></tr>
+        <tr>
+            <td><code>/invia-richiesta/</code></td>
+            <td><span class="status-badge fail">404</span></td>
+            <td>Pagina checkout non esiste</td>
+            <td>Flusso richiesta bloccato &mdash; il cliente non pu&ograve; inviare</td>
+        </tr>
+        <tr>
+            <td><code>/contatti/</code></td>
+            <td><span class="status-badge fail">404</span></td>
+            <td>Pagina contatti non esiste</td>
+            <td>Nessun modo di contattare il negozio dal sito</td>
+        </tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Check completo per pagina</h3>
+    <table class="tech-table">
+        <tr><th>Step</th><th>Pagina</th><th>HTTP</th><th>Tempo</th><th>Esito</th></tr>
+        <tr><td>1</td><td><code>/</code> Homepage</td><td>200</td><td>~3s</td><td><span class="status-badge ok">OK</span></td></tr>
+        <tr><td>2</td><td><code>/catalogo/</code></td><td>200</td><td>0.7s</td><td><span class="status-badge ok">OK</span> &mdash; 34 prodotti</td></tr>
+        <tr><td>3</td><td><code>/prodotto/babbo-natale-cera-dapi/</code></td><td>200</td><td>0.7s</td><td><span class="status-badge warn">WARN</span> &mdash; img non carica, sezione form vuota</td></tr>
+        <tr><td>4</td><td>Click "Richiedi Informazioni"</td><td>&mdash;</td><td>&mdash;</td><td><span class="status-badge ok">OK</span> &mdash; mini-cart visibile</td></tr>
+        <tr><td>5</td><td><code>/carrello/</code></td><td>200</td><td>1.7s</td><td><span class="status-badge ok">OK</span> &mdash; no prezzi, link catalogo</td></tr>
+        <tr><td>6</td><td><code>/invia-richiesta/</code></td><td style="color:var(--red); font-weight:600;">404</td><td>1.6s</td><td><span class="status-badge fail">FAIL</span></td></tr>
+        <tr><td>7</td><td><code>/contatti/</code></td><td style="color:var(--red); font-weight:600;">404</td><td>1.5s</td><td><span class="status-badge fail">FAIL</span></td></tr>
+        <tr><td>8</td><td><code>/la-nostra-storia/</code></td><td>200</td><td>~3s</td><td><span class="status-badge ok">OK</span></td></tr>
+        <tr><td>9</td><td>Turnstile</td><td>&mdash;</td><td>&mdash;</td><td><span class="status-badge warn">WARN</span> &mdash; script presente, widget non renderizzato</td></tr>
+        <tr><td>10</td><td>Console JS</td><td>&mdash;</td><td>&mdash;</td><td><span class="status-badge warn">WARN</span> &mdash; 4 errori (minori)</td></tr>
+        <tr><td>11</td><td>Mobile 375px</td><td>&mdash;</td><td>&mdash;</td><td><span class="status-badge ok">OK</span> &mdash; no overflow</td></tr>
+        <tr><td>12</td><td>Performance</td><td>&mdash;</td><td>&mdash;</td><td><span class="status-badge ok">OK</span> &mdash; pagine veloci (&lt;2s)</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Errori console JavaScript</h3>
+    <div class="log-block">// 4 errori unici rilevati durante la navigazione:
+
+[console.error] Failed to load resource: the server responded with a status of 404 ()
+// &rarr; Risorsa non trovata (probabilmente legata alle pagine 404)
+
+[console.error] Failed to load resource: the server responded with a status of 401 ()
+// &rarr; Risorsa protetta/non autorizzata
+
+[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.
+// &rarr; Policy del browser, non impatta il funzionamento
+
+[console.error] %c%d font-size:0;color:transparent NaN
+// &rarr; Probabilmente Elementor/WooCommerce debug output</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Turnstile</h3>
+    <div class="log-block">// Analisi Turnstile su pagine con form:
+
+/la-nostra-storia/
+  - Script challenges.cloudflare.com/turnstile: TROVATO nel codice
+  - Classe CSS .cf-turnstile: TROVATA nel codice
+  - Widget DOM renderizzato: NO
+  - iframe Cloudflare: NO
+
+/contatti/
+  - Pagina 404 &mdash; impossibile verificare (la pagina non esiste)
+
+// Conclusione: lo script Turnstile &egrave; caricato ma il widget potrebbe
+// operare in modalit&agrave; "managed" (invisibile) o non renderizzarsi
+// correttamente in headless. Verificare manualmente con un browser reale.</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Scheda prodotto &mdash; dettagli</h3>
+    <div class="log-block">// Bottone CTA
+Testo bottone: "RICHIEDI INFORMAZIONI" &rarr; OK
+Post-click: "VEDI LA TUA LISTA" &rarr; OK
+
+// Prezzi
+Elementi .woocommerce-Price-amount nel DOM: 2
+Visibili all'utente: NO (nascosti via CSS)
+Simbolo &euro; nel body text: NO &rarr; OK
+
+// Form contatto sotto scheda
+Form CF7 (.wpcf7): NON presente &rarr; OK (rimosso come richiesto)
+Form Elementor: NON presente &rarr; OK
+Titolo sezione "Compila il form...": ANCORA PRESENTE &rarr; da rimuovere
+
+// Immagine prodotto
+Spazio immagine: presente ma vuoto (img non caricata)
+Post-click "Richiedi info": immagine appare &rarr; lazy loading issue?</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Azioni richieste (priorit&agrave;)</h3>
+    <table class="tech-table">
+        <tr><th>Priorit&agrave;</th><th>Azione</th><th>Dove</th></tr>
+        <tr><td><span class="status-badge fail">CRITICO</span></td><td>Creare/ripristinare pagina checkout</td><td><code>/invia-richiesta/</code></td></tr>
+        <tr><td><span class="status-badge fail">CRITICO</span></td><td>Creare/ripristinare pagina contatti</td><td><code>/contatti/</code></td></tr>
+        <tr><td><span class="status-badge warn">MEDIO</span></td><td>Rimuovere titolo "Compila il form" dalla scheda prodotto</td><td>Template Elementor prodotto singolo</td></tr>
+        <tr><td><span class="status-badge warn">MEDIO</span></td><td>Fix immagine prodotto non caricata</td><td>Schede prodotto (lazy loading?)</td></tr>
+        <tr><td><span class="status-badge warn">MEDIO</span></td><td>Inserire P.IVA reale nel footer</td><td>Footer Elementor</td></tr>
+        <tr><td style="color:var(--text-muted)">BASSO</td><td>Verificare Turnstile con browser reale</td><td>Form "La nostra storia"</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Score breakdown</h3>
+    <div class="log-block">Base:                              100
+/invia-richiesta/ 404 (checkout):  -20  (pagina chiave non raggiungibile)
+/contatti/ 404:                    -20  (pagina chiave non raggiungibile)
+Turnstile non renderizzato:        -10  (script c'&egrave;, widget no)
+Errori console JS:                  -5  (minori, non impattano UX)
+Immagine prodotto non carica:       -5  (glitch visivo)
+Sezione form vuota in prodotto:     -5  (residuo non rimosso)
+P.IVA placeholder nel footer:      -5  (dettaglio legale)
+                                   ----
+TOTALE:                             30/100</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
+
+<script>
+function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+{
+  "results": [
+    {
+      "step": 1,
+      "name": "Homepage",
+      "url": "https://pessano.it/",
+      "status": 200,
+      "time": 63.06,
+      "ok": true
+    },
+    {
+      "step": 2,
+      "name": "Catalogo",
+      "url": "https://pessano.it/catalogo/",
+      "status": 200,
+      "time": 0.7,
+      "ok": true,
+      "detail": "34 prodotti visibili"
+    },
+    {
+      "step": 3,
+      "name": "Scheda prodotto",
+      "url": "https://pessano.it/prodotto/babbo-natale-cera-dapi/",
+      "status": 200,
+      "time": 0.74,
+      "ok": true,
+      "detail": "Bottone: \"RICHIEDI INFORMAZIONI\", Form CF7 sotto: No (OK), Form Elementor sotto: No (OK), Prezzi: 2"
+    },
+    {
+      "step": 4,
+      "name": "Aggiungi alla lista",
+      "url": "",
+      "ok": true,
+      "detail": "Mini-cart: .woocommerce-mini-cart"
+    },
+    {
+      "step": 5,
+      "name": "Carrello",
+      "url": "https://pessano.it/carrello/",
+      "status": 200,
+      "time": 1.66,
+      "ok": true,
+      "detail": "Prodotti: 1, Simbolo €: No (OK), Link catalogo: \"Catalogo\" -> True"
+    },
+    {
+      "step": 6,
+      "name": "Checkout (invia-richiesta)",
+      "url": "https://pessano.it/invia-richiesta/",
+      "status": 404,
+      "time": 1.61,
+      "ok": false,
+      "detail": "Form: NON trovato, Campi: [], €: False, \"ordine\": False, \"pagamento\": False"
+    },
+    {
+      "step": 7,
+      "name": "Contatti",
+      "url": "https://pessano.it/contatti/",
+      "status": 404,
+      "time": 1.54,
+      "ok": false,
+      "detail": "Form: NON trovato, Turnstile DOM: False, Turnstile codice: True"
+    },
+    {
+      "step": 8,
+      "name": "La nostra storia",
+      "url": "https://pessano.it/la-nostra-storia/",
+      "status": 200,
+      "time": 63.08,
+      "ok": true,
+      "detail": "Form: presente, Turnstile DOM: False, Turnstile codice: True"
+    },
+    {
+      "step": 9,
+      "name": "Turnstile check globale",
+      "url": "",
+      "ok": true,
+      "detail": "contatti: div=False, iframe=False, script=True, class=False | storia: div=False, iframe=False, script=True, class=True"
+    },
+    {
+      "step": 10,
+      "name": "Errori JavaScript",
+      "url": "",
+      "ok": false,
+      "detail": "4 errori unici: [console.error] Failed to load resource: the server responded with a status of 404 () | [console.error] %c%d font-size:0;color:transparent NaN | [console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document. | [console.error] Failed to load resource: the server responded with a status of 401 ()"
+    },
+    {
+      "step": 11,
+      "name": "Mobile (375px)",
+      "url": "",
+      "ok": true,
+      "detail": "Tutte OK, no overflow"
+    },
+    {
+      "step": 12,
+      "name": "Performance",
+      "url": "",
+      "ok": false,
+      "detail": "homepage=63.06s, catalogo=0.7s, prodotto=0.74s, carrello=1.66s, checkout=1.61s, contatti=1.54s, storia=63.08s | LENTE: homepage (63.06s), storia (63.08s)"
+    }
+  ],
+  "js_errors": [
+    "[console.error] Failed to load resource: the server responded with a status of 401 ()",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] Failed to load resource: the server responded with a status of 401 ()",
+    "[console.error] Failed to load resource: the server responded with a status of 404 ()",
+    "[console.error] Failed to load resource: the server responded with a status of 404 ()",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] Failed to load resource: the server responded with a status of 401 ()",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] Failed to load resource: the server responded with a status of 401 ()",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.",
+    "[console.error] Failed to load resource: the server responded with a status of 404 ()",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] %c%d font-size:0;color:transparent NaN",
+    "[console.error] Failed to load resource: the server responded with a status of 401 ()",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document.",
+    "[console.error] Permissions policy violation: xr-spatial-tracking is not allowed in this document."
+  ],
+  "timings": {
+    "homepage": 63.06,
+    "catalogo": 0.7,
+    "prodotto": 0.74,
+    "carrello": 1.66,
+    "checkout": 1.61,
+    "contatti": 1.54,
+    "storia": 63.08
+  }
+}
