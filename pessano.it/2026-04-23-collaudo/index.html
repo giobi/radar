@@ -144,7 +144,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div id="tab-simple" class="tab-panel active">
 
 <!-- STEP 1: Homepage -->
-<div class="step">
+<div class="step" id="homepage">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
         <span class="step-title">Homepage: tutto OK</span>
@@ -158,7 +158,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 2: Catalogo -->
-<div class="step">
+<div class="step" id="catalogo">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
         <span class="step-title">Catalogo: 34 prodotti visibili, categorie presenti</span>
@@ -172,7 +172,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 3: Scheda prodotto -->
-<div class="step">
+<div class="step" id="scheda-prodotto">
     <div class="step-header">
         <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         <span class="step-title">Scheda prodotto: funziona, ma l'immagine non si carica</span>
@@ -186,7 +186,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 4: Mini-cart -->
-<div class="step">
+<div class="step" id="mini-cart">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
         <span class="step-title">Richiesta informazioni: il prodotto si aggiunge alla lista</span>
@@ -199,7 +199,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 5: Carrello -->
-<div class="step">
+<div class="step" id="carrello">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
         <span class="step-title">La tua lista: perfetto, nessun prezzo, bottone giusto</span>
@@ -213,7 +213,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 6: Checkout 404 -->
-<div class="step">
+<div class="step" id="checkout-404">
     <div class="step-header">
         <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
         <span class="step-title">Invia richiesta: LA PAGINA NON ESISTE (errore 404)</span>
@@ -227,7 +227,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 7: Contatti 404 -->
-<div class="step">
+<div class="step" id="contatti-404">
     <div class="step-header">
         <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
         <span class="step-title">Contatti: LA PAGINA NON ESISTE (errore 404)</span>
@@ -241,7 +241,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 8: La nostra storia -->
-<div class="step">
+<div class="step" id="storia">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
         <span class="step-title">La nostra storia: pagina completa con form</span>
@@ -255,7 +255,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 9: Turnstile -->
-<div class="step">
+<div class="step" id="turnstile">
     <div class="step-header">
         <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         <span class="step-title">Protezione anti-spam (Turnstile): presente nel codice ma non visibile</span>
@@ -264,7 +264,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 10: Mobile -->
-<div class="step">
+<div class="step" id="mobile">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
         <span class="step-title">Versione mobile: tutto in ordine</span>
@@ -277,7 +277,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 </div>
 
 <!-- STEP 11: Cose minori -->
-<div class="step">
+<div class="step" id="dettagli-minori">
     <div class="step-header">
         <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         <span class="step-title">Dettagli da sistemare</span>
