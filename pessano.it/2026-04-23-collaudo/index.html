@@ -61,6 +61,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 .step-icon.fail { background: var(--red-bg); }
 .step-icon.fail svg { stroke: var(--red); }
 .step-title { font-weight: 600; font-size: .85rem; }
+.step-id { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 20px; padding: 0 6px; border-radius: 3px; font-size: .65rem; font-weight: 700; letter-spacing: .04em; color: var(--text-muted); background: var(--surface-alt); border: 1px solid var(--border); flex-shrink: 0; }
 .step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
 .step-link { font-size: .72rem; color: var(--text-muted); margin-bottom: .75rem; }
 .step-link a { color: var(--text-muted); text-decoration: underline; }
@@ -147,7 +148,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r1">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="step-title">Homepage: tutto OK</span>
+        <span class="step-id">R1</span><span class="step-title">Homepage: tutto OK</span>
     </div>
     <p class="step-explain">La homepage si carica correttamente. Il layout &egrave; completo con il logo Pessano, il menu di navigazione, le sezioni "Le nostre offerte", "I nostri servizi", "Le nostre novit&agrave;" e il catalogo in fondo. Le immagini si vedono bene.</p>
     <div class="step-link"><a href="https://pessano.it/" target="_blank">pessano.it</a></div>
@@ -161,7 +162,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r2">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="step-title">Catalogo: 34 prodotti visibili, categorie presenti</span>
+        <span class="step-id">R2</span><span class="step-title">Catalogo: 34 prodotti visibili, categorie presenti</span>
     </div>
     <p class="step-explain">La pagina del catalogo mostra 34 prodotti con immagini e categorie. La griglia &egrave; ben organizzata e i filtri per categoria sono accessibili. Nessun prezzo visibile, come previsto per un catalogo "a richiesta".</p>
     <div class="step-link"><a href="https://pessano.it/catalogo/" target="_blank">pessano.it/catalogo</a></div>
@@ -175,7 +176,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r3">
     <div class="step-header">
         <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <span class="step-title">Scheda prodotto: funziona, ma l'immagine non si carica</span>
+        <span class="step-id">R3</span><span class="step-title">Scheda prodotto: funziona, ma l'immagine non si carica</span>
     </div>
     <p class="step-explain">La scheda del prodotto "Babbo Natale cera d'api" mostra titolo, descrizione, codice articolo e categoria. Il bottone "RICHIEDI INFORMAZIONI" &egrave; presente e funziona. Il form di contatto sotto la scheda &egrave; stato rimosso come previsto, ma resta il titolo "Compila il form per maggiori informazioni" con uno spazio vuoto sotto. L'immagine del prodotto non si carica (lo spazio resta bianco).</p>
     <div class="step-link"><a href="https://pessano.it/prodotto/babbo-natale-cera-dapi/" target="_blank">pessano.it/prodotto/babbo-natale-cera-dapi</a></div>
@@ -189,7 +190,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r4">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="step-title">Richiesta informazioni: il prodotto si aggiunge alla lista</span>
+        <span class="step-id">R4</span><span class="step-title">Richiesta informazioni: il prodotto si aggiunge alla lista</span>
     </div>
     <p class="step-explain">Cliccando "RICHIEDI INFORMAZIONI" appare il messaggio "Aggiunto alla tua richiesta!" e il bottone cambia in "VEDI LA TUA LISTA". L'immagine del prodotto si carica nella mini-lista. Il sistema funziona come previsto.</p>
     <div class="step-img">
@@ -202,7 +203,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r5">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="step-title">La tua lista: perfetto, nessun prezzo, bottone giusto</span>
+        <span class="step-id">R5</span><span class="step-title">La tua lista: perfetto, nessun prezzo, bottone giusto</span>
     </div>
     <p class="step-explain">La pagina "La tua lista" (il carrello) mostra il prodotto aggiunto con immagine e nome. Non ci sono prezzi n&eacute; totali &mdash; esattamente come deve essere per un catalogo a richiesta. Il bottone dice "PROCEDI CON LA RICHIESTA" e non "Completa l'ordine". Il link per tornare al catalogo &egrave; presente.</p>
     <div class="step-link"><a href="https://pessano.it/carrello/" target="_blank">pessano.it/carrello</a></div>
@@ -216,7 +217,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r6">
     <div class="step-header">
         <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
-        <span class="step-title">Invia richiesta: LA PAGINA NON ESISTE (errore 404)</span>
+        <span class="step-id">R6</span><span class="step-title">Invia richiesta: LA PAGINA NON ESISTE (errore 404)</span>
     </div>
     <p class="step-explain">La pagina dove il cliente dovrebbe completare la richiesta di informazioni (<strong>pessano.it/invia-richiesta/</strong>) non esiste. Appare il messaggio "La pagina non pu&ograve; essere trovata". Questo &egrave; un problema grave: il cliente arriva fino al carrello, clicca "Procedi con la richiesta" e non pu&ograve; andare avanti. Il percorso di richiesta &egrave; bloccato.</p>
     <div class="step-link"><a href="https://pessano.it/invia-richiesta/" target="_blank">pessano.it/invia-richiesta</a></div>
@@ -230,7 +231,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r7">
     <div class="step-header">
         <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
-        <span class="step-title">Contatti: LA PAGINA NON ESISTE (errore 404)</span>
+        <span class="step-id">R7</span><span class="step-title">Contatti: LA PAGINA NON ESISTE (errore 404)</span>
     </div>
     <p class="step-explain">Anche la pagina "Contatti" (<strong>pessano.it/contatti/</strong>) non esiste. Il link &egrave; presente nel menu di navigazione in alto, ma cliccandolo si ottiene un errore 404. I clienti non possono contattare il negozio tramite il sito.</p>
     <div class="step-link"><a href="https://pessano.it/contatti/" target="_blank">pessano.it/contatti</a></div>
@@ -244,7 +245,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r8">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="step-title">La nostra storia: pagina completa con form</span>
+        <span class="step-id">R8</span><span class="step-title">La nostra storia: pagina completa con form</span>
     </div>
     <p class="step-explain">La pagina "La nostra storia" funziona bene. Racconta la storia di Pessano dal 1893 ad oggi con tre sezioni temporali. In fondo c'&egrave; un form di contatto con campi nome, email, motivo e messaggio.</p>
     <div class="step-link"><a href="https://pessano.it/la-nostra-storia/" target="_blank">pessano.it/la-nostra-storia</a></div>
@@ -258,7 +259,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r9">
     <div class="step-header">
         <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <span class="step-title">Protezione anti-spam (Turnstile): presente nel codice ma non visibile</span>
+        <span class="step-id">R9</span><span class="step-title">Protezione anti-spam (Turnstile): presente nel codice ma non visibile</span>
     </div>
     <p class="step-explain">Il codice di Cloudflare Turnstile (la protezione "Verifica di essere umano") &egrave; presente nel codice della pagina, ma il widget non viene mostrato visivamente. Potrebbe funzionare in modalit&agrave; invisibile (managed mode), oppure potrebbe non caricarsi. Da verificare che i form siano effettivamente protetti dallo spam.</p>
 </div>
@@ -267,7 +268,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r10">
     <div class="step-header">
         <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <span class="step-title">Versione mobile: tutto in ordine</span>
+        <span class="step-id">R10</span><span class="step-title">Versione mobile: tutto in ordine</span>
     </div>
     <p class="step-explain">Il sito si adatta bene allo schermo del telefono. Homepage, catalogo e scheda prodotto sono tutti navigabili senza scroll orizzontale. Il menu &egrave; accessibile tramite il classico bottone a tre righe.</p>
     <div class="step-img">
@@ -280,7 +281,7 @@ body { font-family: var(--mono); background: var(--bg); color: var(--text); line
 <div class="step" id="r11">
     <div class="step-header">
         <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <span class="step-title">Dettagli da sistemare</span>
+        <span class="step-id">R11</span><span class="step-title">Dettagli da sistemare</span>
     </div>
     <p class="step-explain">Alcuni dettagli minori da correggere:</p>
     <ul style="font-size: .82rem; color: var(--text-secondary); line-height: 2; padding-left: 1.2rem; margin-bottom: .5rem;">
