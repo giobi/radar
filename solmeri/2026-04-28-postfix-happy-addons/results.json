@@ -1,0 +1,84 @@
+[
+  {
+    "name": "solmeri.com",
+    "url": "https://solmeri.com/",
+    "score": 90,
+    "issues": [
+      "Caricamento lento: 8.9s"
+    ],
+    "screenshots": [
+      "solmeri.com-desktop.png",
+      "solmeri.com-mobile.png"
+    ],
+    "load_time": 8.9,
+    "console_errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "status_code": 200,
+    "title": "Solmeri: agente di aziende finlandesi di soluzioni ad alta tecnologia"
+  },
+  {
+    "name": "blastmanitalia.com",
+    "url": "https://blastmanitalia.com/",
+    "score": 100,
+    "issues": [],
+    "screenshots": [
+      "blastmanitalia.com-desktop.png",
+      "blastmanitalia.com-mobile.png"
+    ],
+    "load_time": 3.6,
+    "console_errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "status_code": 200,
+    "title": "Blastman Robotics: leader mondiale di impianti di sabbiatura"
+  },
+  {
+    "name": "portonigiganti-solmeri.com",
+    "url": "https://portonigiganti-solmeri.com/",
+    "score": 100,
+    "issues": [],
+    "screenshots": [
+      "portonigiganti-solmeri.com-desktop.png",
+      "portonigiganti-solmeri.com-mobile.png"
+    ],
+    "load_time": 3.5,
+    "console_errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "status_code": 200,
+    "title": "Home - Champion Door Italia"
+  },
+  {
+    "name": "hvac-solmeri.com",
+    "url": "https://hvac-solmeri.com/",
+    "score": 90,
+    "issues": [
+      "Caricamento lento: 6.0s"
+    ],
+    "screenshots": [
+      "hvac-solmeri.com-desktop.png",
+      "hvac-solmeri.com-mobile.png"
+    ],
+    "load_time": 6.0,
+    "console_errors": [],
+    "status_code": 200,
+    "title": "Halton Marine - Hvac solmeri"
+  },
+  {
+    "name": "cavi-solmeri.com",
+    "url": "https://cavi-solmeri.com/",
+    "score": 100,
+    "issues": [],
+    "screenshots": [
+      "cavi-solmeri.com-desktop.png",
+      "cavi-solmeri.com-mobile.png"
+    ],
+    "load_time": 3.6,
+    "console_errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "status_code": 200,
+    "title": "Helmacab Italia: cavi elettrici navali, industriali, offshore"
+  }
+]
