@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Giorgetti Product Card</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#fafaf9; --surface:#fff; --border:#e5e5e0; --text:#1c1917; --text-secondary:#57534e; --text-muted:#a8a29e; --green:#15803d; --green-bg:rgba(21,128,61,.06); --mono:'IBM Plex Mono',monospace; --radius:3px; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--mono);background:var(--bg);color:var(--text);line-height:1.7;font-size:14px}
+.container{max-width:1080px;margin:0 auto;padding:2.5rem}
+.brand{font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem}
+.brand a{color:var(--text-muted);text-decoration:none}
+h1{font-size:1.3rem;font-weight:700;margin-bottom:2rem}
+.report-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.5rem;margin-bottom:.5rem;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--text);transition:border-color .15s}
+.report-card:hover{border-color:var(--text-muted)}
+.report-date{font-size:.75rem;color:var(--text-muted);min-width:120px}
+.report-title{font-size:.85rem;font-weight:600;flex:1;margin:0 1.5rem}
+.report-score{font-size:.85rem;font-weight:700;color:var(--green);min-width:60px;text-align:right}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="brand"><a href="../dashboard/">Radar</a></div>
+    <h1>Giorgetti Product Card</h1>
+    <a class="report-card" href="2026-04-30-fix-jwt-auth/">
+        <span class="report-date">30 apr 2026</span>
+        <span class="report-title">Correzione accesso area riservata</span>
+        <span class="report-score">100/100</span>
+    </a>
+</div>
+</body>
+</html>
