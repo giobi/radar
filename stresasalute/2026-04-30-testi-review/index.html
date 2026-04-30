@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — Stresa Salute: Revisione testi e SEO on-page</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); }
+.step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); }
+.step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); }
+.step-icon.fail svg { stroke: var(--red); }
+.step-id { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 20px; padding: 0 6px; border-radius: 3px; font-size: .65rem; font-weight: 700; letter-spacing: .04em; color: var(--text-muted); background: var(--surface-alt); border: 1px solid var(--border); flex-shrink: 0; }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: .5rem; }
+.step-img img { width: 100%; display: block; height: auto; cursor: pointer; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+.step-verify { display: inline-flex; align-items: center; gap: .3rem; font-size: .72rem; color: var(--text-muted); text-decoration: none; margin-top: .5rem; transition: color .15s; }
+.step-verify:hover { color: var(--text); }
+.step-verify svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+.page-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: .75rem; }
+.page-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
+.page-card.ok { border-left: 3px solid var(--green); }
+.page-card.warn { border-left: 3px solid var(--yellow); }
+.page-card.fail { border-left: 3px solid var(--red); }
+.page-card h4 { font-size: .78rem; font-weight: 600; margin-bottom: .25rem; }
+.page-card .page-url { font-size: .65rem; color: var(--text-muted); word-break: break-all; margin-bottom: .4rem; }
+.page-card .page-meta { font-size: .72rem; color: var(--text-secondary); }
+.page-card .page-issue { font-size: .72rem; color: var(--red); margin-top: .25rem; }
+.page-card .page-ok { font-size: .72rem; color: var(--green); margin-top: .25rem; }
+
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.watermark a:hover { color: var(--text-secondary); }
+
+/* Lightbox */
+.lightbox { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.85); z-index: 1000; cursor: zoom-out; justify-content: center; align-items: center; padding: 2rem; }
+.lightbox.active { display: flex; }
+.lightbox img { max-width: 95%; max-height: 95vh; object-fit: contain; border-radius: 4px; }
+
+@media (max-width: 640px) {
+    .score-card { flex-direction: column; text-align: center; }
+    .meta-row { flex-direction: column; gap: .4rem; }
+    .page-grid { grid-template-columns: 1fr; }
+    .container { padding: 0 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <div class="brand">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <a href="https://radar.giobi.com/">RADAR</a> / <a href="https://radar.giobi.com/stresasalute/">stresasalute</a>
+        </div>
+        <h1 class="title">Revisione testi e SEO on-page</h1>
+        <div class="meta-row">
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                30 aprile 2026
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Audit contenuti
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                stresasalute.it
+            </div>
+            <div class="meta-item">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                26 pagine analizzate
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Score -->
+    <div class="score-section">
+        <div class="score-card">
+            <div class="score-ring">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <circle class="track" cx="50" cy="50" r="42"/>
+                    <circle class="fill" cx="50" cy="50" r="42" stroke="#854d0e"
+                        stroke-dasharray="263.9" stroke-dashoffset="66"/>
+                </svg>
+                <div class="score-number">75<small>/100</small></div>
+            </div>
+            <div class="score-summary">
+                <h2>Buona base, ma servono correzioni SEO</h2>
+                <p>Le pagine dei servizi sono ben scritte e strutturate. I problemi principali sono tecnici: pagine senza H1, title generici con "stresasalute.com" invece del brand, e una pagina blog vecchia che punta a un URL sbagliato. Nessun errore ortografico o di accentazione trovato nei testi.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('client')">
+                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Cosa abbiamo trovato
+            </button>
+            <button class="tab-btn" onclick="showTab('tech')">
+                <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                Dettagli tecnici
+            </button>
+        </div>
+
+        <!-- CLIENT TAB -->
+        <div class="tab-panel active" id="tab-client">
+
+            <!-- R1: Panoramica -->
+            <div class="step" id="r1">
+                <div class="step-header">
+                    <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <span class="step-id">R1</span>
+                    <span class="step-title">Il sito funziona bene: tutte le 26 pagine rispondono</span>
+                </div>
+                <p class="step-explain">Abbiamo controllato tutte le pagine del sito &mdash; homepage, servizi odontoiatrici, poliambulatorio, blog, contatti e pagine legali. Nessuna pagina d&agrave; errore, tutto &egrave; raggiungibile e si carica correttamente.</p>
+                <div class="step-img">
+                    <img src="homepage.png" alt="Homepage stresasalute.it" onclick="openLightbox(this)">
+                    <div class="step-img-caption">Homepage &mdash; il sito si presenta bene, contenuti ben organizzati</div>
+                </div>
+                <a class="step-verify" href="https://stresasalute.it/" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Verifica sul sito
+                </a>
+            </div>
+
+            <!-- R2: Pagine servizi -->
+            <div class="step" id="r2">
+                <div class="step-header">
+                    <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <span class="step-id">R2</span>
+                    <span class="step-title">Le pagine dei servizi sono scritte molto bene</span>
+                </div>
+                <p class="step-explain">Tutte le 16 pagine dei servizi (8 odontoiatrici + 5 poliambulatorio + 3 extra) hanno testi professionali, titoli ottimizzati per i motori di ricerca e descrizioni chiare. Ogni pagina ha il titolo principale (H1), sottotitoli ben organizzati (H2) e una descrizione per Google completa e pertinente. &Egrave; il lavoro SEO di Alice che si vede.</p>
+                <div class="step-img">
+                    <img src="servizi-odontoiatrici.png" alt="Pagina servizi odontoiatrici" onclick="openLightbox(this)">
+                    <div class="step-img-caption">Pagina servizi odontoiatrici &mdash; struttura chiara, testi professionali</div>
+                </div>
+                <a class="step-verify" href="https://stresasalute.it/servizi-odontoiatrici/" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Verifica sul sito
+                </a>
+            </div>
+
+            <!-- R3: H1 mancanti -->
+            <div class="step" id="r3">
+                <div class="step-header">
+                    <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                    <span class="step-id">R3</span>
+                    <span class="step-title">4 pagine senza titolo principale (H1)</span>
+                </div>
+                <p class="step-explain">Alcune pagine non hanno il titolo principale che Google usa per capire di cosa parla la pagina. Senza questo titolo, il motore di ricerca fa pi&ugrave; fatica a posizionare la pagina nei risultati. Le pagine interessate sono:</p>
+                <div class="page-grid">
+                    <div class="page-card warn">
+                        <h4>Contatti</h4>
+                        <div class="page-url">/contatti/</div>
+                        <div class="page-issue">Nessun H1 &mdash; l'H2 fa da titolo ma Google lo ignora</div>
+                    </div>
+                    <div class="page-card warn">
+                        <h4>Blog</h4>
+                        <div class="page-url">/blog/</div>
+                        <div class="page-issue">Nessun H1 &mdash; pagina importante per la SEO</div>
+                    </div>
+                    <div class="page-card warn">
+                        <h4>Parodontologia (articolo)</h4>
+                        <div class="page-url">/parodontologia-cura-malattia-gengive/</div>
+                        <div class="page-issue">Nessun H1 &mdash; articolo lungo e ben scritto ma senza titolo tecnico</div>
+                    </div>
+                    <div class="page-card warn">
+                        <h4>Supporto emotivo</h4>
+                        <div class="page-url">/supporto-emotivo-intervento/</div>
+                        <div class="page-issue">Nessun H1 &mdash; articolo approfondito ma invisibile a Google</div>
+                    </div>
+                </div>
+                <p class="step-explain">La correzione &egrave; semplice: basta aggiungere un titolo H1 a ciascuna di queste pagine in WordPress.</p>
+            </div>
+
+            <!-- R4: Homepage doppio H1 -->
+            <div class="step" id="r4">
+                <div class="step-header">
+                    <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                    <span class="step-id">R4</span>
+                    <span class="step-title">La homepage ha due titoli principali invece di uno</span>
+                </div>
+                <p class="step-explain">La homepage ha due titoli H1: uno grande in alto ("STRESA SALUTE &mdash; Studio Dentistico e Poliambulatorio sul Lago Maggiore") e un secondo pi&ugrave; in basso ("Stresa salute"). Per Google ogni pagina dovrebbe avere un solo titolo principale. Il secondo va cambiato in H2.</p>
+                <div class="step-img">
+                    <img src="homepage.png" alt="Homepage con doppio H1" onclick="openLightbox(this)">
+                    <div class="step-img-caption">Homepage &mdash; due H1 visibili, il secondo andrebbe convertito in H2</div>
+                </div>
+                <a class="step-verify" href="https://stresasalute.it/" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Verifica sul sito
+                </a>
+            </div>
+
+            <!-- R5: Title generici -->
+            <div class="step" id="r5">
+                <div class="step-header">
+                    <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                    <span class="step-id">R5</span>
+                    <span class="step-title">Alcune pagine hanno il titolo generico "stresasalute.com"</span>
+                </div>
+                <p class="step-explain">Quando condividete un link su WhatsApp o Facebook, il titolo che appare &egrave; quello della pagina. Alcune pagine mostrano solo "Titolo - stresasalute.com" invece di un titolo descrittivo con il nome dello studio. Le pagine interessate:</p>
+                <div class="page-grid">
+                    <div class="page-card warn">
+                        <h4>Tutela del Paziente</h4>
+                        <div class="page-url">Title: "Tutela del Paziente - stresasalute.com"</div>
+                        <div class="page-issue">Meglio: "Tutela del Paziente | Stresa Salute"</div>
+                    </div>
+                    <div class="page-card warn">
+                        <h4>Privacy Policy</h4>
+                        <div class="page-url">Title: "Privacy Policy - stresasalute.com"</div>
+                        <div class="page-issue">Meta description troppo corta (37 caratteri)</div>
+                    </div>
+                    <div class="page-card warn">
+                        <h4>Cookie Policy</h4>
+                        <div class="page-url">Title: "Cookie Policy (UE) - stresasalute.com"</div>
+                        <div class="page-issue">Meta description completamente assente</div>
+                    </div>
+                </div>
+                <p class="step-explain">Le pagine legali non sono cruciali per la SEO, ma un title coerente con il brand aiuta l'immagine professionale.</p>
+            </div>
+
+            <!-- R6: URL legacy -->
+            <div class="step" id="r6">
+                <div class="step-header">
+                    <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                    <span class="step-id">R6</span>
+                    <span class="step-title">Un link interno punta a un indirizzo vecchio</span>
+                </div>
+                <p class="step-explain">La pagina "Igiene Orale e Prevenzione" esiste in due versioni: una con l'indirizzo vecchio (<code>/index.php/servizi-di-prevenzione-e-igiene-orale/</code>) e una con l'indirizzo corretto (<code>/servizi-odontoiatrici/prevenzione-igiene-orale/</code>). Il contenuto &egrave; identico, ma avere due indirizzi per la stessa pagina confonde Google e diluisce il posizionamento. Il link dall'homepage punta all'indirizzo vecchio.</p>
+                <a class="step-verify" href="https://stresasalute.it/index.php/servizi-di-prevenzione-e-igiene-orale/" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Verifica: URL vecchio
+                </a>
+                &nbsp;&nbsp;
+                <a class="step-verify" href="https://stresasalute.it/servizi-odontoiatrici/prevenzione-igiene-orale/" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Verifica: URL corretto
+                </a>
+            </div>
+
+            <!-- R7: Qualità testi -->
+            <div class="step" id="r7">
+                <div class="step-header">
+                    <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <span class="step-id">R7</span>
+                    <span class="step-title">Nessun errore di ortografia o accentazione trovato</span>
+                </div>
+                <p class="step-explain">Abbiamo controllato tutti i testi del sito alla ricerca di errori comuni: accenti mancanti (perch&eacute;, pi&ugrave;, cos&igrave;), testo segnaposto (lorem ipsum), frasi incomplete o errori grammaticali. Non abbiamo trovato problemi. I testi sono scritti in italiano corretto e con un tono professionale adatto a uno studio medico.</p>
+            </div>
+
+            <!-- R8: Contenuti ben strutturati -->
+            <div class="step" id="r8">
+                <div class="step-header">
+                    <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <span class="step-id">R8</span>
+                    <span class="step-title">Articolo parodontologia: il contenuto pi&ugrave; ricco</span>
+                </div>
+                <p class="step-explain">L'articolo sulla parodontologia &egrave; il contenuto pi&ugrave; lungo e approfondito del sito, con oltre 40 paragrafi ben strutturati. Copre cause, diagnosi, prevenzione e trattamenti &mdash; esattamente il tipo di contenuto che Google premia. L'unica cosa che manca &egrave; il titolo H1 (vedi punto R3).</p>
+                <div class="step-img">
+                    <img src="parodontologia-cura-malattia-gengive.png" alt="Articolo parodontologia" onclick="openLightbox(this)">
+                    <div class="step-img-caption">Articolo parodontologia &mdash; contenuto approfondito e professionale</div>
+                </div>
+                <a class="step-verify" href="https://stresasalute.it/parodontologia-cura-malattia-gengive/" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Verifica sul sito
+                </a>
+            </div>
+
+            <!-- R9: Riepilogo azioni -->
+            <div class="step" id="r9">
+                <div class="step-header">
+                    <div class="step-icon warn"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                    <span class="step-id">R9</span>
+                    <span class="step-title">Riepilogo: cosa va corretto</span>
+                </div>
+                <p class="step-explain">Ecco la lista delle correzioni consigliate, in ordine di importanza:</p>
+                <table class="tech-table" style="margin-top: .5rem;">
+                    <thead>
+                        <tr><th>Priorit&agrave;</th><th>Cosa</th><th>Dove</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="color: var(--red); font-weight: 600;">Alta</td><td>Aggiungere H1</td><td>Contatti, Blog, Parodontologia, Supporto emotivo</td></tr>
+                        <tr><td style="color: var(--red); font-weight: 600;">Alta</td><td>Rimuovere secondo H1</td><td>Homepage (convertire in H2)</td></tr>
+                        <tr><td style="color: var(--yellow); font-weight: 600;">Media</td><td>Correggere link interno al vecchio URL</td><td>Homepage &rarr; Igiene Orale</td></tr>
+                        <tr><td style="color: var(--yellow); font-weight: 600;">Media</td><td>Redirect 301 dal vecchio URL</td><td>/index.php/servizi-di-prevenzione... &rarr; /servizi-odontoiatrici/prevenzione...</td></tr>
+                        <tr><td style="color: var(--text-muted);">Bassa</td><td>Uniformare title pagine legali</td><td>Tutela Paziente, Privacy, Cookie</td></tr>
+                        <tr><td style="color: var(--text-muted);">Bassa</td><td>Aggiungere meta description</td><td>Cookie Policy</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- TECH TAB -->
+        <div class="tab-panel" id="tab-tech">
+            <div class="tech-section">
+                <h3>
+                    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    Riepilogo tecnico
+                </h3>
+                <table class="tech-table">
+                    <tr><td>Target</td><td><code>stresasalute.it</code> (redirect a <code>stresasalute.com</code>)</td></tr>
+                    <tr><td>Stack</td><td>WordPress + Elementor su Cloudways (Athena)</td></tr>
+                    <tr><td>Pagine analizzate</td><td>26</td></tr>
+                    <tr><td>Pagine OK (H1 + meta)</td><td>18 / 26 (69%)</td></tr>
+                    <tr><td>Pagine senza H1</td><td>4 (contatti, blog, parodontologia, supporto emotivo)</td></tr>
+                    <tr><td>Pagine con H1 multipli</td><td>1 (homepage: 2x H1)</td></tr>
+                    <tr><td>Meta description mancanti</td><td>1 (cookie policy)</td></tr>
+                    <tr><td>Meta description corte</td><td>1 (privacy policy: 37 char)</td></tr>
+                    <tr><td>URL duplicati</td><td>1 (igiene orale: /index.php/... e /servizi-odontoiatrici/...)</td></tr>
+                    <tr><td>Errori ortografici</td><td>0</td></tr>
+                    <tr><td>Lorem ipsum</td><td>0</td></tr>
+                    <tr><td>Errori 404</td><td>0</td></tr>
+                    <tr><td>Errori 500</td><td>0</td></tr>
+                </table>
+            </div>
+
+            <div class="tech-section">
+                <h3>
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    Dettaglio pagine analizzate
+                </h3>
+                <table class="tech-table">
+                    <thead>
+                        <tr><th>Pagina</th><th>H1</th><th>Meta</th><th>Note</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>/</td><td style="color:var(--yellow)">2x</td><td style="color:var(--green)">OK</td><td>Doppio H1</td></tr>
+                        <tr><td>/contatti/</td><td style="color:var(--red)">NO</td><td style="color:var(--green)">OK</td><td></td></tr>
+                        <tr><td>/blog/</td><td style="color:var(--red)">NO</td><td style="color:var(--green)">OK</td><td></td></tr>
+                        <tr><td>/tutela-del-paziente/</td><td style="color:var(--green)">OK</td><td style="color:var(--green)">OK</td><td>Title generico</td></tr>
+                        <tr><td>/prenotazioni/</td><td style="color:var(--green)">OK</td><td style="color:var(--green)">OK</td><td>Poco testo</td></tr>
+                        <tr><td>/parodontologia-cura-malattia-gengive/</td><td style="color:var(--red)">NO</td><td style="color:var(--green)">OK</td><td>Ottimo contenuto</td></tr>
+                        <tr><td>/supporto-emotivo-intervento/</td><td style="color:var(--red)">NO</td><td style="color:var(--green)">OK</td><td>Ottimo contenuto</td></tr>
+                        <tr><td>/servizi-odontoiatrici/ (8 sotto-pagine)</td><td style="color:var(--green)">OK</td><td style="color:var(--green)">OK</td><td>Tutto perfetto</td></tr>
+                        <tr><td>/servizi-poliambulatorio/ (5 sotto-pagine)</td><td style="color:var(--green)">OK</td><td style="color:var(--green)">OK</td><td>Tutto perfetto</td></tr>
+                        <tr><td>/privacy-policy/</td><td style="color:var(--green)">OK</td><td style="color:var(--yellow)">Corta</td><td>37 char</td></tr>
+                        <tr><td>/cookie-policy-ue/</td><td style="color:var(--green)">OK</td><td style="color:var(--red)">NO</td><td></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tech-section">
+                <h3>
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    Note
+                </h3>
+                <p style="font-size: .82rem; color: var(--text-secondary); line-height: 1.8;">
+                    Il dominio <code>stresasalute.it</code> fa redirect a <code>stresasalute.com</code>. Tutti i link interni puntano correttamente a <code>.com</code>. L'unica eccezione &egrave; il link alla vecchia pagina igiene orale che usa il pattern <code>/index.php/...</code> &mdash; probabilmente residuo della migrazione iniziale.
+                    <br><br>
+                    Il cookie banner (Complianz) mostra alcune stringhe in inglese ("Preferences", "The technical storage or access is necessary..."). Andrebbe verificata la configurazione lingua per avere tutto in italiano.
+                    <br><br>
+                    I testi H1 delle pagine servizi hanno un trattino iniziale (&ldquo;- SERVIZIO DI...&rdquo;) che probabilmente &egrave; un artefatto del template Elementor. Non impatta la SEO ma visivamente potrebbe essere pi&ugrave; pulito senza.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="watermark"><a href="https://radar.giobi.com/">RADAR</a> &mdash; giobi.com &mdash; 30/04/2026</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.closest('.tab-btn').classList.add('active');
+}
+function openLightbox(img) {
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>
