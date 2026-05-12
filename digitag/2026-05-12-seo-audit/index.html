@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radar — digitag.me | Audit tecnico SEO | 12 mag 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafaf9;
+      --surface: #fff;
+      --surface-alt: #f5f5f4;
+      --border: #e5e5e0;
+      --text: #1c1917;
+      --text-muted: #78716c;
+      --accent: #1c1917;
+      --green: #15803d;
+      --green-bg: #f0fdf4;
+      --green-border: #bbf7d0;
+      --yellow: #a16207;
+      --yellow-bg: #fefce8;
+      --yellow-border: #fde68a;
+      --red: #b91c1c;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+      --blue: #1d4ed8;
+      --blue-bg: #eff6ff;
+      --blue-border: #bfdbfe;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'IBM Plex Mono', monospace; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.6; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    .header { background: var(--text); color: #fff; padding: 20px 0; }
+    .header .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .header-brand { display: flex; align-items: center; gap: 10px; }
+    .header-brand svg { width: 28px; height: 28px; }
+    .header-brand-name { font-size: 15px; font-weight: 700; letter-spacing: .04em; }
+    .header-meta { font-size: 11px; color: rgba(255,255,255,.55); text-align: right; }
+
+    /* Score hero */
+    .hero { padding: 40px 0 32px; }
+    .hero .container { display: flex; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
+    .score-ring { flex-shrink: 0; }
+    .score-ring svg { display: block; }
+    .score-text { font-size: 28px; font-weight: 700; }
+    .score-label { font-size: 11px; color: var(--text-muted); letter-spacing: .06em; text-transform: uppercase; margin-top: 2px; }
+    .hero-info { flex: 1; min-width: 260px; padding-top: 4px; }
+    .hero-title { font-size: 20px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+    .hero-subtitle { color: var(--text-muted); font-size: 12px; margin-bottom: 16px; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { display: inline-block; padding: 2px 8px; border: 1px solid var(--border); border-radius: 3px; font-size: 10px; color: var(--text-muted); letter-spacing: .04em; }
+    .tag.red { border-color: var(--red-border); background: var(--red-bg); color: var(--red); }
+    .tag.yellow { border-color: var(--yellow-border); background: var(--yellow-bg); color: var(--yellow); }
+    .tag.green { border-color: var(--green-border); background: var(--green-bg); color: var(--green); }
+
+    /* Timeline */
+    .timeline { padding: 24px 0; border-top: 1px solid var(--border); }
+    .timeline-title { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+    .timeline-items { display: flex; flex-direction: column; gap: 0; }
+    .tl-item { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; }
+    .tl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+    .tl-dot.red { background: var(--red); }
+    .tl-dot.yellow { background: #d97706; }
+    .tl-dot.green { background: var(--green); }
+    .tl-dot.blue { background: var(--blue); }
+    .tl-line { position: relative; }
+    .tl-line::before { content: ''; position: absolute; left: 4px; top: 14px; bottom: -6px; width: 1px; background: var(--border); }
+    .tl-time { font-size: 10px; color: var(--text-muted); flex-shrink: 0; width: 48px; padding-top: 2px; }
+    .tl-text { font-size: 12px; }
+
+    /* Tabs */
+    .tabs { border-top: 1px solid var(--border); }
+    .tab-nav { display: flex; gap: 0; background: var(--surface-alt); border-bottom: 1px solid var(--border); }
+    .tab-btn { padding: 10px 20px; font-family: inherit; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; background: none; border: none; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .15s; }
+    .tab-btn.active { color: var(--text); border-bottom-color: var(--text); background: var(--surface); }
+    .tab-btn:hover:not(.active) { color: var(--text); background: var(--bg); }
+    .tab-content { display: none; padding: 32px 0; }
+    .tab-content.active { display: block; }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; gap: 20px; }
+    .step { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+    .step-header { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--surface-alt); }
+    .step-icon { font-size: 16px; flex-shrink: 0; }
+    .step-id { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 20px; padding: 0 6px; border-radius: 3px; font-size: .65rem; font-weight: 700; letter-spacing: .04em; color: var(--text-muted); background: var(--bg); border: 1px solid var(--border); flex-shrink: 0; }
+    .step-title { font-size: 13px; font-weight: 700; flex: 1; }
+    .step-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; letter-spacing: .04em; }
+    .step-badge.critical { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+    .step-badge.warning { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow-border); }
+    .step-badge.ok { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+    .step-body { padding: 18px; }
+    .step-eli5 { font-size: 13px; line-height: 1.7; margin-bottom: 14px; color: var(--text); }
+    .step-verify { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border: 1px solid var(--border); border-radius: 3px; font-size: 11px; color: var(--text-muted); text-decoration: none; background: var(--surface-alt); transition: all .15s; }
+    .step-verify:hover { border-color: var(--text); color: var(--text); }
+    .screenshot-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+    .screenshot-single { margin: 14px 0; }
+    .screenshot-wrapper { border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+    .screenshot-wrapper img { width: 100%; height: auto; display: block; }
+    .screenshot-caption { font-size: 10px; color: var(--text-muted); padding: 6px 10px; background: var(--surface-alt); border-top: 1px solid var(--border); }
+    .finding-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin: 12px 0; }
+    .finding-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; padding: 6px 10px; border-radius: 3px; border: 1px solid var(--border); }
+    .finding-list li.bad { border-color: var(--red-border); background: var(--red-bg); }
+    .finding-list li.warn { border-color: var(--yellow-border); background: var(--yellow-bg); }
+    .finding-list li.good { border-color: var(--green-border); background: var(--green-bg); }
+    .fi { flex-shrink: 0; }
+
+    /* Technical tab */
+    .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media (max-width: 640px) { .tech-grid { grid-template-columns: 1fr; } }
+    .tech-card { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 14px; }
+    .tech-card-title { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .kv-row { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
+    .kv-row:last-child { border-bottom: none; }
+    .kv-key { color: var(--text-muted); flex-shrink: 0; }
+    .kv-val { text-align: right; word-break: break-all; max-width: 60%; }
+    .kv-val.red { color: var(--red); font-weight: 600; }
+    .kv-val.green { color: var(--green); font-weight: 600; }
+    .kv-val.yellow { color: var(--yellow); font-weight: 600; }
+    .code-block { background: #1c1917; color: #d6d3d1; padding: 14px; border-radius: 3px; font-size: 11px; line-height: 1.6; overflow-x: auto; margin: 10px 0; white-space: pre-wrap; word-break: break-all; }
+    .section-title { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin: 24px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+    /* Score colors */
+    .score-48 .score-arc { stroke: #b91c1c; }
+    .score-48 .score-text { color: #b91c1c; }
+
+    /* Footer */
+    .footer { padding: 24px 0; border-top: 1px solid var(--border); margin-top: 40px; }
+    .footer .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .footer-brand { font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+    .footer-meta { font-size: 10px; color: var(--text-muted); }
+
+    /* Lightbox */
+    .lb { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 9999; align-items: center; justify-content: center; cursor: zoom-out; }
+    .lb.open { display: flex; }
+    .lb img { max-width: 92vw; max-height: 92vh; border-radius: 3px; }
+
+    @media (max-width: 640px) {
+      .screenshot-pair { grid-template-columns: 1fr; }
+      .hero .container { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <div class="header-brand">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="13" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        <path d="M9 14 L14 9 L19 14 L14 19 Z" stroke="white" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="14" r="2" fill="white"/>
+      </svg>
+      <span class="header-brand-name">RADAR</span>
+    </div>
+    <div class="header-meta">
+      digitag.me &nbsp;·&nbsp; Audit SEO &nbsp;·&nbsp; 12 maggio 2026<br>
+      Analisi tecnica — <a href="https://giobi.com" style="color:rgba(255,255,255,.55);text-decoration:none;">giobi.com</a>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="container">
+    <div class="score-ring score-48">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="46" fill="none" stroke="#f5f5f4" stroke-width="10"/>
+        <circle class="score-arc" cx="55" cy="55" r="46" fill="none" stroke="#b91c1c" stroke-width="10"
+          stroke-dasharray="289" stroke-dashoffset="150" stroke-linecap="round"
+          transform="rotate(-90 55 55)"/>
+        <text x="55" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="26" font-weight="700" fill="#b91c1c">48</text>
+        <text x="55" y="67" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#78716c">/100</text>
+      </svg>
+    </div>
+    <div class="hero-info">
+      <div class="hero-title">digitag.me — Audit tecnico e SEO</div>
+      <div class="hero-subtitle">Analisi completa: accessibilità Google, meta tag, immagini social, struttura tecnica</div>
+      <div class="hero-tags">
+        <span class="tag red">SEO critico</span>
+        <span class="tag red">OG image sbagliata</span>
+        <span class="tag red">Sitemap mancante</span>
+        <span class="tag yellow">Lingua mista</span>
+        <span class="tag yellow">Schema assente</span>
+        <span class="tag yellow">Favicon assente</span>
+        <span class="tag green">SSL OK</span>
+        <span class="tag green">Performance accettabile</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="timeline">
+    <div class="timeline-title">Cronologia analisi</div>
+    <div class="timeline-items">
+      <div class="tl-item">
+        <div class="tl-dot blue tl-line"></div>
+        <div class="tl-time">17:43</div>
+        <div class="tl-text">Avvio analisi — caricamento homepage e scansione meta tag</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot red tl-line"></div>
+        <div class="tl-time">17:43</div>
+        <div class="tl-text">Rilevata og:image puntante a dominio lovable.dev (branding esterno)</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot red tl-line"></div>
+        <div class="tl-time">17:43</div>
+        <div class="tl-text">sitemap.xml restituisce la homepage — nessun sitemap presente</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot yellow tl-line"></div>
+        <div class="tl-time">17:43</div>
+        <div class="tl-text">Titolo e meta description in inglese — contenuto pagina in italiano</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot yellow tl-line"></div>
+        <div class="tl-time">17:43</div>
+        <div class="tl-text">Assenza completa di schema.org, favicon, meta robots</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot yellow"></div>
+        <div class="tl-time">17:44</div>
+        <div class="tl-text">Screenshot desktop + mobile acquisiti — analisi completata</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="container">
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('client')">Cosa abbiamo trovato</button>
+      <button class="tab-btn" onclick="switchTab('tech')">Dettagli tecnici</button>
+    </div>
+  </div>
+
+  <!-- TAB CLIENTE -->
+  <div class="tab-content active" id="tab-client">
+    <div class="container">
+      <div class="steps">
+
+        <!-- R1: OG IMAGE -->
+        <div class="step" id="r1">
+          <div class="step-header">
+            <span class="step-icon">🖼️</span>
+            <span class="step-id">R1</span>
+            <span class="step-title">Quando condividi il sito, appare il logo di un altro</span>
+            <span class="step-badge critical">Critico</span>
+          </div>
+          <div class="step-body">
+            <p class="step-eli5">
+              Quando qualcuno condivide digitag.me su LinkedIn, WhatsApp o Slack, il riquadro di anteprima che appare non mostra la vostra immagine — mostra l'immagine di <strong>Lovable</strong>, lo strumento con cui è stato costruito il sito.
+              Questo succede perché nel codice del sito l'immagine di anteprima punta ancora al server di Lovable.
+              In pratica, state facendo pubblicità gratuita al loro prodotto ogni volta che qualcuno condivide il vostro sito.
+            </p>
+            <ul class="finding-list">
+              <li class="bad"><span class="fi">✗</span> Immagine social (og:image) punta a: <code>https://lovable.dev/opengraph-image-p98pqg.png</code></li>
+              <li class="bad"><span class="fi">✗</span> Ogni condivisione mostra il brand Lovable, non Digitag</li>
+              <li class="bad"><span class="fi">✗</span> Manca og:url (URL canonico per i social)</li>
+            </ul>
+            <a class="step-verify" href="https://www.opengraph.xyz/url/https%3A%2F%2Fdigitag.me" target="_blank">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7 1h4v4M5 7l6-6M3 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Verifica anteprima social
+            </a>
+          </div>
+        </div>
+
+        <!-- R2: SITEMAP -->
+        <div class="step" id="r2">
+          <div class="step-header">
+            <span class="step-icon">🗺️</span>
+            <span class="step-id">R2</span>
+            <span class="step-title">Google non ha una mappa del sito</span>
+            <span class="step-badge critical">Critico</span>
+          </div>
+          <div class="step-body">
+            <p class="step-eli5">
+              Ogni sito dovrebbe avere un file chiamato "sitemap" — è come una mappa che dai a Google per dirgli "queste sono tutte le pagine del mio sito, indicizzale".
+              Su digitag.me questo file non esiste: se provi ad aprire <code>digitag.me/sitemap.xml</code> vieni rimandato alla homepage.
+              Senza mappa, Google naviga il sito "alla cieca" e potrebbe non trovare alcune pagine.
+            </p>
+            <ul class="finding-list">
+              <li class="bad"><span class="fi">✗</span> <code>/sitemap.xml</code> restituisce la homepage invece di un file XML valido</li>
+              <li class="bad"><span class="fi">✗</span> Nessun riferimento alla sitemap nel file robots.txt</li>
+            </ul>
+            <a class="step-verify" href="https://digitag.me/sitemap.xml" target="_blank">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7 1h4v4M5 7l6-6M3 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Controlla il sitemap
+            </a>
+          </div>
+        </div>
+
+        <!-- R3: LINGUA MISTA -->
+        <div class="step" id="r3">
+          <div class="step-header">
+            <span class="step-icon">🌍</span>
+            <span class="step-id">R3</span>
+            <span class="step-title">Il sito parla inglese a Google ma italiano ai visitatori</span>
+            <span class="step-badge warning">Attenzione</span>
+          </div>
+          <div class="step-body">
+            <p class="step-eli5">
+              Le informazioni che Google legge per decidere come mostrare il sito nei risultati di ricerca (titolo, descrizione) sono scritte in inglese.
+              Il contenuto che i visitatori vedono è in italiano.
+              Questa incoerenza crea confusione per Google e può ridurre la visibilità nelle ricerche in italiano.
+              In più, le keywords nel codice usano termini inglesi come "digital consulting" invece degli equivalenti italiani.
+            </p>
+            <ul class="finding-list">
+              <li class="bad"><span class="fi">✗</span> Titolo: "Digitag Consulting | Architects of Sustainable Digital Growth" (inglese)</li>
+              <li class="bad"><span class="fi">✗</span> Descrizione in inglese: "Strategic digital consultancy uniting strategy, creativity..."</li>
+              <li class="bad"><span class="fi">✗</span> H1 in italiano: "Costruiamo vantaggio competitivo."</li>
+              <li class="warn"><span class="fi">!</span> Keywords: "digital consulting, Milan" — mix inglese/italiano</li>
+            </ul>
+            <a class="step-verify" href="https://digitag.me" target="_blank">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7 1h4v4M5 7l6-6M3 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Visita il sito
+            </a>
+          </div>
+        </div>
+
+        <!-- R4: SCHEMA.ORG -->
+        <div class="step" id="r4">
+          <div class="step-header">
+            <span class="step-icon">📋</span>
+            <span class="step-id">R4</span>
+            <span class="step-title">Opportunità perse nei risultati di ricerca</span>
+            <span class="step-badge warning">Attenzione</span>
+          </div>
+          <div class="step-body">
+            <p class="step-eli5">
+              Google può mostrare informazioni arricchite nei risultati di ricerca — stelle di valutazione, FAQ, informazioni sull'azienda, indirizzo.
+              Per farlo ha bisogno di dati strutturati nel codice della pagina, che attualmente mancano completamente.
+              Un'agenzia di consulenza digitale dovrebbe avere almeno i dati aziendali (nome, settore, contatti) codificati correttamente.
+            </p>
+            <ul class="finding-list">
+              <li class="bad"><span class="fi">✗</span> Nessun dato strutturato (Schema.org) trovato</li>
+              <li class="bad"><span class="fi">✗</span> Nessun markup per Organization, LocalBusiness o Service</li>
+              <li class="warn"><span class="fi">!</span> I meta tag "keywords" sono ancora presenti ma ignorati da Google dal 2009</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- R5: FAVICON E DETTAGLI -->
+        <div class="step" id="r5">
+          <div class="step-header">
+            <span class="step-icon">🔍</span>
+            <span class="step-id">R5</span>
+            <span class="step-title">Piccoli dettagli che fanno la differenza</span>
+            <span class="step-badge warning">Attenzione</span>
+          </div>
+          <div class="step-body">
+            <p class="step-eli5">
+              Alcuni elementi di rifinitura risultano assenti o incompleti.
+              L'icona del sito (quella che appare nella scheda del browser) non è configurata.
+              Il video di sfondo della homepage non si carica correttamente su alcuni browser perché proviene da un servizio esterno.
+            </p>
+            <ul class="finding-list">
+              <li class="bad"><span class="fi">✗</span> Favicon assente — la scheda del browser mostra solo testo, nessuna icona</li>
+              <li class="warn"><span class="fi">!</span> Video di sfondo (cdn.coverr.co) bloccato da alcuni browser per motivi di sicurezza</li>
+              <li class="good"><span class="fi">✓</span> SSL attivo e configurato correttamente (Cloudflare)</li>
+              <li class="good"><span class="fi">✓</span> Caricamento pagina: ~3.4 secondi — accettabile</li>
+              <li class="good"><span class="fi">✓</span> Visualizzazione mobile: corretta</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- R6: SCREENSHOT -->
+        <div class="step" id="r6">
+          <div class="step-header">
+            <span class="step-icon">📸</span>
+            <span class="step-id">R6</span>
+            <span class="step-title">Stato del sito al momento dell'analisi</span>
+            <span class="step-badge ok">Informativo</span>
+          </div>
+          <div class="step-body">
+            <p class="step-eli5">Screenshot acquisiti durante l'analisi — desktop e mobile.</p>
+            <div class="screenshot-pair">
+              <div>
+                <div class="screenshot-wrapper">
+                  <img src="screenshot-homepage.png" alt="digitag.me desktop" onclick="openLb(this)" style="cursor:zoom-in">
+                  <div class="screenshot-caption">Homepage desktop (1280×800) — 12 maggio 2026, 17:43</div>
+                </div>
+              </div>
+              <div>
+                <div class="screenshot-wrapper">
+                  <img src="screenshot-mobile.png" alt="digitag.me mobile" onclick="openLb(this)" style="cursor:zoom-in">
+                  <div class="screenshot-caption">Homepage mobile (390×844 — iPhone 15) — layout corretto</div>
+                </div>
+              </div>
+            </div>
+            <a class="step-verify" href="https://digitag.me" target="_blank">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7 1h4v4M5 7l6-6M3 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Visita il sito live
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB TECNICO -->
+  <div class="tab-content" id="tab-tech">
+    <div class="container">
+
+      <div class="section-title">Riepilogo analisi</div>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <div class="tech-card-title">Target</div>
+          <div class="kv-row"><span class="kv-key">URL</span><span class="kv-val">https://digitag.me</span></div>
+          <div class="kv-row"><span class="kv-key">Scenario</span><span class="kv-val">Audit SEO tecnico</span></div>
+          <div class="kv-row"><span class="kv-key">Data</span><span class="kv-val">2026-05-12 17:43</span></div>
+          <div class="kv-row"><span class="kv-key">Score</span><span class="kv-val red">48/100</span></div>
+          <div class="kv-row"><span class="kv-key">Verdict</span><span class="kv-val red">ISSUES</span></div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-card-title">Infrastruttura</div>
+          <div class="kv-row"><span class="kv-key">CDN</span><span class="kv-val green">Cloudflare</span></div>
+          <div class="kv-row"><span class="kv-key">Server</span><span class="kv-val">cloudflare</span></div>
+          <div class="kv-row"><span class="kv-key">HTTP</span><span class="kv-val green">200 / H2</span></div>
+          <div class="kv-row"><span class="kv-key">SSL</span><span class="kv-val green">OK</span></div>
+          <div class="kv-row"><span class="kv-key">Stack</span><span class="kv-val">React SPA (Lovable) + Cloudflare Pages</span></div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-card-title">Performance</div>
+          <div class="kv-row"><span class="kv-key">Load time</span><span class="kv-val yellow">3.37s</span></div>
+          <div class="kv-row"><span class="kv-key">DOMContentLoaded</span><span class="kv-val green">362ms</span></div>
+          <div class="kv-row"><span class="kv-key">Transfer size</span><span class="kv-val">1.96 KB (shell)</span></div>
+          <div class="kv-row"><span class="kv-key">Source length</span><span class="kv-val">149 KB (SPA bundle)</span></div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-card-title">SEO checklist</div>
+          <div class="kv-row"><span class="kv-key">Title</span><span class="kv-val yellow">Presente (EN)</span></div>
+          <div class="kv-row"><span class="kv-key">Meta description</span><span class="kv-val yellow">Presente (EN)</span></div>
+          <div class="kv-row"><span class="kv-key">Canonical</span><span class="kv-val green">OK</span></div>
+          <div class="kv-row"><span class="kv-key">og:image</span><span class="kv-val red">lovable.dev ✗</span></div>
+          <div class="kv-row"><span class="kv-key">og:url</span><span class="kv-val red">Assente ✗</span></div>
+          <div class="kv-row"><span class="kv-key">Sitemap</span><span class="kv-val red">Assente ✗</span></div>
+          <div class="kv-row"><span class="kv-key">Schema.org</span><span class="kv-val red">Assente ✗</span></div>
+          <div class="kv-row"><span class="kv-key">Favicon</span><span class="kv-val red">Assente ✗</span></div>
+          <div class="kv-row"><span class="kv-key">Meta robots</span><span class="kv-val yellow">Non configurato</span></div>
+          <div class="kv-row"><span class="kv-key">Viewport</span><span class="kv-val green">OK</span></div>
+        </div>
+      </div>
+
+      <div class="section-title">Meta tag rilevati</div>
+      <div class="code-block">TITLE: "Digitag Consulting | Architects of Sustainable Digital Growth"
+
+META DESCRIPTION: "Digitag Consulting: Strategic digital consultancy uniting strategy,
+  creativity, and engineering to transform business ambitions into measurable results."
+
+OG:TITLE: "Digitag Consulting | Architects of Sustainable Digital Growth"
+OG:DESCRIPTION: (stesso della meta description)
+OG:TYPE: website
+OG:IMAGE: "https://lovable.dev/opengraph-image-p98pqg.png"  ← PROBLEMA CRITICO
+OG:URL: null  ← ASSENTE
+
+CANONICAL: https://digitag.me
+META ROBOTS: null (non configurato)
+META KEYWORDS: "digital consulting, digital commerce, marketing strategy,
+  technology lab, digital transformation, Milan"  ← obsoleto (non usato da Google)
+
+TWITTER:CARD: summary_large_image
+TWITTER:SITE: @DigitagConsult
+TWITTER:IMAGE: "https://lovable.dev/opengraph-image-p98pqg.png"  ← stessa immagine sbagliata</div>
+
+      <div class="section-title">Intestazioni H1/H2</div>
+      <div class="code-block">H1: "Costruiamo vantaggio competitivo."  ← italiano
+
+H2[0]: "STRATEGY FORGED IN EXECUTION."  ← inglese
+H2[1]: "I nostri pilastri."  ← italiano
+H2[2]: "Il partner che guida l'ecosistema verso la crescita."
+H2[3]: "Ultimi Insights."
+H2[4]: "Pronti a ridefinire il vostro futuro?"</div>
+
+      <div class="section-title">Errori di rete</div>
+      <div class="code-block">ERR_BLOCKED_BY_ORB: https://cdn.coverr.co/videos/coverr-abstract-blue-particles-1932/1080p.mp4
+  → Video di sfondo bloccato dal browser (CORS/ORB policy)
+  → Fonte esterna: Coverr.co stock video service
+  → Impatto: la homepage potrebbe apparire senza video di sfondo ad alcuni utenti
+
+GA4 collect: net::ERR_ABORTED
+  → Normale in sessione Playwright (headless detection da Google)</div>
+
+      <div class="section-title">Robots.txt</div>
+      <div class="code-block">User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: *
+Allow: /
+
+# MANCANTE: Sitemap: https://digitag.me/sitemap.xml</div>
+
+      <div class="section-title">Score breakdown</div>
+      <div class="code-block">Base score: 100
+
+Detrazioni:
+  og:image punta a lovable.dev (visual/brand broken): -15
+  Nessun sitemap XML: -10
+  Lingua incoerente (EN meta, IT content): -10
+  Nessun schema.org: -5
+  Nessun favicon: -5
+  Video background bloccato: -5
+  OG:URL assente: -2
+
+Score finale: 48/100</div>
+
+      <div class="section-title">Headers HTTP</div>
+      <div class="code-block">HTTP/2 200
+server: cloudflare
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, must-revalidate
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+access-control-allow-origin: *
+cf-cache-status: DYNAMIC</div>
+
+      <div class="section-title">Tracking attivo</div>
+      <div class="code-block">Google Analytics 4: G-WD57N9QELM  ✓
+Google Tag Manager: presente  ✓
+Klaviyo: presente  ✓
+React SPA (id="root"): presente  ✓</div>
+
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+    <div class="footer-brand">RADAR — giobi.com</div>
+    <div class="footer-meta">Generato il 12 maggio 2026 alle 17:44 &nbsp;·&nbsp; digitag.me/2026-05-12-seo-audit</div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lb" id="lb" onclick="closeLb()">
+  <img id="lb-img" src="" alt="">
+</div>
+
+<script>
+function switchTab(t) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + t).classList.add('active');
+  event.target.classList.add('active');
+}
+function openLb(img) {
+  document.getElementById('lb-img').src = img.src;
+  document.getElementById('lb').classList.add('open');
+}
+function closeLb() {
+  document.getElementById('lb').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+</script>
+</body>
+</html>
