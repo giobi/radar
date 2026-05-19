@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar — Digitag Life Sciences — Post-deploy 19/05/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fafaf9;--surface:#fff;--surface-alt:#f5f5f4;--border:#e5e5e0;
+  --text:#1c1917;--text-muted:#78716c;--text-dim:#a8a29e;
+  --green:#16a34a;--green-bg:#dcfce7;--yellow:#ca8a04;--yellow-bg:#fef9c3;
+  --red:#dc2626;--red-bg:#fee2e2;--blue:#2563eb;--blue-bg:#dbeafe;
+  --radius:3px;
+}
+body{font-family:'IBM Plex Mono',monospace;background:var(--bg);color:var(--text);font-size:13px;line-height:1.6}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.wrap{max-width:1080px;margin:0 auto;padding:32px 24px}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.header-brand{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--text-muted);text-transform:uppercase}
+.header-title{font-size:18px;font-weight:700;margin-top:4px}
+.header-meta{text-align:right;font-size:11px;color:var(--text-muted);line-height:1.8}
+
+/* SCORE */
+.score-wrap{display:flex;gap:32px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;margin-bottom:32px}
+.score-circle{flex-shrink:0}
+.score-circle svg{display:block}
+.score-info{flex:1}
+.score-verdict{font-size:20px;font-weight:700;margin-bottom:6px}
+.score-eli5{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+/* TABS */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:28px}
+.tab{padding:10px 20px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--text-muted);transition:color .15s}
+.tab.active{color:var(--text);border-bottom-color:var(--text)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* STEPS */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px}
+.step-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.step-id{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:20px;padding:0 6px;border-radius:var(--radius);font-size:.65rem;font-weight:700;letter-spacing:.04em;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);flex-shrink:0}
+.step-icon{font-size:18px;flex-shrink:0}
+.step-title{font-size:14px;font-weight:700}
+.step-body{font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:14px}
+.step-verify{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--blue);border:1px solid var(--blue);padding:4px 10px;border-radius:var(--radius)}
+.step-verify:hover{background:var(--blue-bg);text-decoration:none}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:var(--radius)}
+.badge-ok{background:var(--green-bg);color:var(--green)}
+.badge-warn{background:var(--yellow-bg);color:var(--yellow)}
+.badge-error{background:var(--red-bg);color:var(--red)}
+
+/* SCREENSHOTS */
+.shot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:20px}
+.shot-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.shot-card img{width:100%;height:auto;display:block;cursor:zoom-in}
+.shot-label{font-size:11px;color:var(--text-muted);padding:8px 12px;background:var(--surface-alt);border-top:1px solid var(--border)}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;align-items:center;justify-content:center;padding:20px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:95vw;max-height:92vh;border-radius:var(--radius);object-fit:contain}
+.lightbox-close{position:fixed;top:16px;right:20px;font-size:28px;color:#fff;cursor:pointer;line-height:1;background:none;border:none;font-family:monospace}
+
+/* PAGES TABLE */
+.pages-table{width:100%;border-collapse:collapse;margin-top:20px}
+.pages-table th,.pages-table td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:12px}
+.pages-table th{font-weight:700;color:var(--text-muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;background:var(--surface-alt)}
+.pages-table tr:hover td{background:var(--surface-alt)}
+
+/* TECH BLOCK */
+.tech-block{background:#1c1917;color:#d6d3d1;border-radius:var(--radius);padding:20px;font-size:12px;line-height:1.8;margin-bottom:16px;white-space:pre-wrap;overflow-x:auto}
+.tech-section{margin-bottom:24px}
+.tech-section h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:12px}
+
+/* FOOTER */
+.footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-brand">📡 Radar — Collaudo post-deploy</div>
+      <div class="header-title">Digitag Life Sciences</div>
+    </div>
+    <div class="header-meta">
+      19 maggio 2026<br>
+      Scenario: post-deploy<br>
+      Target: digitaglifescience.com<br>
+      Pagine testate: 14
+    </div>
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-wrap">
+    <div class="score-circle">
+      <svg width="90" height="90" viewBox="0 0 90 90">
+        <circle cx="45" cy="45" r="38" fill="none" stroke="#e5e5e0" stroke-width="8"/>
+        <circle cx="45" cy="45" r="38" fill="none" stroke="#16a34a" stroke-width="8"
+          stroke-dasharray="203" stroke-dashoffset="20"
+          stroke-linecap="round" transform="rotate(-90 45 45)"/>
+        <text x="45" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="22" font-weight="700" fill="#1c1917">90</text>
+      </svg>
+    </div>
+    <div class="score-info">
+      <div class="score-verdict">✅ Sito funzionante — piccola cosa da verificare</div>
+      <div class="score-eli5">Tutte le 14 pagine caricano correttamente, sia in italiano che in inglese. Il cambio lingua funziona. L'ordine del Advisory Board è stato aggiornato. L'unica nota: la pagina Case Studies nella versione inglese mostra ancora il testo in italiano — da verificare se è intenzionale.</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('cliente')">Cosa abbiamo verificato</button>
+    <button class="tab" onclick="switchTab('tecnico')">Dettagli tecnici</button>
+  </div>
+
+  <!-- TAB CLIENTE -->
+  <div id="tab-cliente" class="tab-panel active">
+
+    <div class="step" id="r1">
+      <div class="step-header">
+        <span class="step-id">R1</span>
+        <span class="step-icon">🚀</span>
+        <span class="step-title">Deploy completato — sito aggiornato</span>
+      </div>
+      <div class="step-body">
+        Abbiamo applicato gli ultimi aggiornamenti pubblicati su Lovable al sito in produzione. La build è andata a buon fine in circa 5 secondi e il sito risponde correttamente.
+      </div>
+      <a class="step-verify" href="https://digitaglifescience.com/" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Verifica sul sito
+      </a>
+    </div>
+
+    <div class="step" id="r2">
+      <div class="step-header">
+        <span class="step-id">R2</span>
+        <span class="step-icon">🌍</span>
+        <span class="step-title">Cambio lingua — funziona correttamente</span>
+      </div>
+      <div class="step-body">
+        I pulsanti <strong>IT</strong> e <strong>EN</strong> in alto a destra funzionano: cliccando si passa da una lingua all'altra e l'indirizzo della pagina cambia di conseguenza (<code>/it/…</code> → <code>/en/…</code>). Abbiamo verificato su più pagine.
+      </div>
+      <a class="step-verify" href="https://digitaglifescience.com/en" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Verifica versione inglese
+      </a>
+    </div>
+
+    <div class="step" id="r3">
+      <div class="step-header">
+        <span class="step-id">R3</span>
+        <span class="step-icon">👥</span>
+        <span class="step-title">Advisory Board — ordine aggiornato</span>
+      </div>
+      <div class="step-body">
+        Roberto Bettin è ora al secondo posto (ADV-02), come richiesto. L'ordine completo: Michele Barletta → Roberto Bettin → Stefano Carella → Ottavia Landi di Chiavenna → Francesca Russo → Emanuela Arcangeli. Verificato sia su versione italiana che inglese.
+      </div>
+      <a class="step-verify" href="https://digitaglifescience.com/it/advisory-board" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Verifica Advisory Board IT
+      </a>
+      &nbsp;
+      <a class="step-verify" href="https://digitaglifescience.com/en/advisory-board" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Verifica Advisory Board EN
+      </a>
+    </div>
+
+    <div class="step" id="r4">
+      <div class="step-header">
+        <span class="step-id">R4</span>
+        <span class="step-icon">🔗</span>
+        <span class="step-title">Tutti i link di navigazione funzionano</span>
+      </div>
+      <div class="step-body">
+        Pharma, Medtech, Corporate, AI Solutions, Case Studies, Advisory Board — tutte le sezioni caricano correttamente in entrambe le lingue. Il link "Contattaci" apre una nuova email a <code>lifesciences@digitag.me</code>.
+      </div>
+      <a class="step-verify" href="https://digitaglifescience.com/it/pharma" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Verifica Pharma
+      </a>
+    </div>
+
+    <div class="step" id="r5">
+      <div class="step-header">
+        <span class="step-id">R5</span>
+        <span class="step-icon">⚠️</span>
+        <span class="step-title">Case Studies EN — testo in italiano</span>
+        <span class="badge badge-warn">da verificare</span>
+      </div>
+      <div class="step-body">
+        La pagina Case Studies nella versione inglese (<code>/en/case-studies</code>) mostra il testo in italiano: <em>"Progetti reali. Compliance assoluta."</em> e i contenuti sottostanti sono ancora in italiano. Le altre pagine EN sono tradotte correttamente. Da confermare se questa pagina è intenzionalmente non tradotta o se manca la versione inglese su Lovable.
+      </div>
+      <a class="step-verify" href="https://digitaglifescience.com/en/case-studies" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Verifica Case Studies EN
+      </a>
+    </div>
+
+    <!-- SCREENSHOT GRID -->
+    <h3 style="font-size:13px;font-weight:700;margin:32px 0 16px">Schermate del sito</h3>
+    <div class="shot-grid">
+      <div class="shot-card"><img src="screenshots/homepage-it.png" alt="Homepage IT" onclick="openLightbox(this)"><div class="shot-label">Homepage — IT</div></div>
+      <div class="shot-card"><img src="screenshots/homepage-en.png" alt="Homepage EN" onclick="openLightbox(this)"><div class="shot-label">Homepage — EN</div></div>
+      <div class="shot-card"><img src="screenshots/advisory-board-it.png" alt="Advisory Board IT" onclick="openLightbox(this)"><div class="shot-label">Advisory Board — IT</div></div>
+      <div class="shot-card"><img src="screenshots/advisory-board-en.png" alt="Advisory Board EN" onclick="openLightbox(this)"><div class="shot-label">Advisory Board — EN</div></div>
+      <div class="shot-card"><img src="screenshots/pharma-it.png" alt="Pharma IT" onclick="openLightbox(this)"><div class="shot-label">Pharma — IT</div></div>
+      <div class="shot-card"><img src="screenshots/pharma-en.png" alt="Pharma EN" onclick="openLightbox(this)"><div class="shot-label">Pharma — EN</div></div>
+      <div class="shot-card"><img src="screenshots/medtech-it.png" alt="Medtech IT" onclick="openLightbox(this)"><div class="shot-label">Medtech — IT</div></div>
+      <div class="shot-card"><img src="screenshots/medtech-en.png" alt="Medtech EN" onclick="openLightbox(this)"><div class="shot-label">Medtech — EN</div></div>
+      <div class="shot-card"><img src="screenshots/corporate-it.png" alt="Corporate IT" onclick="openLightbox(this)"><div class="shot-label">Corporate — IT</div></div>
+      <div class="shot-card"><img src="screenshots/corporate-en.png" alt="Corporate EN" onclick="openLightbox(this)"><div class="shot-label">Corporate — EN</div></div>
+      <div class="shot-card"><img src="screenshots/ai-solutions-it.png" alt="AI Solutions IT" onclick="openLightbox(this)"><div class="shot-label">AI Solutions — IT</div></div>
+      <div class="shot-card"><img src="screenshots/ai-solutions-en.png" alt="AI Solutions EN" onclick="openLightbox(this)"><div class="shot-label">AI Solutions — EN</div></div>
+      <div class="shot-card"><img src="screenshots/case-studies-it.png" alt="Case Studies IT" onclick="openLightbox(this)"><div class="shot-label">Case Studies — IT</div></div>
+      <div class="shot-card"><img src="screenshots/case-studies-en.png" alt="Case Studies EN ⚠️" onclick="openLightbox(this)"><div class="shot-label">Case Studies — EN ⚠️ testo IT</div></div>
+      <div class="shot-card"><img src="screenshots/lang-switch-test.png" alt="Language switch" onclick="openLightbox(this)"><div class="shot-label">Test cambio lingua</div></div>
+    </div>
+
+  </div>
+
+  <!-- TAB TECNICO -->
+  <div id="tab-tecnico" class="tab-panel">
+
+    <div class="tech-section">
+      <h4>Riepilogo</h4>
+      <div class="tech-block">Progetto    : digitaglifescience.com
+Stack       : Vite + React + shadcn/ui (Lovable)
+Server      : Tanuki (188.245.145.207) — /home/forge/digitaglifesciences.com/
+Repo        : digitag-agency/digital-med-co-pilot (private)
+Scenario    : post-deploy
+Data        : 2026-05-19
+Pagine OK   : 14/14
+Issues      : 1 (Case Studies EN non tradotta)
+Score       : 90/100</div>
+    </div>
+
+    <div class="tech-section">
+      <h4>Commit deployato</h4>
+      <div class="tech-block">0e3427f3  Reshuffled board order
+0c32760e  Changes  (AdvisoryBoard.tsx — Roberto Bettin aggiunto come id:2)
+50614eef  Changes  (AdvisoryBoardPreview.tsx — codici ADV rinumerati)
+3d6d336c  Changes  (AdvisoryBoardPreview.tsx — Bettin inserito in posizione 2)
+
+Diff: 2 file modificati (AdvisoryBoardPreview.tsx + AdvisoryBoard.tsx)
+Operazione: Roberto Bettin spostato da ADV-06 → ADV-02</div>
+    </div>
+
+    <div class="tech-section">
+      <h4>Comandi eseguiti</h4>
+      <div class="tech-block">ssh tanuki "cd /home/forge/digitaglifesciences.com && git pull origin main"
+# → f4c5793..0e3427f (+2 file modificati)
+
+ssh tanuki "npm install && npm run build"
+# → ✓ built in 4.97s
+
+ssh tanuki "python3 patch-dist.py"
+# → patch-dist.py: OK
+
+curl -o /dev/null -w '%{http_code}' https://digitaglifescience.com/
+# → 200</div>
+    </div>
+
+    <div class="tech-section">
+      <h4>Pagine testate</h4>
+      <table class="pages-table">
+        <thead><tr><th>URL</th><th>Titolo</th><th>Stato</th></tr></thead>
+        <tbody>
+          <tr><td>/it</td><td>Digitag Life Sciences — Digital excellence...</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/en</td><td>Digitag Life Sciences — Digital excellence...</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/it/advisory-board</td><td>Advisory Board | Digitag</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/en/advisory-board</td><td>Advisory Board | Digitag</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/it/pharma</td><td>Pharma Business Unit | Digitag Life Sciences</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/en/pharma</td><td>Pharma Business Unit | Digitag Life Sciences</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/it/medtech</td><td>Medtech Business Unit | Digitag</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/en/medtech</td><td>Medtech Business Unit | Digitag</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/it/corporate</td><td>Corporate Communications | Digitag</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/en/corporate</td><td>Corporate Communications | Digitag</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/it/ai-solutions</td><td>AI solutions for Pharma and Medtech | Digitag</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/en/ai-solutions</td><td>AI solutions for Pharma and Medtech | Digitag</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/it/case-studies</td><td>Case Studies | Digitag Life Sciences</td><td><span class="badge badge-ok">OK</span></td></tr>
+          <tr><td>/en/case-studies</td><td>Case Studies | Digitag Life Sciences</td><td><span class="badge badge-warn">⚠️ testo IT</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tech-section">
+      <h4>Note tecniche</h4>
+      <div class="tech-block">Language switcher: pulsanti IT/EN (button, non link) — cambio URL via router
+IT path: /it/* | EN path: /en/* | Root /: redirect a /en (default EN o cookie)
+Advisory Board: array riordinato in AdvisoryBoardPreview.tsx + AdvisoryBoard.tsx
+patch-dist.py: script post-build su Tanuki per fix favicon/OG/title
+nginx: try_files $uri $uri/ /index.html (SPA routing)</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>📡 Radar — giobi.com</span>
+    <span>Generato il 19 maggio 2026</span>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+function openLightbox(img){
+  document.getElementById('lightbox-img').src=img.src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox()});
+</script>
+</body>
+</html>
