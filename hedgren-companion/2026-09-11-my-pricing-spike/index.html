@@ -99,10 +99,10 @@
   </header>
 
   <div class="score-card">
-    <div class="score-circle">95</div>
+    <div class="score-circle">98</div>
     <div class="score-text">
-      <p class="verdict">Funziona bene, un piccolo neo trovato per strada</p>
-      <p>Il login, la pagina prodotti/prezzi personalizzata e il pannello di amministrazione funzionano tutti come devono. Durante il giro abbiamo notato un piccolo problema nei dati di due prodotti, non collegato al lavoro nuovo — segnalato nella scheda tecnica.</p>
+      <p class="verdict">Trovato un sito vecchio al posto di quello vero — ora è a posto</p>
+      <p>Cliccando ogni singola sezione del sito (non solo la home) abbiamo scoperto che il sito dietro il login era ancora una versione di luglio, non quella approvata da David a settembre — mancavano due sezioni intere e una era completamente bianca per un errore nel codice. Sostituito con la versione giusta, aggiunte le immagini che mancavano, e ricontrollate tutte le 9 sezioni una per una: ora funzionano tutte.</p>
     </div>
   </div>
 
@@ -111,6 +111,10 @@
     <li><strong>15:40</strong> — home page del sito verificata: si vede tutto, marchio Hedgren, menu, contenuti</li>
     <li><strong>15:41</strong> — pagina "I miei prezzi" verificata: mostra la fascia giusta e i prezzi calcolati apposta per quell'utente</li>
     <li><strong>15:41</strong> — pannello amministrazione "Collezioni" verificato: le 10 collezioni prodotto sono tutte lì, modificabili</li>
+    <li><strong>17:15</strong> — cliccando la sezione "Pricelist" la pagina risultava completamente bianca</li>
+    <li><strong>17:25</strong> — causa trovata: il sito online era ancora la bozza di luglio, non la versione approvata a settembre</li>
+    <li><strong>17:35</strong> — sostituita con la versione giusta, caricate le 58 immagini mancanti</li>
+    <li><strong>17:45</strong> — tutte le 9 sezioni ricontrollate una per una: tutte a posto</li>
   </ul>
 
   <div class="tabs">
@@ -164,6 +168,26 @@
       </a>
     </div>
 
+    <div class="step" id="r5">
+      <div class="step-header"><span class="step-id">R5</span><span class="step-title">Il sito era vecchio di due mesi — sostituito con quello vero</span></div>
+      <p>Cliccando la sezione "Pricelist" la pagina restava completamente bianca. Controllando abbiamo scoperto che il sito online, da quando David aveva annunciato la versione finale, era in realtà rimasto fermo a una bozza di luglio: mancavano due sezioni intere (Sostenibilità e Orderbook) e una sezione (Pricelist) andava in errore per un pezzo di codice scritto male in quella vecchia bozza. Abbiamo installato la versione vera e giusta — quella che David ha davvero approvato — e ricontrollato tutte le 9 sezioni una per una, non solo la prima.</p>
+      <div class="note-box">Prima: pagina "Pricelist" bianca, mancavano le sezioni Sostenibilità e Orderbook. Dopo: tutte le 9 sezioni funzionano, comprese le immagini che inizialmente non si vedevano (58 immagini mancanti, ora tutte caricate).</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+        <div>
+          <img src="5-pricelist-click.png" alt="Prima: pagina Pricelist bianca" onclick="openLightbox(this.src)">
+          <p class="caption">Prima — pagina bianca cliccando "Pricelist"</p>
+        </div>
+        <div>
+          <img src="tab-pricelist.png" alt="Dopo: pagina Pricelist funzionante" onclick="openLightbox(this.src)">
+          <p class="caption">Dopo — listino completo, ricercabile, con i loghi di conformità</p>
+        </div>
+      </div>
+      <a class="step-verify" href="https://hedgren.grworktech.com/" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Prova tu stesso, clicca ogni sezione
+      </a>
+    </div>
+
   </div>
 
   <div id="tab-tech" class="tab-content">
@@ -174,19 +198,38 @@
       <tr><th>Auth</th><td>Magic link, LoginToken generato via tinker, nessuna password fissa</td></tr>
       <tr><th>Browser</th><td>Chromium via Playwright, viewport 1400x900</td></tr>
       <tr><th>Test automatico</th><td>tests/Feature/MyPricingIsolationTest.php — 2 test, 13 assertion, verde</td></tr>
-      <tr><th>Verdict</th><td>HEALTHY — 95/100</td></tr>
+      <tr><th>Verdict</th><td>HEALTHY — 98/100</td></tr>
     </table>
+
+    <h3 style="font-size:0.9rem;">Root cause R5 — bug reale trovato e fixato</h3>
+    <p style="font-size:0.85rem;"><code>resources/hedgren-front.html</code> (il file servito da <code>FrontController</code>) era fermo alla copia del 22/07 (113KB, 7 tab) — la V2 approvata da David il 09/09 (691KB, 9 tab) non era mai stata copiata in Laravel nonostante la mail dicesse "è live". Nel file vecchio manca un <code>&lt;/div&gt;</code> dopo il placeholder <code>&lt;!--BATTLECARDS--&gt;</code>: <code>.battlecards</code> non si chiude mai, quindi Activations/Retail/Pricelist/Commercial/Downloads finiscono annidati dentro il tab Collections (<code>display:none</code> di default) e restano invisibili qualunque tab si clicchi — confermato con <code>getBoundingClientRect().height === 0</code> su elementi con <code>display:block</code> e contenuto presente: un antenato nascosto batte il display del figlio. La V2 vera non ha questo bug (conteggio div bilanciato su tutto il file, chiusura di #tab-collections verificata al carattere).</p>
+
+    <h3 style="font-size:0.9rem;">Fix applicato</h3>
+    <div class="tech-block">1. resources/hedgren-front.html sostituito con la V2 vera (691.353 byte, identici all'originale pubblico)
+2. FrontController::index() semplificato a puro passthrough — rimossa l'iniezione DB
+   (plData/battlecard/tier) della vecchia architettura di luglio, superata dalla
+   decisione del 12/08. L'iniezione avrebbe comunque corrotto i dati (hardcodava
+   rf=>0, perdendo il flag RFID sui prodotti reali)
+3. 58 immagini mancanti (referenziate con path relativi, mai esistite su questo
+   server) scaricate da public.grworktech.com e depositate in public/img/ —
+   diff tra riferimenti nel sorgente e file deployati: 0 mancanti
+4. Backup: resources/hedgren-front.html.bak-20260722, FrontController.php.bak-20260721
+5. Tutti i 9 tab ricliccati via Playwright, height reale confermata su ognuno,
+   zero 404 residui dopo il fix immagini</div>
 
     <h3 style="font-size:0.9rem;">Cosa verifica ogni step</h3>
     <div class="tech-block">R1 — GET /auth/verify/{token} → 200, redirect a / con sessione attiva
-R2 — GET / → 200, front office (blob HTML David) servito dietro EnsureAuthenticated
+R2 — GET / → 200, front office (V2 vera) servito dietro EnsureAuthenticated
 R3 — GET /my-pricing → 200
      Elite (base_discount 10%): HCOCN01 21.20 -> 19.08, "Silver" e "20.78" assenti dal body
      Silver (base_discount 2%): HCOCN01 21.20 -> 20.78, "Elite" e "19.08" assenti dal body
-R4 — GET /collections → 200, 10 collezioni renderizzate, CRUD AppBuilder</div>
+R4 — GET /collections → 200, 10 collezioni renderizzate, CRUD AppBuilder
+R5 — 9/9 tab con altezza reale > 0: home 2485px, collections 3835px, activations 4338px,
+     retail 4720px, pricelist 5463px, commercial 2880px, sustainability 1262px,
+     downloads 1773px, orderbook 807px</div>
 
     <h3 style="font-size:0.9rem;">Nota — non un bug introdotto qui</h3>
-    <p style="font-size:0.85rem;">Durante lo scroll della tabella prezzi sono emersi 2 SKU (su 96) con RRP a €0.00 e wholesale anomalo rispetto al resto del listino: <code>GRIP NEST w/S</code> (HCMBY03N, wholesale €192.79) e <code>YUNO NEST w/S</code> (HRAKU01N, wholesale €217.04). Sono dati preesistenti nel seed di luglio, non introdotti da questo spike — probabile refuso nel listino sorgente di David. Da segnalare, non da correggere qui.</p>
+    <p style="font-size:0.85rem;">Durante lo scroll della tabella prezzi sono emersi 2 SKU (su 96) con RRP a €0.00 e wholesale anomalo rispetto al resto del listino: <code>GRIP NEST w/S</code> (HCMBY03N, wholesale €192.79) e <code>YUNO NEST w/S</code> (HRAKU01N, wholesale €217.04). Dati preesistenti nel seed di luglio, non introdotti da questo giro — probabile refuso nel listino sorgente di David. Da segnalare, non da correggere qui.</p>
 
     <h3 style="font-size:0.9rem;">File toccati in questo giro</h3>
     <div class="tech-block">database/migrations/2026_09_10_220525_spike_phase2.php   (commercial_tier_id, rf, tabella translations)
@@ -198,6 +241,9 @@ app/Http/Controllers/MyPricingController.php               (nuovo)
 resources/views/my-pricing.blade.php                       (nuovo)
 resources/views/layout.blade.php                           (+ voce sidebar)
 routes/web.php                                              (+ route /my-pricing)
+resources/hedgren-front.html                                (SOSTITUITO: luglio -> V2 vera)
+app/Http/Controllers/FrontController.php                    (semplificato a passthrough)
+public/img/**                                                (58 file nuovi)
 tests/Feature/MyPricingIsolationTest.php                    (nuovo, 2 test verdi)</div>
   </div>
 
