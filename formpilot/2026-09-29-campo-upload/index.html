@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar — FormPilot, campo allegati</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fafaf9;--surface:#fff;--surface-alt:#f5f5f4;--border:#e5e5e0;--text:#1c1917;--text-muted:#78716c;--green:#15803d;--amber:#b45309;--red:#b91c1c;--accent:#4f46e5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;line-height:1.65}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 20px 64px}
+header{border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:28px}
+.brand{font-size:.7rem;font-weight:700;letter-spacing:.18em;color:var(--text-muted)}
+h1{font-size:1.5rem;margin:8px 0 6px;font-weight:600}
+.meta{font-size:.75rem;color:var(--text-muted)}
+.meta span{margin-right:16px}
+.scorecard{display:flex;gap:24px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:22px;margin-bottom:28px;flex-wrap:wrap}
+.ring{flex-shrink:0}
+.score-text{flex:1;min-width:260px}
+.score-text strong{display:block;font-size:1rem;margin-bottom:4px}
+.score-text p{margin:0;color:var(--text-muted);font-size:.82rem}
+.tabs{display:flex;gap:6px;margin-bottom:18px;border-bottom:1px solid var(--border)}
+.tab{padding:8px 16px;font:inherit;font-size:.8rem;background:none;border:0;border-bottom:2px solid transparent;color:var(--text-muted);cursor:pointer}
+.tab.active{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
+.panel{display:none}.panel.active{display:block}
+.timeline{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:20px 22px;margin-bottom:26px}
+.timeline h2{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin:0 0 14px}
+.tl-row{display:flex;gap:12px;align-items:flex-start;padding:5px 0;font-size:.82rem}
+.dot{width:9px;height:9px;border-radius:50%;margin-top:7px;flex-shrink:0}
+.dot.red{background:var(--red)}.dot.amber{background:var(--amber)}.dot.green{background:var(--green)}
+.tl-time{color:var(--text-muted);min-width:52px;font-size:.76rem}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:22px;margin-bottom:18px}
+.step-header{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.step-id{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:20px;padding:0 6px;border-radius:3px;font-size:.65rem;font-weight:700;letter-spacing:.04em;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);flex-shrink:0}
+.step-title{font-weight:600;font-size:.98rem}
+.step p{margin:0 0 12px}
+.step img{width:100%;height:auto;border:1px solid var(--border);border-radius:3px;display:block;margin:12px 0 6px;cursor:zoom-in}
+.caption{font-size:.74rem;color:var(--text-muted);margin-bottom:10px}
+.step-verify{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;color:var(--accent);text-decoration:none;border:1px solid var(--border);border-radius:3px;padding:5px 10px}
+.step-verify:hover{border-color:var(--accent)}
+.note{background:var(--surface-alt);border-left:3px solid var(--amber);padding:12px 14px;font-size:.82rem;margin:12px 0}
+pre{background:#1c1917;color:#e7e5e4;padding:14px 16px;border-radius:3px;overflow-x:auto;font-size:.76rem;line-height:1.55}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+th{color:var(--text-muted);font-weight:600;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em}
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);font-size:.72rem;color:var(--text-muted)}
+.lb{position:fixed;inset:0;background:rgba(28,25,23,.92);display:none;align-items:center;justify-content:center;padding:24px;z-index:50;cursor:zoom-out}
+.lb.open{display:flex}.lb img{max-width:100%;max-height:100%;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">RADAR</div>
+  <h1>FormPilot — il campo per allegare documenti</h1>
+  <div class="meta">
+    <span>29 settembre 2026</span>
+    <span>Ambiente: sviluppo (efesto)</span>
+    <span>Collaudo di una funzione nuova</span>
+    <span>95 verifiche automatiche</span>
+  </div>
+</header>
+
+<div class="scorecard">
+  <div class="ring">
+    <svg width="104" height="104" viewBox="0 0 104 104">
+      <circle cx="52" cy="52" r="45" fill="none" stroke="#e5e5e0" stroke-width="9"/>
+      <circle cx="52" cy="52" r="45" fill="none" stroke="#15803d" stroke-width="9"
+              stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round"
+              transform="rotate(-90 52 52)"/>
+      <text x="52" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="25" font-weight="700" fill="#1c1917">100</text>
+    </svg>
+  </div>
+  <div class="score-text">
+    <strong>Funziona, da cima a fondo.</strong>
+    <p>Un candidato può allegare il curriculum al modulo, il documento finisce nell'archivio
+       dell'azienda e chi legge le candidature può aprirlo o girarlo a un cliente con un
+       collegamento che dura un mese. Provato con un browser vero, non solo a tavolino.
+       Resta da accendere sul sito pubblico: qui è stato collaudato sull'ambiente di prova.</p>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-panel="p1">Cosa abbiamo fatto</button>
+  <button class="tab" data-panel="p2">Dettagli tecnici</button>
+</div>
+
+<section class="panel active" id="p1">
+
+  <div class="timeline">
+    <h2>Cronologia</h2>
+    <div class="tl-row"><span class="dot amber"></span><span class="tl-time">17:43</span><span>Deciso come deve funzionare: dove finiscono i documenti, chi può aprirli, quanto restano.</span></div>
+    <div class="tl-row"><span class="dot amber"></span><span class="tl-time">18:21</span><span>Creato l'archivio dedicato per i documenti di GR WorkTech, separato da quello dei documenti riservati.</span></div>
+    <div class="tl-row"><span class="dot red"></span><span class="tl-time">18:39</span><span>Primo collaudo col browser: il caricamento si pianta a metà.</span></div>
+    <div class="tl-row"><span class="dot red"></span><span class="tl-time">18:40</span><span>Secondo ostacolo: l'archivio non autorizzava il browser a scrivere.</span></div>
+    <div class="tl-row"><span class="dot green"></span><span class="tl-time">18:42</span><span>Risolti tutti e due. Documento caricato e collegato alla candidatura.</span></div>
+    <div class="tl-row"><span class="dot green"></span><span class="tl-time">18:48</span><span>Collaudo anche dal lato di chi legge le candidature: documento scaricato, collegamento di condivisione creato.</span></div>
+  </div>
+
+  <div class="step" id="r1">
+    <div class="step-header"><span class="step-id">R1</span><span class="step-title">Il modulo, prima di allegare</span></div>
+    <p>Il campo per il documento compare insieme agli altri dati della persona. Accanto al bottone
+       è scritto cosa si può caricare e quanto può pesare al massimo.</p>
+    <img src="upload-1-before.png" alt="Il modulo con il campo per il curriculum">
+    <div class="caption">Il campo CV, con il limite dichiarato sotto.</div>
+  </div>
+
+  <div class="step" id="r2">
+    <div class="step-header"><span class="step-id">R2</span><span class="step-title">Primo tentativo: il caricamento si pianta</span></div>
+    <p>Scegliendo il file, la scritta restava su «Uploading…» e non succedeva più niente. Il modulo
+       sembrava sano visto da fuori — la pagina rispondeva correttamente — ma nel browser il
+       meccanismo si fermava alla prima istruzione. È il tipo di difetto che si vede solo aprendo
+       davvero la pagina con un browser, ed è il motivo per cui questo collaudo si fa così.</p>
+    <img src="debug.png" alt="Il caricamento bloccato sulla scritta Uploading">
+    <div class="caption">Bloccato su «Uploading…»: da fuori sembrava tutto a posto.</div>
+  </div>
+
+  <div class="step" id="r3">
+    <div class="step-header"><span class="step-id">R3</span><span class="step-title">Secondo ostacolo: l'archivio non autorizzava il browser</span></div>
+    <p>Risolto il primo problema, il documento partiva ma veniva respinto: l'archivio non era
+       ancora configurato per accettare invii diretti dal sito. Configurato, e il documento è
+       passato al primo colpo.</p>
+  </div>
+
+  <div class="step" id="r4">
+    <div class="step-header"><span class="step-id">R4</span><span class="step-title">Documento allegato</span></div>
+    <p>Il file viaggia dal computer della persona direttamente all'archivio, senza passare dal
+       sito: il sito non ne conserva copia e non c'è un limite di peso imposto dal server. Quando
+       è arrivato, compare la conferma verde.</p>
+    <img src="upload-2-attached.png" alt="Il campo con la conferma Attached">
+    <div class="caption">«Attached»: il documento è nell'archivio e resterà legato a questa candidatura.</div>
+  </div>
+
+  <div class="step" id="r5">
+    <div class="step-header"><span class="step-id">R5</span><span class="step-title">Candidatura inviata</span></div>
+    <p>All'invio, il sistema va a rileggere il documento nell'archivio per accertarsi che ci sia
+       davvero e che corrisponda a quello annunciato — non si fida di quello che dichiara il
+       browser. Solo allora lo lega alla candidatura.</p>
+    <img src="upload-3-thanks.png" alt="La pagina di ringraziamento">
+    <div class="caption">La pagina di conferma, invariata rispetto a prima.</div>
+  </div>
+
+  <div class="step" id="r6">
+    <div class="step-header"><span class="step-id">R6</span><span class="step-title">Dal lato di chi legge le candidature</span></div>
+    <p>Nella scheda della candidatura compaiono gli allegati, con nome e peso. Il nome è
+       cliccabile e apre il documento. Il bottone accanto crea un collegamento da incollare in
+       una mail a un cliente: dura trenta giorni e non richiede di entrare nel sistema.</p>
+    <img src="admin-2-shared.png" alt="La scheda candidatura con l'allegato e il collegamento copiato">
+    <div class="caption">Allegato scaricabile e collegamento di condivisione valido fino al 29 ottobre.</div>
+  </div>
+
+  <div class="step" id="r7">
+    <div class="step-header"><span class="step-id">R7</span><span class="step-title">Cosa resta da fare</span></div>
+    <p>Quanto sopra è stato collaudato sull'ambiente di prova. Per accenderlo sul sito pubblico
+       mancano tre decisioni, elencate nel dettaglio tecnico: mettere in funzione la nuova
+       versione, aggiungere il campo al modulo di Fairtrade Belgium, e scrivere nell'informativa
+       che i documenti allegati vengono conservati senza scadenza.</p>
+    <div class="note">I documenti non hanno scadenza automatica per scelta: questo archivio è il
+      primo passo verso la banca dati dei candidati, dove il materiale va conservato nel tempo.
+      Va però dichiarato nell'informativa del modulo prima di pubblicarlo.</div>
+  </div>
+
+</section>
+
+<section class="panel" id="p2">
+
+  <div class="step">
+    <div class="step-header"><span class="step-title">Riepilogo</span></div>
+    <table>
+      <tr><th>Progetto</th><td>formpilot, branch <code>generations</code></td></tr>
+      <tr><th>Produzione</th><td>forms.grworktech.com su <strong>generations</strong> (135.181.144.5), <code>/home/web/formpilot</code> — ferma a <code>b07a703</code></td></tr>
+      <tr><th>Sviluppo</th><td>efesto, <code>/home/web/formpilot</code>, stessa branch</td></tr>
+      <tr><th>Commit</th><td><code>dd3f624</code> · <code>985f161</code> · <code>c9c9325</code> · <code>7921041</code> (pushati)</td></tr>
+      <tr><th>Storage</th><td>OVH, bucket <code>grworktech-uploads</code> (region <code>de</code>), CORS su forms.grworktech.com</td></tr>
+      <tr><th>Test</th><td>95 verdi, 272 asserzioni. Gli 8 di ObjectVault girano contro il bucket vero, senza mock</td></tr>
+      <tr><th>Esito</th><td>HEALTHY — non rilasciato in produzione</td></tr>
+    </table>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-title">I due difetti trovati solo nel browser</span></div>
+    <p><strong>1. Nessun meta CSRF nella pagina pubblica.</strong> Il JS leggeva
+       <code>document.querySelector('meta[name=csrf-token]').content</code> su <code>null</code> e
+       moriva prima della prima richiesta. HTML e API rispondevano 200 per tutto il tempo.</p>
+    <pre>PAGEERROR: Cannot read properties of null (reading 'content')
+STATUS TEXT: "Uploading…"
+HAS csrf meta: 0</pre>
+    <p>Corretto leggendo il token dall'input <code>_token</code> del form, con il meta come ripiego.</p>
+
+    <p><strong>2. Nessuna regola CORS sul bucket.</strong> Il PUT firmato moriva solo nel browser.</p>
+    <pre>Access to fetch at 'https://grworktech-uploads.s3.de.io.cloud.ovh.net/files/…'
+from origin 'http://127.0.0.1:8899' has been blocked by CORS policy:
+No 'Access-Control-Allow-Origin' header is present on the requested resource.</pre>
+    <p>La skill <code>/s3</code> ha guadagnato <code>cors get|set</code> e <code>mb</code>. Su OVH
+       il PUT nudo di creazione bucket è rifiutato senza <code>LocationConstraint</code> esplicito
+       nel body, anche se l'endpoint nomina già la regione.</p>
+
+    <p><strong>Più due visivi che nessun test avrebbe visto</strong>: il foglio di stile del campo
+       era scritto con colori da tema scuro su una pagina chiara (nome del file quasi invisibile),
+       e un file da 69 byte veniva mostrato come «0 KB».</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-title">Decisioni di progetto</span></div>
+    <p><strong>Il collegamento di condivisione non è una presigned URL.</strong> La firma versione 4
+       rifiuta qualunque scadenza oltre una settimana, e ne servivano trenta giorni. Il link punta
+       quindi all'applicazione, firmato da Laravel, e la URL del bucket nasce al click. Viene
+       generato su richiesta e non stampato in pagina: una credenziale visibile a ogni apertura
+       esce da uno screenshot.</p>
+    <p><strong>Il tetto viene registrato sulla riga.</strong> Risolvere la policy solo al momento
+       della conferma permetteva a una modifica di configurazione fatta nel frattempo di allargare
+       un permesso già concesso. La verifica ora usa <code>min(promesso, corrente)</code>.</p>
+    <p><strong>Un allegato obbligatorio blocca solo se manca del tutto.</strong> Se il documento è
+       stato offerto ma non si riesce a confermarlo, la candidatura passa comunque senza allegato:
+       chi ha scritto tre risposte lunghe non deve perderle per un intoppo dell'archivio.</p>
+    <p><strong>Un modulo senza allegati non emette né foglio di stile né script</strong>, quindi i
+       due moduli CEFTA in produzione rendono esattamente quello che rendevano prima.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-title">Aperto</span></div>
+    <table>
+      <tr><th>Deploy</th><td>Codice pushato ma non rilasciato. Servono il blocco <code>UPLOADS_S3_*</code> nel <code>.env</code> di generations e <code>php artisan migrate</code></td></tr>
+      <tr><th>Utente S3 ristretto</th><td><code>user-XKFj7F3h5VJ2</code> è oggi l'unica identità S3 del tenant e apre ogni bucket, backup compresi. Per crearne uno stretto serve l'API del manager OVH (application key + secret + consumer key), assente da <code>.env</code></td></tr>
+      <tr><th>Antivirus</th><td>Nessuna scansione, con <code>zip</code> in whitelist. I recruiter aprono questi file e li inoltrano ai clienti</td></tr>
+      <tr><th>Informativa</th><td>Un modulo con allegati deve dichiarare che i documenti restano senza scadenza</td></tr>
+      <tr><th>Campo su Fairtrade</th><td>Da aggiungere alla sezione «Personal details», e da decidere se obbligatorio</td></tr>
+      <tr><th>Dipendenze</th><td><code>composer</code> segnala 40 advisory su 12 pacchetti — preesistente, non introdotto qui</td></tr>
+    </table>
+  </div>
+
+</section>
+
+<footer>Radar — giobi.com — generato il 29/09/2026</footer>
+</div>
+
+<div class="lb" id="lb"><img src="" alt=""></div>
+<script>
+document.querySelectorAll('.tab').forEach(function (tab) {
+  tab.addEventListener('click', function () {
+    document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+});
+var lb = document.getElementById('lb');
+document.querySelectorAll('.step img').forEach(function (img) {
+  img.addEventListener('click', function () {
+    lb.querySelector('img').src = img.src;
+    lb.classList.add('open');
+  });
+});
+lb.addEventListener('click', function () { lb.classList.remove('open'); });
+</script>
+</body>
+</html>
