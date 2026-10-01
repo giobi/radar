@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — A3D — Pagina Shape, dal timeout agli indici</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafaf9; --surface: #fff; --surface-alt: #f5f5f4; --border: #e5e5e0;
+  --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+  --mono: 'IBM Plex Mono', monospace; --radius: 3px;
+  --green: #166534; --green-bg: rgba(22,101,52,.07);
+  --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.07);
+  --red: #991b1b; --red-bg: rgba(153,27,27,.07);
+  --dark: #1c1917;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.container { max-width: 1080px; margin: 0 auto; padding: 2rem 1.25rem; }
+@media (min-width: 720px) { .container { padding: 2rem 2.5rem; } }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+h1 { font-size: 1.3rem; margin-bottom: .4rem; line-height: 1.4; }
+.sub { font-size: .82rem; color: var(--text-secondary); margin-bottom: 1rem; }
+.meta { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; font-size: .7rem; color: var(--text-muted); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: .7rem 0; margin-bottom: 2rem; }
+
+.scorecard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+.ring { flex-shrink: 0; }
+.score-text { flex: 1; min-width: 240px; }
+.score-text strong { display: block; font-size: .95rem; margin-bottom: .35rem; }
+.score-text p { font-size: .82rem; color: var(--text-secondary); }
+
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+.timeline h2 { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; font-weight: 600; }
+.tl-row { display: flex; gap: .85rem; align-items: flex-start; padding: .35rem 0; font-size: .8rem; }
+.tl-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: .5rem; }
+.tl-red { background: #991b1b; } .tl-yellow { background: #ca8a04; } .tl-green { background: #166534; } .tl-grey { background: #a8a29e; }
+.tl-when { color: var(--text-muted); white-space: nowrap; min-width: 108px; font-size: .74rem; }
+
+.tabs { display: flex; gap: .4rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.tab { background: none; border: none; font-family: var(--mono); font-size: .78rem; padding: .6rem .9rem; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.panel { display: none; } .panel.active { display: block; }
+
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .9rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .7rem; flex-wrap: wrap; }
+.step-id { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 20px; padding: 0 6px; border-radius: 3px; font-size: .65rem; font-weight: 700; letter-spacing: .04em; color: var(--text-muted); background: var(--surface-alt); border: 1px solid var(--border); flex-shrink: 0; }
+.step-title { font-weight: 600; font-size: .92rem; }
+.step p { font-size: .84rem; color: var(--text-secondary); margin-bottom: .7rem; }
+.step p strong { color: var(--text); }
+.shot { width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); display: block; margin: .8rem 0 .4rem; cursor: zoom-in; }
+.caption { font-size: .72rem; color: var(--text-muted); margin-bottom: .8rem; }
+.step-verify { display: inline-flex; align-items: center; gap: .4rem; font-size: .75rem; color: var(--text-secondary); text-decoration: none; border: 1px solid var(--border); border-radius: var(--radius); padding: .35rem .7rem; }
+.step-verify:hover { border-color: var(--text-muted); color: var(--text); }
+
+table.num { width: 100%; border-collapse: collapse; font-size: .78rem; margin: .8rem 0; }
+table.num th, table.num td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--border); }
+table.num th { font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); font-weight: 600; }
+table.num td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.ok { color: var(--green); font-weight: 600; } .bad { color: var(--red); font-weight: 600; } .warn { color: var(--yellow); font-weight: 600; }
+
+.callout { border-left: 3px solid var(--yellow); background: var(--yellow-bg); padding: .8rem 1rem; border-radius: 0 var(--radius) var(--radius) 0; font-size: .82rem; margin: .9rem 0; }
+.callout.green { border-left-color: var(--green); background: var(--green-bg); }
+pre { background: var(--dark); color: #e7e5e4; padding: 1rem 1.1rem; border-radius: var(--radius); overflow-x: auto; font-size: .74rem; line-height: 1.6; margin: .8rem 0; }
+pre b { color: #fbbf24; font-weight: 600; }
+.footer { margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-size: .7rem; color: var(--text-muted); }
+
+#lb { display: none; position: fixed; inset: 0; background: rgba(28,25,23,.92); z-index: 99; align-items: center; justify-content: center; padding: 1.5rem; cursor: zoom-out; }
+#lb.on { display: flex; }
+#lb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="brand"><a href="../../dashboard/">Radar</a> / A3D</div>
+  <h1>Pagina Shape: dal timeout agli indici mancanti</h1>
+  <p class="sub">Collaudo del lavoro su mule, e confronto con vittoria che aspetta ancora l'ultimo pezzo.</p>
+  <div class="meta">
+    <span>1 ottobre 2026</span>
+    <span>mule.a3d.it &middot; vittoria.a3d.it</span>
+    <span>Verifica post-correzione</span>
+    <span>Segnalazione #1858</span>
+  </div>
+
+  <div class="scorecard">
+    <svg class="ring" width="92" height="92" viewBox="0 0 92 92">
+      <circle cx="46" cy="46" r="40" fill="none" stroke="#e5e5e0" stroke-width="7"/>
+      <circle cx="46" cy="46" r="40" fill="none" stroke="#854d0e" stroke-width="7"
+              stroke-dasharray="251.3" stroke-dashoffset="62.8" stroke-linecap="round"
+              transform="rotate(-90 46 46)"/>
+      <text x="46" y="52" text-anchor="middle" font-family="IBM Plex Mono, monospace"
+            font-size="22" font-weight="700" fill="#1c1917">75</text>
+    </svg>
+    <div class="score-text">
+      <strong>La pagina funziona di nuovo. Su una delle due piattaforme è ancora lenta.</strong>
+      <p>La pagina che non mostrava più le persone adesso le mostra, su tutte e due le piattaforme.
+         Su <b>mule</b> è anche veloce, perché ha ricevuto l'ultimo pezzo del lavoro. Su
+         <b>vittoria</b> ci mette ancora quasi cinquanta secondi: funziona, ma è a un soffio dal
+         limite oltre il quale il sito rinuncia e mostra errore. Quel pezzo va messo anche lì.</p>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <h2>Cronologia</h2>
+    <div class="tl-row"><span class="tl-dot tl-red"></span><span class="tl-when">28 set, 13:34</span><span>Primo tentativo fallito di aprire la pagina, registrato dal server. Ne seguono altri due.</span></div>
+    <div class="tl-row"><span class="tl-dot tl-red"></span><span class="tl-when">28 set, 13:57</span><span>Viene aperta la segnalazione: &laquo;non si vedono gli utenti&raquo;, urgenza bloccante.</span></div>
+    <div class="tl-row"><span class="tl-dot tl-yellow"></span><span class="tl-when">1 ott, mattina</span><span>Nei registri del server si scopre che la pagina non era vuota: non finiva mai di caricare, e il sito la interrompeva.</span></div>
+    <div class="tl-row"><span class="tl-dot tl-yellow"></span><span class="tl-when">1 ott</span><span>Prima correzione: il programma chiedeva al database le stesse informazioni centinaia di volte. Da circa 300 secondi a 55.</span></div>
+    <div class="tl-row"><span class="tl-dot tl-yellow"></span><span class="tl-when">1 ott</span><span>Seconda correzione: stessa abitudine, un livello più in su. Da 55 secondi a 35.</span></div>
+    <div class="tl-row"><span class="tl-dot tl-green"></span><span class="tl-when">1 ott</span><span>Terza parte: gli indici del database. Provata interamente su mule, dove la pagina torna sotto i due secondi di calcolo.</span></div>
+    <div class="tl-row"><span class="tl-dot tl-grey"></span><span class="tl-when">domani</span><span>La stessa operazione su vittoria, e poi sulle altre undici piattaforme.</span></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-p="p1">Cosa abbiamo fatto</button>
+    <button class="tab" data-p="p2">Dettagli tecnici</button>
+  </div>
+
+  <div class="panel active" id="p1">
+
+    <div class="step" id="r0">
+      <div class="step-header"><span class="step-id">R0</span><span class="step-title">Il problema non era quello che sembrava</span></div>
+      <p>La segnalazione diceva &laquo;non si vedono gli utenti&raquo;, e sembrava che mancassero dei dati.
+         Non mancava niente: le persone nel sistema c'erano tutte. <strong>La pagina non riusciva a
+         finire di prepararsi.</strong></p>
+      <p>Il sito ha una regola di sicurezza: se una pagina ci mette più di un minuto a essere pronta,
+         viene interrotta, perché un'attesa infinita blocca anche tutti gli altri. Questa pagina ci
+         metteva circa cinque minuti. Veniva interrotta ogni volta, e chi guardava vedeva una pagina
+         che non arrivava mai.</p>
+      <div class="callout">I registri del server lo dicevano già: tre interruzioni su quella
+        pagina il 28 settembre, la prima <strong>ventitré minuti prima</strong> che venisse aperta la
+        segnalazione. Bastava guardare lì.</div>
+    </div>
+
+    <div class="step" id="r1">
+      <div class="step-header"><span class="step-id">R1</span><span class="step-title">Siamo entrati nella piattaforma di prova</span></div>
+      <p>Tutto il lavoro è stato provato prima su <strong>mule</strong>, che è la copia usata per le
+         prove, e solo dopo si tocca quella vera. Siamo entrati con un utente amministratore.</p>
+      <img class="shot" src="r1-login.png" alt="La pagina iniziale di mule dopo l'accesso">
+      <p class="caption">La pagina iniziale di mule, con l'accesso effettuato.</p>
+      <a class="step-verify" href="https://mule.a3d.it/app" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+        Apri mule
+      </a>
+    </div>
+
+    <div class="step" id="r2">
+      <div class="step-header"><span class="step-id">R2</span><span class="step-title">La campagna di prova</span></div>
+      <p>Da qui si arriva alla sezione delle persone. È lo stesso percorso che fa chi usa la
+         piattaforma tutti i giorni.</p>
+      <img class="shot" src="r2-campagna.png" alt="La campagna di prova su mule">
+      <p class="caption">La campagna su cui abbiamo fatto le misure.</p>
+      <a class="step-verify" href="https://mule.a3d.it/app/campaign/2" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+        Apri la campagna
+      </a>
+    </div>
+
+    <div class="step" id="r3">
+      <div class="step-header"><span class="step-id">R3</span><span class="step-title">La pagina del problema, su mule: funziona</span></div>
+      <p>Questa è la pagina che non si apriva. Su mule, con tutte e tre le correzioni,
+         mostra <strong>le sue 13 persone</strong> con i punteggi colorati e la forma prevalente.
+         Nessun errore nel browser.</p>
+      <img class="shot" src="r3-shape.png" alt="La pagina Utenti per Shape su mule, con 13 persone e i punteggi">
+      <p class="caption">mule, pagina completa: 13 persone, punteggi per area, forma prevalente a destra.</p>
+      <a class="step-verify" href="https://mule.a3d.it/app/campaign/2/user/shape" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+        Apri la pagina su mule
+      </a>
+    </div>
+
+    <div class="step" id="r4">
+      <div class="step-header"><span class="step-id">R4</span><span class="step-title">La stessa pagina su vittoria: funziona, ma è lenta</span></div>
+      <p>Stesso programma, stessa pagina, piattaforma vera. Mostra <strong>tutte le 49 persone</strong>:
+         il problema segnalato è chiuso. Ma ci mette <strong>49 secondi</strong>, contro un limite di
+         60 oltre il quale verrebbe di nuovo interrotta.</p>
+      <p>Il motivo è l'ultimo pezzo, quello che su mule c'era già e su vittoria no: una specie di
+         <strong>indice analitico</strong> del database. Senza, per trovare una riga il sistema le
+         legge tutte, sessantatremila ogni volta. Con l'indice va dritto al punto. È la stessa
+         differenza fra cercare una parola in un dizionario e leggere il dizionario dall'inizio.</p>
+      <img class="shot" src="r4-vittoria.png" alt="La pagina Utenti per Shape su vittoria, con 49 persone">
+      <p class="caption">vittoria, pagina completa: tutte le 49 persone ci sono. Caricata in 49 secondi.</p>
+      <div class="callout">Da guardare con i propri occhi: la colonna <strong>Shape prevalente</strong>
+        riporta 100 per ogni persona. Può essere corretto (il punteggio è 100 quando il valore cade
+        dentro la soglia prevista), ma è un numero che vale la pena confermare prima di considerarlo
+        buono.</div>
+      <a class="step-verify" href="https://vittoria.a3d.it/app/campaign/1/user/shape" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+        Apri la pagina su vittoria (attendere ~50 secondi)
+      </a>
+    </div>
+
+    <div class="step" id="r5">
+      <div class="step-header"><span class="step-id">R5</span><span class="step-title">Quanto pesa l'ultimo pezzo</span></div>
+      <p>Per misurarlo abbiamo fatto una cosa un po' particolare: su mule gli indici c'erano già,
+         quindi <strong>glieli abbiamo tolti</strong> per ricreare la condizione di vittoria, misurato,
+         e poi rimessi con la procedura automatica. Stessa pagina, stessi dati, stesso programma.</p>
+      <table class="num">
+        <tr><th>mule</th><th class="n">Tempo di calcolo</th><th class="n">Richieste al database</th></tr>
+        <tr><td>Con gli indici</td><td class="n ok">1,31 s</td><td class="n">275</td></tr>
+        <tr><td>Senza (come vittoria oggi)</td><td class="n bad">8,34 s</td><td class="n">275</td></tr>
+        <tr><td>Dopo la procedura automatica</td><td class="n ok">1,34 s</td><td class="n">275</td></tr>
+      </table>
+      <p><strong>Le richieste al database sono sempre 275.</strong> Gli indici non riducono le domande
+         che il programma fa: rendono veloce ogni risposta. Per questo servivano in aggiunta alle due
+         correzioni precedenti, non al posto loro.</p>
+      <div class="callout green">Su vittoria il guadagno sarà maggiore, perché ha più del doppio dei
+        dati di mule. Quanto esattamente si vedrà solo facendolo lì.</div>
+    </div>
+
+    <div class="step" id="r6">
+      <div class="step-header"><span class="step-id">R6</span><span class="step-title">Cosa resta da fare</span></div>
+      <p><strong>Domani su vittoria:</strong> una sola procedura automatica, pochi secondi, nessuna
+         modifica ai dati. Poi la stessa cosa sulle altre undici piattaforme, che hanno lo stesso
+         problema anche se finora nessuno se n'è lamentato.</p>
+      <p>Da oggi quel pezzo è scritto nel programma invece di esistere su una macchina sola: le
+         piattaforme nuove nasceranno già a posto, e un controllo automatico segnala subito quelle a
+         cui manca.</p>
+    </div>
+
+  </div>
+
+  <div class="panel" id="p2">
+
+    <div class="step">
+      <div class="step-header"><span class="step-title">Riepilogo</span></div>
+      <table class="num">
+        <tr><td>Server</td><td>a3d-s0 (Hetzner, Forge) — 5.75.135.34</td></tr>
+        <tr><td>Path</td><td><code>/home/forge/{tenant}.a3d.it</code></td></tr>
+        <tr><td>Tenant collaudato</td><td>mule.a3d.it (DB <code>a3dmule</code>)</td></tr>
+        <tr><td>Tenant di confronto</td><td>vittoria.a3d.it (DB <code>a3dvittoria</code>)</td></tr>
+        <tr><td>Scenario</td><td>post-fix validation</td></tr>
+        <tr><td>Commit</td><td><code>c03742ce</code> &rarr; <code>d38987b3</code> &rarr; <code>5989e3bb</code></td></tr>
+        <tr><td>Verdict</td><td class="warn">FIXED su mule, PENDING su vittoria (indici)</td></tr>
+      </table>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-title">La causa, dai log</span></div>
+      <pre><b>/var/log/nginx/vittoria.a3d.it-error.log</b>
+2026/09/28 13:34:09 [error] upstream timed out (110: Connection timed out)
+  while reading response header from upstream,
+  client: 5.99.6.233, request: "GET /app/campaign/1/user/shape HTTP/2.0"
+  (altre due: 13:55:22, 14:47:31)
+
+<b>/var/log/php8.3-fpm.log</b>
+[28-Sep-2026 13:31:24] WARNING: [pool www] child 1961245,
+  script '/home/forge/vittoria.a3d.it/public/index.php'
+  execution timed out (73.751236 sec), terminating
+
+<b>/etc/php/8.3/fpm/pool.d/www.conf</b>
+request_terminate_timeout = 60</pre>
+      <p>Issue aperta alle 13:57, primo timeout alle 13:34.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-title">I tre difetti</span></div>
+      <p><strong>1. N+1 in <code>SubscriptionCalculator</code></strong> &mdash; <code>Block::getScoreForInput()</code>
+         leggeva <code>$input-&gt;subscription</code> in lazy e <code>BlockCalculator::getAnswerForBlock()</code>
+         rileggeva l'intera collection di input su quell'istanza; più i figli e i metas del blocco uno
+         per uno. Una subscription da 113 input: <b>343 query, 36s</b> &rarr; 8 query, 0,29s.</p>
+      <p><strong>2. N+1 in <code>Cluster::getShapedScoreValue()</code></strong> &mdash; una query sul pivot
+         <code>cluster_shape</code> per ogni coppia (cluster, shape) per ogni utente. 5664 query per
+         49 utenti &rarr; 1941.</p>
+      <p><strong>3. Indici assenti</strong> &mdash; <code>blocks</code> (63.730 righe) e <code>meta</code>
+         avevano solo la primary key. <code>select * from blocks where block_id in (...)</code>:
+         400-500ms a query, 88% del tempo di pagina in SQL.</p>
+      <pre>CREATE INDEX idx_blocks_block_id   ON blocks (block_id);
+CREATE INDEX idx_blocks_module_id  ON blocks (module_id);
+CREATE INDEX idx_blocks_skill_id   ON blocks (skill_id);
+CREATE INDEX idx_meta_entity_id    ON meta (entity_id);
+CREATE INDEX idx_inputs_block_id   ON inputs (block_id);
+CREATE INDEX idx_inputs_user_id    ON inputs (user_id);
+CREATE INDEX idx_scores_subject_id ON scores (subject_id);
+CREATE INDEX idx_scores_context_id ON scores (context_id);</pre>
+      <p>Esistevano su mule, aggiunti a mano, in nessuna migration. Ora in
+         <code>App\Database\HotPathIndexes</code>, letta sia dalla migration sia dal test.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-title">Il difetto trovato durante il collaudo</span></div>
+      <p>La prima versione del <code>down()</code> chiamava <code>HotPathIndexes::drop()</code>.
+         <code>up()</code> salta i due indici già presenti su ogni tenant
+         (<code>idx_inputs_subscription</code>, <code>idx_scores_subj_ctx</code>), ma
+         <code>down()</code> li cancellava comunque: <b>un rollback lasciava il tenant peggio di
+         prima</b>. Visto solo girando il ciclo completo <code>migrate</code> &rarr;
+         <code>rollback</code> &rarr; <code>migrate</code> su mule. Ora <code>down()</code> è un no-op
+         documentato.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-title">Misure</span></div>
+      <table class="num">
+        <tr><th>Misura</th><th class="n">Valore</th></tr>
+        <tr><td>vittoria, prima di tutto</td><td class="n bad">~300s (timeout a 60)</td></tr>
+        <tr><td>vittoria, dopo fix 1</td><td class="n bad">55,46s &mdash; 5664 query</td></tr>
+        <tr><td>vittoria, dopo fix 2 (stato attuale)</td><td class="n warn">35,44s calcolo &mdash; 1941 query</td></tr>
+        <tr><td>vittoria, pagina intera dal browser</td><td class="n warn">49,11s &mdash; HTTP 200, 49 righe</td></tr>
+        <tr><td>mule con indici, calcolo</td><td class="n ok">1,31s &mdash; 275 query</td></tr>
+        <tr><td>mule senza indici, calcolo</td><td class="n bad">8,34s &mdash; 275 query</td></tr>
+        <tr><td>mule, pagina intera dal browser</td><td class="n warn">8,61s &mdash; 5,04s lato server</td></tr>
+      </table>
+      <p>Le misure di calcolo sono <code>mount()</code> + <code>render()</code> del componente. La
+         pagina intera include layout e sidebar, che pesano a parte e non sono stati toccati.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-title">Test</span></div>
+      <p><code>SubscriptionCalculatorQueryCountTest</code> &mdash; le query non devono crescere col
+         numero di input.<br>
+         <code>CampaignShapeCalculatorQueryCountTest</code> &mdash; conta le query su
+         <code>cluster_shape</code>: 23 prima, max 4 dopo. Due formulazioni più deboli sono state
+         scartate perché passavano dove il bug c'era.<br>
+         <code>HotPathIndexesTest</code> &mdash; 10 casi, uno per indice, con il nome e il comando da
+         lanciare nel messaggio di errore.</p>
+      <pre>tests/Feature/Score + tests/Unit
+<b>OK — 48 test, 154 assertion</b> (1 incomplete preesistente)
+
+migrate   → created: 8 indici, 2.751ms
+rollback  → no-op, indici intatti
+migrate   → nothing to do, 73ms</pre>
+      <p>Equivalenza: output confrontato prima/dopo su tutte le 235 subscription con input di mule e
+         su tutte le 20 coppie campagna:utente &mdash; zero differenze.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-title">Note e cose aperte</span></div>
+      <p>&bull; Il deploy key GitHub dell'utente <code>forge</code> su s0 non esiste più. Deploy fatto
+         via Forgejo (tailnet), token <code>a3d-s0-ro</code> con scope <code>read:repository</code>.</p>
+      <p>&bull; <code>Shape::getTextForUser()</code> dereferenzia l'utente autenticato senza
+         controllarlo: <code>Call to a member function hasTag() on null</code>. In pagina non si vede
+         perché un utente c'è sempre. Fuori dallo scope di #1858.</p>
+      <p>&bull; La cache di <code>getSkillTotals</code> ha TTL 3600s su driver <code>file</code>: ogni
+         ora il primo visitatore paga il costo a freddo.</p>
+      <p>&bull; La password del DB <code>a3dvittoria</code> è stata ruotata: era finita in chiaro nel
+         transcript di una sessione.</p>
+      <p>&bull; Backup schema mule prima delle prove:
+         <code>/home/forge/mule-schema-backup-20261001145446.sql</code>.</p>
+    </div>
+
+  </div>
+
+  <div class="footer">Radar &middot; giobi.com &middot; generato il 1 ottobre 2026</div>
+</div>
+
+<div id="lb"><img id="lbi" alt=""></div>
+<script>
+document.querySelectorAll('.tab').forEach(function (t) {
+  t.addEventListener('click', function () {
+    document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function (x) { x.classList.remove('active'); });
+    t.classList.add('active');
+    document.getElementById(t.dataset.p).classList.add('active');
+  });
+});
+var lb = document.getElementById('lb'), lbi = document.getElementById('lbi');
+document.querySelectorAll('.shot').forEach(function (img) {
+  img.addEventListener('click', function () { lbi.src = img.src; lb.classList.add('on'); });
+});
+lb.addEventListener('click', function () { lb.classList.remove('on'); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { lb.classList.remove('on'); } });
+</script>
+</body>
+</html>
