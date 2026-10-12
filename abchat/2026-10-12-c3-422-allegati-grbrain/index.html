@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — GR Brain: invio di un'immagine senza testo rifiutato (422)</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); } .step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); } .step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); } .step-icon.fail svg { stroke: var(--red); }
+.step-id { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 20px; padding: 0 6px; border-radius: 3px; font-size: .65rem; font-weight: 700; letter-spacing: .04em; color: var(--text-muted); background: var(--surface-alt); border: 1px solid var(--border); flex-shrink: 0; }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: .75rem; }
+.step-img img { width: 100%; height: auto; display: block; cursor: zoom-in; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+.step-verify { display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem; color: var(--text-secondary); text-decoration: none; border: 1px solid var(--border); padding: .25rem .6rem; border-radius: var(--radius); }
+.step-verify:hover { border-color: var(--text); color: var(--text); }
+.step-verify svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); vertical-align: top; }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.timeline h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.tl { position: relative; padding-left: 1.5rem; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--border-strong); }
+.tl-item { position: relative; margin-bottom: .75rem; display: flex; align-items: baseline; gap: .75rem; }
+.tl-dot { position: absolute; left: -1.5rem; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); }
+.tl-dot.red { border-color: var(--red); background: var(--red-bg); }
+.tl-dot.yellow { border-color: var(--yellow); background: var(--yellow-bg); }
+.tl-dot.green { border-color: var(--green); background: var(--green-bg); }
+.tl-time { font-size: .72rem; font-weight: 600; color: var(--text-muted); min-width: 42px; flex-shrink: 0; }
+.tl-text { font-size: .8rem; color: var(--text-secondary); }
+.tl-duration { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; background: var(--green-bg); color: var(--green); font-size: .68rem; font-weight: 600; border-radius: 2px; }
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; align-items: center; justify-content: center; z-index: 50; cursor: zoom-out; padding: 2rem; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: var(--radius); }
+@media (max-width: 640px) { .score-card { flex-direction: column; text-align: center; } .meta-row { flex-direction: column; gap: .4rem; } .container { padding: 0 1rem; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+        <a href="../../dashboard/">Radar</a>
+    </div>
+    <h1 class="title">GR Brain — Inviare un'immagine senza testo dava "Richiesta rifiutata (422)"</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>12 ottobre 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>2 iterazioni</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Verifica dopo correzione</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>grbrain.com</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="0"/>
+        </svg>
+        <div class="score-number">100<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Risolto e verificato su grbrain.com</h2>
+        <p>Allegare un'immagine e premere Invio senza scrivere niente faceva comparire "Richiesta rifiutata (422)", e la casella si svuotava: immagine e testo andavano persi. Ora un messaggio fatto di soli allegati parte normalmente e il brain risponde descrivendo l'immagine. Se si prova ad allegare più di 10 file, la chat lo dice prima di caricarli; e se il server rifiuta un invio, spiega perché e lascia testo e allegati al loro posto.</p>
+    </div>
+</div>
+</div>
+
+<div class="timeline">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Cronologia intervento</h3>
+    <div class="tl">
+        <div class="tl-item"><div class="tl-dot red"></div><span class="tl-time">28/09</span><span class="tl-text">Segnalazione #121 su GR Brain: due immagini allegate, nessun testo, "Richiesta rifiutata (422)" (stesso difetto su abchat.it #60/#64 e brain.emisfera.it #64)</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">12/10 08:40</span><span class="tl-text">Causa confermata dai registri del server: il campo testo era obbligatorio anche con allegati; un secondo caso era il tetto di 10 allegati, non segnalato in chat</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">09:40</span><span class="tl-text">Correzione scritta e provata sull'ambiente di collaudo (test automatici + browser reale)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:05</span><span class="tl-text">Correzione installata su grbrain.com, limite di upload del server allineato a 64 MB</span></div>
+        <div class="tl-item"><div class="tl-dot red"></div><span class="tl-time">10:08</span><span class="tl-text">Seconda iterazione: il registro degli errori su grbrain non era scrivibile dalla chat e il rifiuto diventava un errore 500. Corretto</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">10:11</span><span class="tl-text">Verifica finale da browser su grbrain.com: immagine senza testo accettata, avviso sui 10 allegati, rifiuto leggibile senza perdere niente</span></div>
+    </div>
+    <div class="tl-duration">Dalla diagnosi alla verifica in produzione: 1 ora e 30 minuti</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech', this)">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-simple" class="tab-panel active">
+
+<div class="step" id="r1">
+    <div class="step-header">
+        <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <span class="step-id">R1</span>
+        <span class="step-title">Il problema: immagine allegata, nessun testo, "Richiesta rifiutata (422)"</span>
+    </div>
+    <p class="step-explain">Chi allegava una foto e premeva Invio senza scrivere nulla vedeva un errore generico, e la casella si svuotava: per riprovare bisognava ricaricare tutto. Il server pretendeva che ci fosse sempre del testo, anche quando l'allegato bastava da solo. Un secondo caso, mai segnalato ma visibile nei registri: chi allegava più di 10 file riceveva lo stesso errore, senza nessun avviso prima. Di questo stato precedente non esiste uno screenshot: la prova sta nei registri del server del 28 settembre, riportati nella scheda tecnica.</p>
+</div>
+
+<div class="step" id="r2">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-id">R2</span>
+        <span class="step-title">Verifica su grbrain.com: un'immagine, casella vuota, Invio</span>
+    </div>
+    <p class="step-explain">Siamo entrati su grbrain.com con un browser reale, nel brain di prova "Demo", abbiamo allegato un'immagine e premuto Invio senza scrivere niente.</p>
+    <div class="step-img">
+        <img src="02-allegato-senza-testo-prima-invio.png" alt="Composer con un'immagine allegata e la casella di testo vuota">
+        <div class="step-img-caption">Prima dell'invio: un'immagine in barra allegati, casella di testo vuota</div>
+    </div>
+    <div class="step-img">
+        <img src="04-turno-finito.png" alt="Il messaggio con la sola immagine è passato e il brain la descrive">
+        <div class="step-img-caption">Dopo l'invio: il messaggio parte, nessun errore, il brain descrive l'immagine</div>
+    </div>
+    <a class="step-verify" href="https://grbrain.com/chat/demo" target="_blank"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Prova nel brain Demo</a>
+</div>
+
+<div class="step" id="r3">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-id">R3</span>
+        <span class="step-title">Più di 10 allegati: la chat lo dice prima di caricarli</span>
+    </div>
+    <p class="step-explain">Abbiamo selezionato 11 file in una volta. I primi 10 vengono caricati, l'undicesimo no, e compare subito un avviso che spiega il limite e cosa fare (mandare il resto in un secondo messaggio). Prima l'avviso non c'era e l'errore arrivava solo al momento dell'invio.</p>
+    <div class="step-img">
+        <img src="05-undici-file-avviso.png" alt="Avviso: massimo 10 allegati per messaggio">
+        <div class="step-img-caption">Undici file selezionati: dieci in barra, avviso sul limite per l'undicesimo</div>
+    </div>
+</div>
+
+<div class="step" id="r4">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-id">R4</span>
+        <span class="step-title">Se il server rifiuta, spiega perché e non butta via niente</span>
+    </div>
+    <p class="step-explain">Per provare anche questo caso abbiamo forzato un invio con 11 allegati aggirando il blocco della pagina. Il server rifiuta, ma ora il messaggio dice chiaramente il motivo ("Massimo 10 allegati per messaggio, ne hai messi 11…"), e il testo scritto e gli allegati restano nella casella, pronti per essere corretti e rimandati.</p>
+    <div class="step-img">
+        <img src="06-422-forzato-messaggio-e-casella.png" alt="Rifiuto con messaggio leggibile, testo e allegati ancora nella casella">
+        <div class="step-img-caption">Rifiuto leggibile: il testo "testo da non perdere" e gli 11 allegati sono ancora nella casella</div>
+    </div>
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Riepilogo</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Install</td><td><code>grbrain</code> (host generations, container <code>grb-php</code>), checkout <code>/var/abchat/app</code></td></tr>
+        <tr><td>Commit</td><td><code>8af2c93</code> + <code>d7bc26b</code> su <code>village-v2</code> (su grbrain: <code>86658e6</code>, <code>c832ed1</code> via format-patch / git apply --3way --index)</td></tr>
+        <tr><td>Segnalazioni</td><td>abchat #60 #64, grbrain #121, emibrain #64</td></tr>
+        <tr><td>Brain di prova</td><td><code>demo</code> (utente giobimail@gmail.com, login via <code>radar:login</code>), sessioni 1078 e 1080</td></tr>
+        <tr><td>Nginx host</td><td><code>/etc/nginx/sites-enabled/grbrain.com</code>: <code>client_max_body_size</code> 50m → 64m (backup in <code>/root/grbrain.com.bak-c3-20261012</code>)</td></tr>
+        <tr><td>Health</td><td><code>/login</code> 200, 6638 byte prima e dopo</td></tr>
+        <tr><td>Test</td><td><code>tests/Feature/InvioConAllegatiSenzaTestoTest</code>: 4 nuovi, verdi. Suite: 27 rossi identici a prima del fix (ereditati), 0 regressioni</td></tr>
+        <tr><td>Non toccati</td><td>avocado (abchat.it), emibrain (brain.emisfera.it): il fix è nel branch, da deployare a parte</td></tr>
+        <tr><td>Verdict</td><td style="color: var(--green); font-weight: 600;">FIXED</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>Evidenza del problema (access log nginx host generations, 28/09, utente dcage)</h3>
+    <div class="log-block">[28/Sep/2026:19:30:32] POST /chat/dcage/upload 200          braccialini_logo.png
+[28/Sep/2026:19:30:34] POST /chat/dcage/upload 200          csm_Braccialini_Banner_Shop.jpg
+[28/Sep/2026:19:30:35] POST /chat/dcage/async-stream 422 100   ← {"message":"The message field is required.", ...}
+[28/Sep/2026:19:31:00] POST /chat/dcage/async-stream 422 100   ← stessi file ricaricati, stesso esito
+[28/Sep/2026:19:31:16] POST /chat/dcage/async-stream 200       ← ha scritto del testo
+
+Il JS leggeva body.error (undefined) invece di body.message → "Richiesta rifiutata (422)".
+Casella e allegati venivano svuotati prima della fetch.</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Fix applicato</h3>
+    <div class="log-block">app/Http/Controllers/WebchatController.php
+  validaTurno(): regole condivise da stream() e asyncStream()
+    message     => required_without:attachments|nullable|string|max:50000   (era: required)
+    attachments => nullable|array|max:10  con messaggio custom che dice il limite e quanti ne hai messi
+    Log::warning('webchat: turno rifiutato dalla validazione (422)', {brain, session_id, user_id, route, regole, n_allegati})
+    — dentro try/catch: su grbrain il daily log è creato da root a mezzanotte e www-data non lo scrive (→ 500)
+  testoPerIlPrompt(): con soli allegati il prompt porta "(L'utente ha inviato solo allegati, senza testo: ...)"
+
+resources/views/webchat/index.blade.php
+  handleFiles(): MAX_ALLEGATI=10 e MAX_FILE_BYTES=20MB controllati PRIMA della XHR, con avviso
+  runTurn() ramo 4xx: legge body.errors / body.message; ripristina ta.value, attachments; rimuove la bolla utente
+
+/etc/nginx/sites-enabled/grbrain.com: client_max_body_size 64m (nginx -t ok, reload)
+chmod 666 storage/logs/laravel-2026-10-12.log dentro grb-php (sblocco immediato, vedi note)</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Note</h3>
+    <ul style="font-size:.78rem; color:var(--text-secondary); padding-left:1.2rem; line-height:1.9;">
+        <li>Verifica e2e: Playwright headless, login con magic link, stesso script su staging e su grbrain (<code>storage/tmp/c3/e2e.py</code> nel brain di Giobi). Esiti: async-stream 200 per l'immagine sola, 422 parlante per gli 11 forzati, zero errori console.</li>
+        <li><strong>Trovato in corsa:</strong> su grbrain <code>storage/logs/laravel-YYYY-MM-DD.log</code> nasce a mezzanotte dal cron <code>docker exec grb-php php artisan schedule:run</code> (root) e <code>www-data</code> non può scriverci. Qualsiasi <code>Log::</code> da una richiesta web lì esplode in 500 senza traccia. Il chmod di oggi è un tampone: domani il file rinasce di root. Da decidere: <code>-u www-data</code> nel cron, oppure <code>'permission' => 0666</code> sul canale daily in <code>config/logging.php</code>.</li>
+        <li>Il worker non è stato riavviato: il codice dei job non cambia. opcache ha <code>validate_timestamps=On</code>, nessun restart di <code>grb-php</code>.</li>
+        <li>Nel checkout di grbrain restano non committati (di un'altra sessione, non toccati): <code>.gitignore</code>, <code>website/app/Http/Controllers/Api/BrainVillageController.php</code>.</li>
+    </ul>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')"><img id="lightbox-img" src="" alt=""></div>
+<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
+
+<script>
+function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+}
+document.querySelectorAll('.step-img img').forEach(function(img){
+    img.addEventListener('click', function(){
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox').classList.add('open');
+    });
+});
+</script>
+</body>
+</html>
