@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — ABChat staging: il messaggio in coda finiva nella chat sbagliata</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); } .step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); } .step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); } .step-icon.fail svg { stroke: var(--red); }
+.step-id { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 20px; padding: 0 6px; border-radius: 3px; font-size: .65rem; font-weight: 700; letter-spacing: .04em; color: var(--text-muted); background: var(--surface-alt); border: 1px solid var(--border); flex-shrink: 0; }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: .75rem; }
+.step-img img { width: 100%; height: auto; display: block; cursor: zoom-in; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.step-verify { display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem; color: var(--text-secondary); text-decoration: none; border: 1px solid var(--border); padding: .25rem .6rem; border-radius: var(--radius); }
+.step-verify:hover { border-color: var(--text); color: var(--text); }
+.step-verify svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); vertical-align: top; }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.timeline h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.tl { position: relative; padding-left: 1.5rem; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--border-strong); }
+.tl-item { position: relative; margin-bottom: .75rem; display: flex; align-items: baseline; gap: .75rem; }
+.tl-dot { position: absolute; left: -1.5rem; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); }
+.tl-dot.red { border-color: var(--red); background: var(--red-bg); }
+.tl-dot.yellow { border-color: var(--yellow); background: var(--yellow-bg); }
+.tl-dot.green { border-color: var(--green); background: var(--green-bg); }
+.tl-time { font-size: .72rem; font-weight: 600; color: var(--text-muted); min-width: 42px; flex-shrink: 0; }
+.tl-text { font-size: .8rem; color: var(--text-secondary); }
+.tl-duration { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; background: var(--green-bg); color: var(--green); font-size: .68rem; font-weight: 600; border-radius: 2px; }
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; align-items: center; justify-content: center; z-index: 50; cursor: zoom-out; padding: 2rem; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: var(--radius); }
+@media (max-width: 640px) { .score-card { flex-direction: column; text-align: center; } .meta-row { flex-direction: column; gap: .4rem; } .container { padding: 0 1rem; } .pair { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/></svg>
+        <a href="../../dashboard/">Radar</a>
+    </div>
+    <h1 class="title">ABChat (staging) — Il messaggio scritto in una chat partiva in un'altra</h1>
+    <div class="meta-row">
+        <span class="meta-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>12 ottobre 2026</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>2 giri (prima e dopo la correzione)</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Verifica dopo correzione</span>
+        <span class="meta-item"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>staging.abchat.it</span>
+    </div>
+</div>
+</div>
+
+<div class="container">
+
+<div class="score-section">
+<div class="score-card">
+    <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="track" cx="50" cy="50" r="42"/>
+            <circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="26.4"/>
+        </svg>
+        <div class="score-number">90<small>/100</small></div>
+    </div>
+    <div class="score-summary">
+        <h2>Corretto e verificato sull'ambiente di collaudo, non ancora installato sui siti in uso</h2>
+        <p>Mentre il brain sta ancora rispondendo si può continuare a scrivere: il messaggio resta "in coda" e parte da solo a fine risposta. Se però nel frattempo si apriva un'altra chat, quel messaggio partiva nella chat nuova invece che in quella dove era stato scritto; in altri casi spariva senza dire niente. Ora ogni messaggio in coda ricorda la chat a cui appartiene, parte solo lì, e tornando in quella chat lo si ritrova ancora in attesa. La correzione è su staging; per arrivare su abchat.it, grbrain.com e brain.emisfera.it serve un passaggio a parte.</p>
+    </div>
+</div>
+</div>
+
+<div class="timeline">
+    <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Cronologia intervento</h3>
+    <div class="tl">
+        <div class="tl-item"><div class="tl-dot red"></div><span class="tl-time">07/09</span><span class="tl-text">Segnalazione #54 su abchat.it: "ho messo in coda un messaggio in una chat, sono passato a un'altra, è partito in quella sbagliata". Il 22/09 la #63 racconta lo stesso</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">12/10 09:40</span><span class="tl-text">Riprodotto su staging in modo deterministico: la coda dei messaggi era unica per tutta la pagina e il messaggio prendeva la chat aperta nel momento in cui partiva, non quella in cui era stato scritto</span></div>
+        <div class="tl-item"><div class="tl-dot red"></div><span class="tl-time">18:10</span><span class="tl-text">Test automatico da browser scritto e lanciato sul codice vecchio: fallisce in 5 punti (messaggio partito nella chat B, messaggio perso)</span></div>
+        <div class="tl-item"><div class="tl-dot yellow"></div><span class="tl-time">18:17</span><span class="tl-text">Correzione applicata su staging (solo la pagina della chat, il server non cambia)</span></div>
+        <div class="tl-item"><div class="tl-dot green"></div><span class="tl-time">18:20</span><span class="tl-text">Stesso test, tutto verde: il messaggio parte nella chat giusta, nessun errore nel browser. Verificato anche nel database</span></div>
+    </div>
+    <div class="tl-duration">Dal test rosso al test verde: 10 minuti</div>
+</div>
+
+<div class="tabs">
+<div class="tab-buttons">
+    <button class="tab-btn active" onclick="switchTab('simple', this)">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Cosa abbiamo fatto
+    </button>
+    <button class="tab-btn" onclick="switchTab('tech', this)">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Dettagli tecnici
+    </button>
+</div>
+
+<div id="tab-simple" class="tab-panel active">
+
+<div class="step" id="r1">
+    <div class="step-header">
+        <div class="step-icon fail"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <span class="step-id">R1</span>
+        <span class="step-title">Prima: scrivo nella chat A, passo alla chat B, il messaggio parte in B</span>
+    </div>
+    <p class="step-explain">Nella chat A il brain sta lavorando a una richiesta lunga. Scriviamo un secondo messaggio: resta in attesa, con l'etichetta "in coda". Poi clicchiamo sulla chat B nell'elenco a sinistra. Pochi secondi dopo la chat B mostra una risposta vuota in arrivo e la barra di lavoro in basso: sta rispondendo al messaggio scritto in A, che in B non si vede nemmeno. Tornando in A, il messaggio in coda non c'è più.</p>
+    <div class="pair">
+        <div class="step-img">
+            <img src="01-prima-A-in-coda.png" alt="Chat A con un messaggio in coda mentre il brain lavora">
+            <div class="step-img-caption">Chat A: richiesta in corso, secondo messaggio "in coda"</div>
+        </div>
+        <div class="step-img">
+            <img src="02-prima-B-lavora-sul-messaggio-di-A.png" alt="Chat B che sta rispondendo al messaggio scritto in A">
+            <div class="step-img-caption">Chat B subito dopo il cambio: risposta in arrivo a un messaggio che qui non esiste</div>
+        </div>
+    </div>
+    <div class="step-img">
+        <img src="03-prima-A-bolla-sparita.png" alt="Chat A riaperta: il messaggio in coda è sparito">
+        <div class="step-img-caption">Chat A riaperta: il messaggio in coda non c'è più (è finito in B)</div>
+    </div>
+</div>
+
+<div class="step" id="r2">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-id">R2</span>
+        <span class="step-title">Dopo: stesso percorso, il messaggio resta in A e parte in A</span>
+    </div>
+    <p class="step-explain">Stessi passi, pagina corretta. Al cambio di chat compare un avviso: "1 messaggio in coda resta in attesa nella chat che lasci". La chat B resta com'era, senza lavori in corso. Tornando in A, il messaggio è ancora lì con l'etichetta "in coda", e quando la prima risposta finisce parte da solo, in A.</p>
+    <div class="step-img">
+        <img src="07-dopo-avviso-al-cambio-chat.png" alt="Avviso in basso al cambio di chat: 1 messaggio in coda resta in attesa nella chat che lasci">
+        <div class="step-img-caption">Il momento del cambio: avviso in basso, chat B intatta</div>
+    </div>
+    <div class="pair">
+        <div class="step-img">
+            <img src="05-dopo-B-pulita.png" alt="Chat B dopo il cambio: nessun lavoro in corso">
+            <div class="step-img-caption">Chat B dopo il cambio: niente in arrivo, niente barra di lavoro</div>
+        </div>
+        <div class="step-img">
+            <img src="06-dopo-A-bolla-ancora-in-coda.png" alt="Chat A riaperta: il messaggio è ancora in coda">
+            <div class="step-img-caption">Chat A riaperta: il messaggio è ancora "in coda", il lavoro prosegue</div>
+        </div>
+    </div>
+    <div class="step-img">
+        <img src="08-dopo-A-finita.png" alt="Chat A a fine lavoro: prima risposta, poi il messaggio in coda con la sua risposta">
+        <div class="step-img-caption">Chat A a fine lavoro: la prima risposta, poi il messaggio che era in coda e la sua risposta — tutto nella stessa chat</div>
+    </div>
+    <a class="step-verify" href="https://staging.abchat.it/chat/demo" target="_blank"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Prova nel brain Demo su staging</a>
+</div>
+
+<div class="step" id="r3">
+    <div class="step-header">
+        <div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="step-id">R3</span>
+        <span class="step-title">Il secondo caso: il messaggio che spariva</span>
+    </div>
+    <p class="step-explain">C'era anche una variante peggiore: se la risposta lunga era stata avviata in questa stessa finestra (non ripresa da un ricaricamento), cambiando chat il messaggio in coda veniva buttato via senza nessun avviso. Il test automatico lo prova a parte: prima del fix il messaggio non partiva mai; ora resta in coda, lo si ritrova riaprendo la chat e parte lì.</p>
+</div>
+
+</div>
+
+<div id="tab-tech" class="tab-panel">
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Riepilogo</h3>
+    <table class="tech-table">
+        <tr><th>Campo</th><th>Valore</th></tr>
+        <tr><td>Install</td><td><code>staging</code> (efesto, container <code>stg-php</code>), checkout <code>/var/abchat-staging/app</code>, branch <code>village-v2</code></td></tr>
+        <tr><td>Commit</td><td><code>a5c69f6</code> — locale, non pushato su origin e non deployato (C3 in deploy sulla flotta dalla stessa origin)</td></tr>
+        <tr><td>Segnalazioni</td><td>abchat #54 (sessione 332), #63 (sessione 398) — cluster C2 di <code>wiki/projects/abchat/bugs-flotta-2026-10.md</code></td></tr>
+        <tr><td>File toccati</td><td><code>website/resources/views/webchat/index.blade.php</code> (+56/−27, solo JS inline), <code>website/tests/Browser/c2-queue-switch.py</code> (nuovo). Server non toccato</td></tr>
+        <tr><td>Brain di prova</td><td><code>demo</code> (utente demo@staging.abchat.it, login via <code>radar:login</code>). Rosso: sessioni 578/579/580. Verde: 596 (B), 597 (A), 612 (A2)</td></tr>
+        <tr><td>Test browser</td><td>rosso su <code>d7bc26b</code>: 5 fallimenti su 10 asserzioni. Verde su <code>a5c69f6</code>: 10/10, zero errori console/pageerror</td></tr>
+        <tr><td>Suite PHP</td><td><code>php artisan test</code>: 732 passed, 11 failed, 1 skipped — i rossi sono gli stessi ereditati (nessuno tocca la webchat); subset webchat/allegati: 30/30 verdi</td></tr>
+        <tr><td>Verdict</td><td style="color: var(--green); font-weight: 600;">FIXED su staging — da deployare</td></tr>
+    </table>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>Evidenza del problema (Playwright sul codice vecchio, 18:10)</h3>
+    <div class="log-block">18:10:22 B = 578   (turno chiuso)
+18:10:49 A = 579   (streaming vero dopo 20s, model pro, `sleep 100`)
+18:10:57 PASS s1: A reattached (composer is-streaming)
+18:10:58 PASS s1: one queued bubble in A
+18:10:59 POST async-stream session_id=578 message='C2-QUEUED-FOR-A-20261012-181012: written in chat A.'   ← B!
+18:11:05 FAIL s1: marker NOT posted with session_id=B
+18:11:10 FAIL s1: back in A the queued bubble is still there
+18:12:45 A2 = 580  (turno live via runTurn)
+18:12:57 FAIL s2: back in A2 the queued bubble is still there (bug: silently dropped)
+18:16:17 FAIL s2: marker finally posted with session_id=A2 (got [])   ← mai partito
+RESULT RED (5 failures)
+
+Causa: pendingQueue globale alla pagina; runTurn() legge `sessionId` al momento della fetch,
+dopo che loadSession() l'ha gia' cambiata. Due abort diversi: runTurn svuotava la coda,
+reattachJob no (e cleanup() -> flushQueue partiva con la sessione nuova).</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.15a2.1 2.1 0 01-2.97-2.97l6.65-6.65a6 6 0 017.94-7.94l-3.66 3.71z"/></svg>Fix applicato (index.blade.php)</h3>
+    <div class="log-block">pendingQueue: [{text, atts, el, sessionId}]  — send() cattura sessionId all'accodamento
+codaDi(sid)             elementi in coda di una sessione
+staccaTurno(prossima)   UNICO abort allo switch (loadSession in testa, newChat): chiude lo stream,
+                        azzera stato busy, NON tocca la coda; toast se lascia messaggi in attesa
+ridisegnaCoda()         loadSession ridisegna le bolle .queued della sessione riaperta
+scartaCodaDi(sid)       stop esplicito (bottone/modal): scarta solo la coda della chat corrente
+flushQueue()            parte solo con gli elementi della sessione corrente; runTurn(text, atts, forSessionId)
+runTurn                 body.session_id = forSessionId ?? sessionId; l'abort non svuota piu' la coda;
+                        gli elementi accodati con sessionId null ereditano l'id al dispatch
+checkActiveJob          nessun job attivo per la sessione riaperta -> flushQueue subito
+
+Verde (18:16-18:20): POST marker s1 con session_id=597 (A), s2 con session_id=612 (A2).
+DB: chat_messages di 597 = [A-LONG, DONE, QUEUED-FOR-A, DONE]; di 612 = [A2-LIVE, DONE, QUEUED-FOR-A2, DONE]; 596 solo il setup.</div>
+</div>
+
+<div class="tech-section">
+    <h3><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Note e cosa resta aperto</h3>
+    <ul style="font-size:.78rem; color:var(--text-secondary); padding-left:1.2rem; line-height:1.9;">
+        <li>Scelta di design: opzione A+B dell'indagine, nella variante "la coda non si svuota mai allo switch". Aggiunta necessaria rispetto alla lettera dell'indagine: <code>flushQueue</code> filtra per sessione corrente, altrimenti la POST andava alla sessione giusta ma la bolla di risposta finiva nel DOM della chat sbagliata e <code>stream_done</code> rimetteva <code>sessionId</code> su quella vecchia.</li>
+        <li>La coda vive nella memoria della scheda: un reload la perde, come prima. Portarla in cache locale (opzione C dell'indagine) è il passo successivo se serve.</li>
+        <li>Un messaggio lasciato in coda in una chat con turno già finito parte solo quando la chat viene riaperta (non in background): è voluto, così la risposta nasce nella chat che si sta guardando.</li>
+        <li>Worker unico <code>queue:work</code> su staging: i turni di chat diverse si accodano uno dietro l'altro (opzione E dell'indagine, tema separato, da misurare su prod).</li>
+        <li>Il test browser (<code>tests/Browser/c2-queue-switch.py</code>) dura ~4 minuti perché ha bisogno di turni lunghi veri (<code>sleep</code> via Bash, modello <code>pro</code>); non è parte di <code>php artisan test</code>, come gli altri test in <code>tests/Browser/</code>.</li>
+    </ul>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')"><img id="lightbox-img" src="" alt=""></div>
+<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
+
+<script>
+function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+}
+document.querySelectorAll('.step-img img').forEach(function(img){
+    img.addEventListener('click', function(){
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox').classList.add('open');
+    });
+});
+</script>
+</body>
+</html>
