@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Radar — ABChat staging: la segnalazione resta in chat</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #fafaf9; --surface: #ffffff; --surface-alt: #f5f5f4;
+    --border: #e5e5e0; --border-strong: #d0d0c8;
+    --green: #15803d; --green-bg: rgba(21,128,61,.06);
+    --yellow: #854d0e; --yellow-bg: rgba(133,77,14,.06);
+    --red: #b91c1c; --red-bg: rgba(185,28,28,.06);
+    --text: #1c1917; --text-secondary: #57534e; --text-muted: #a8a29e;
+    --mono: 'IBM Plex Mono', 'SFMono-Regular', 'Consolas', monospace;
+    --radius: 3px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--mono); background: var(--bg); color: var(--text); line-height:1.7; font-size:14px; }
+.header { background: var(--surface); border-bottom: 2px solid var(--text); padding: 2rem 0 1.75rem; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem; }
+.brand { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+.brand svg { width: 14px; height: 14px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.brand a { color: var(--text-muted); text-decoration: none; }
+.title { font-size: 1.3rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: -.01em; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: .75rem; color: var(--text-secondary); }
+.meta-item { display: flex; align-items: center; gap: .35rem; }
+.meta-item svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.score-section { padding: 2rem 0; }
+.score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: flex; align-items: center; gap: 2rem; }
+.score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .track { fill: none; stroke: var(--surface-alt); stroke-width: 6; }
+.score-ring .fill { fill: none; stroke-width: 6; stroke-linecap: round; }
+.score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.6rem; font-weight: 700; }
+.score-number small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+.score-summary h2 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+.score-summary p { font-size: .82rem; color: var(--text-secondary); line-height: 1.75; }
+.tabs { padding: 1.25rem 0 0; }
+.tab-buttons { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: .6rem 1.2rem; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; font-family: var(--mono); font-size: .75rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: .4rem; }
+.tab-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.step-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-icon svg { width: 12px; height: 12px; stroke-width: 2.5; fill: none; }
+.step-icon.ok { background: var(--green-bg); } .step-icon.ok svg { stroke: var(--green); }
+.step-icon.warn { background: var(--yellow-bg); } .step-icon.warn svg { stroke: var(--yellow); }
+.step-icon.fail { background: var(--red-bg); } .step-icon.fail svg { stroke: var(--red); }
+.step-id { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 20px; padding: 0 6px; border-radius: 3px; font-size: .65rem; font-weight: 700; letter-spacing: .04em; color: var(--text-muted); background: var(--surface-alt); border: 1px solid var(--border); flex-shrink: 0; }
+.step-title { font-weight: 600; font-size: .85rem; }
+.step-explain { font-size: .82rem; color: var(--text-secondary); margin-bottom: .75rem; line-height: 1.8; }
+.step-img { border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: .75rem; }
+.step-img img { width: 100%; height: auto; display: block; cursor: zoom-in; }
+.step-img-caption { padding: .4rem .75rem; background: var(--surface-alt); font-size: .7rem; color: var(--text-muted); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.step-verify { display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem; color: var(--text-secondary); text-decoration: none; border: 1px solid var(--border); padding: .25rem .6rem; border-radius: var(--radius); }
+.step-verify:hover { border-color: var(--text); color: var(--text); }
+.step-verify svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+.tech-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: .75rem; }
+.tech-section h3 { font-size: .78rem; font-weight: 600; margin-bottom: .75rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.tech-section h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.log-block { background: #1c1917; color: #d6d3d1; padding: 1rem 1.25rem; border-radius: var(--radius); font-size: .75rem; line-height: 1.9; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tech-table th { text-align: left; font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: .4rem 0; border-bottom: 1px solid var(--border); }
+.tech-table td { padding: .4rem 0; border-bottom: 1px solid var(--surface-alt); vertical-align: top; }
+.tech-table code { background: var(--surface-alt); padding: .1rem .3rem; border-radius: 2px; font-size: .75rem; }
+.watermark { position: fixed; bottom: 1rem; right: 1.5rem; font-size: .62rem; color: var(--text-muted); letter-spacing: .04em; }
+.watermark a { color: var(--text-muted); text-decoration: none; }
+.timeline { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+.timeline h3 { font-size: .78rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: .02em; display: flex; align-items: center; gap: .4rem; }
+.timeline h3 svg { width: 13px; height: 13px; stroke: var(--text-muted); fill: none; stroke-width: 2; }
+.tl { position: relative; padding-left: 1.5rem; }
+.tl::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 1px; background: var(--border-strong); }
+.tl-item { position: relative; margin-bottom: .75rem; display: flex; align-items: baseline; gap: .75rem; }
+.tl-dot { position: absolute; left: -1.5rem; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); }
+.tl-dot.red { border-color: var(--red); background: var(--red-bg); }
+.tl-dot.yellow { border-color: var(--yellow); background: var(--yellow-bg); }
+.tl-dot.green { border-color: var(--green); background: var(--green-bg); }
+.tl-time { font-size: .72rem; font-weight: 600; color: var(--text-muted); min-width: 42px; flex-shrink: 0; }
+.tl-text { font-size: .8rem; color: var(--text-secondary); }
+.tl-duration { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; background: var(--green-bg); color: var(--green); font-size: .68rem; font-weight: 600; border-radius: 2px; }
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; align-items: center; justify-content: center; z-index: 50; cursor: zoom-out; padding: 2rem; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: var(--radius); }
+@media (max-width: 640px) { .score-card { flex-direction: column; text-align: center; } .meta-row { flex-direction: column; gap: .4rem; } .container { padding: 0 1rem; } .pair { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="header"><div class="container">
+<div class="brand"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><a href="../../dashboard/">Radar</a></div>
+<h1 class="title">ABChat (staging) — La segnalazione di un problema resta visibile nella chat</h1>
+<div class="meta-row">
+<span class="meta-item">14 ottobre 2026</span>
+<span class="meta-item">Nuova funzione, verifica su staging</span>
+<span class="meta-item"><a href="https://staging.abchat.it/chat/demo/636">https://staging.abchat.it/chat/demo/636</a></span>
+</div></div></div>
+<div class="container">
+<div class="score-section"><div class="score-card">
+<div class="score-ring"><svg width="100" height="100" viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="42"/><circle class="fill" cx="50" cy="50" r="42" stroke="var(--green)" stroke-dasharray="263.9" stroke-dashoffset="26.4"/></svg><div class="score-number">90<small>/100</small></div></div>
+<div class="score-summary"><h2>Funziona su staging, non ancora installato sui siti in uso</h2>
+<p>Chi preme il bottone "Segnala un problema" vedeva un ringraziamento per un secondo e mezzo, poi niente: nella chat non restava traccia di cosa aveva segnalato e quando. Ora la segnalazione compare nella chat come un riquadro rossiccio, nel punto in cui è stata mandata, e resta lì anche ricaricando la pagina. Il brain non la legge: non è un messaggio della conversazione. Il codice è su staging e non è stato pubblicato altrove.</p></div>
+</div></div>
+<div class="tabs">
+<div class="tab-buttons">
+<button class="tab-btn active" onclick="switchTab('simple', this)">Cosa abbiamo fatto</button>
+<button class="tab-btn" onclick="switchTab('tech', this)">Dettagli tecnici</button>
+</div>
+<div id="tab-simple" class="tab-panel active">
+<div class="step" id="r1"><div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-id">R1</span><span class="step-title">Il bottone apre il modulo della segnalazione</span></div><p class="step-explain">Dalla chat aperta si preme l'icona dell'insetto in basso a sinistra e si scrive cosa non va. La segnalazione di prova inizia con [TEST STAGING balloon].</p><div class="step-img"><img src="01-modal.png" alt="Modulo di segnalazione compilato"><div class="step-img-caption">Modulo di segnalazione compilato</div></div></div>
+
+<div class="step" id="r2"><div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-id">R2</span><span class="step-title">Subito dopo l'invio: il riquadro rossiccio in fondo alla chat</span></div><p class="step-explain">Senza ricaricare la pagina, in fondo alla conversazione compare il riquadro "Report sent" (la lingua segue quella dell'utente: italiano, inglese o francese), con il testo inviato e l'ora. Il rosso è attenuato: si distingue dai messaggi ma non sembra un errore.</p><div class="pair"><div class="step-img"><img src="02-bolla-subito.png" alt="La chat subito dopo l'invio"><div class="step-img-caption">La chat subito dopo l'invio</div></div><div class="step-img"><img src="03-bolla-zoom.png" alt="Il riquadro da vicino"><div class="step-img-caption">Il riquadro da vicino</div></div></div></div>
+
+<div class="step" id="r3"><div class="step-header"><div class="step-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-id">R3</span><span class="step-title">Ricaricando la pagina il riquadro è ancora lì</span></div><p class="step-explain">La segnalazione è salvata nella storia della chat: ricaricando, i riquadri tornano nello stesso punto. Ce ne sono tre perché la prova è stata ripetuta tre volte nella stessa chat.</p><div class="step-img"><img src="04-dopo-reload.png" alt="La stessa chat dopo il reload"><div class="step-img-caption">La stessa chat dopo il reload</div></div></div>
+
+</div>
+<div id="tab-tech" class="tab-panel">
+<div class="tech-section"><h3>Cosa è cambiato</h3>
+<table class="tech-table"><tr><th>Pezzo</th><th>Cosa</th></tr>
+<tr><td><code>BugReportController@store</code></td><td>Con <code>session_id</code> di una sessione dell'utente su quel brain: riga <code>chat_messages</code> role <code>system</code>, content <code>{type:"bug_report", title, excerpt, village_post_id, reported_at}</code>. La risposta JSON include <code>message</code>, il frontend disegna la bolla senza reload. Senza sessione: nessuna riga, risposta invariata.</td></tr>
+<tr><td><code>ChatSessionManager::conversation()</code></td><td><code>history()</code> senza le segnalazioni, usata dai tre punti che costruiscono il prompt (stream, asyncStream, voce). La UI resta su <code>history()</code>.</td></tr>
+<tr><td><code>WebchatController@history</code></td><td>Ogni messaggio espone <code>bug_report</code> (oggetto o null).</td></tr>
+<tr><td><code>webchat/index.blade.php</code></td><td><code>addBugBalloon()</code> + <code>.msg.bug-report</code> (<code>color-mix</code> su <code>--danger</code>, icona lucide <code>bug</code>); i tre loop di render della storia passano da <code>addHistoryMsg()</code>.</td></tr>
+<tr><td><code>lang/{it,en,fr}/webchat.php</code></td><td><code>bug_balloon_titolo</code>, <code>bug_balloon_thread</code>, <code>bug_balloon_senza_testo</code>.</td></tr>
+</table></div>
+<div class="tech-section"><h3>Verifiche</h3>
+<ul style="font-size:.78rem; color:var(--text-secondary); padding-left:1.2rem; line-height:1.9;">
+<li><code>tests/Feature/BugBalloonTest.php</code>: 7/7 verdi (sessione, senza sessione, sessione altrui, esclusione dal prompt, storia, link al thread, lingue).</li>
+<li>Regressione: SegnalazioneBugTest, Village/BugChannelTest, JavascriptDellaWebchatTest (parse script inline), ChatSession*, Webchat*, IndirizziChat, InvioConAllegati, Megamenu, NotaVocale: verdi. Un rosso non correlato: <code>BrainExecJobStatusTest::stale running job</code> (file non toccati da questa modifica; sullo staging ci sono modifiche non committate di un'altra sessione a <code>TurnLiveness</code>).</li>
+<li>Playwright su staging, utente reale, brain <code>demo</code>: POST 200 con <code>message</code>, bolla presente subito (DOM) e dopo reload; console: zero errori (solo il warning noto di Tailwind CDN).</li>
+</ul></div>
+<div class="tech-section"><h3>Note e cosa resta aperto</h3>
+<ul style="font-size:.78rem; color:var(--text-secondary); padding-left:1.2rem; line-height:1.9;">
+<li>Il link al thread del village non compare negli screenshot, per scelta: il canale <code>bugs</code> è privato del brain che amministra l'istanza, e per chi segnala il link apriva "Thread non trovato". Ora il server manda <code>village_url</code> (<code>/village/p/N</code>) solo se il brain che guarda può vedere il canale; coperto da test.</li>
+<li>Corretto in corsa: il <code>session_id</code> arriva dal client e la bolla poteva finire nella chat di un altro utente. Ora va solo in una sessione dell'utente su quel brain.</li>
+<li>Ogni invio di prova manda anche la mail di segnalazione reale (comportamento esistente): tre mail "[TEST STAGING balloon]" alla casella di triage, e tre post (#40-42) nel canale <code>bugs</code> di staging.</li>
+<li>Commit <code>79d4a29</code> su <code>village-v2</code>, non pushato, non deployato.</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')"><img id="lightbox-img" src="" alt=""></div>
+<div class="watermark"><a href="https://giobi.com">giobi.com</a></div>
+
+<script>
+function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+}
+document.querySelectorAll('.step-img img').forEach(function(img){
+    img.addEventListener('click', function(){
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox').classList.add('open');
+    });
+});
+</script>
+</body>
+</html>
